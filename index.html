@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ErfoNT pro - Industrial CMMS & SCADA</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
+    <style>
+        :root {
+            --bg-body: #0b0f19;
+            --surface-card: #131b2e;
+            --surface-card-hover: #1b2642;
+            --surface-input: #080c14;
+            --border-color: #22304a;
+            --border-focus: #0284c7;
+            
+            --text-main: #f1f5f9;
+            --text-muted: #8c9cb0;
+            --primary: #0284c7;
+            
+            --accent-amber: #d97706;
+            --accent-emerald: #059669;
+            --accent-rose: #dc2626;
+            --accent-purple: #7c3aed;
+            
+            --modal-bg: #0f172a;
+            --radius-box: 8px;
+            --radius-btn: 6px;
+        }
+
+        body.light-theme {
+            --bg-body: #f8fafc;
+            --surface-card: #ffffff;
+            --surface-card-hover: #f1f5f9;
+            --surface-input: #f8fafc;
+            --border-color: #cbd5e1;
+            --border-focus: #0284c7;
+            
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --primary: #0284c7;
+            
+            --accent-amber: #b45309;
+            --accent-emerald: #047857;
+            --accent-rose: #b91c1c;
+            --accent-purple: #6d28d9;
+            
+            --modal-bg: #ffffff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        
+        body { 
+            background: var(--bg-body); 
+            color: var(--text-main); 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column;
+            overflow-x: hidden;
+            font-size: 13px;
+        }
+
+        #login-screen {
+            position: fixed;
+            inset: 0;
+            background: #030509;
+            z-index: 999999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .login-card {
+            background: var(--surface-card);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 400px;
+            padding: 30px;
+            border-radius: var(--radius-box);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+            text-align: right;
+        }
+        body[dir="ltr"] .login-card { text-align: left; }
+        .login-logo { font-size: 18px; font-weight: 800; color: var(--text-main); margin-bottom: 6px; border-bottom: 2px solid var(--primary); padding-bottom: 10px; }
+        .login-subtitle { font-size: 11px; color: var(--text-muted); margin: 12px 0 20px 0; line-height: 1.6; }
+
+        #license-lock-screen {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #030509;
+            z-index: 1000000;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        header { 
+            background: var(--surface-card); 
+            border-bottom: 1px solid var(--border-color); 
+            padding: 10px 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            gap: 15px;
+            flex-wrap: wrap; 
+            z-index: 50; 
+        }
+        
+        .logo-group { display: flex; align-items: center; gap: 12px; }
+        .logo { font-size: 16px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 6px; cursor: pointer; letter-spacing: 0.5px; }
+        .badge { font-size: 10px; background: rgba(5, 150, 105, 0.1); color: var(--accent-emerald); padding: 2px 8px; border: 1px solid var(--accent-emerald); border-radius: 4px; font-family: monospace; font-weight: 700; }
+        
+        .icon-btn { background: var(--surface-input); border: 1px solid var(--border-color); color: var(--text-main); font-size: 12px; padding: 6px 10px; border-radius: var(--radius-btn); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 600; }
+        .icon-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+        .header-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .role-display { background: var(--surface-input); border: 1px solid var(--border-color); color: var(--text-main); padding: 5px 10px; border-radius: var(--radius-btn); font-size: 11px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+        .user-avatar-head { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; border: 1px solid var(--primary); }
+        .sync-badge { font-size: 10px; background: rgba(5, 150, 105, 0.1); color: var(--accent-emerald); padding: 4px 8px; border-radius: var(--radius-btn); border: 1px solid var(--border-color); font-family: monospace; font-weight: 600; }
+
+        .undo-btn-head { background: var(--accent-purple); color: #fff; border-color: var(--accent-purple); display: none; }
+
+        main.workspace { flex-grow: 1; padding: 20px; max-width: 1400px; margin: 0 auto; width: 100%; }
+        
+        .back-nav-bar { display: none; margin-bottom: 14px; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
+        .back-btn { background: var(--surface-card); border: 1px solid var(--border-color); color: var(--text-main); padding: 6px 12px; border-radius: var(--radius-btn); font-weight: 600; font-size: 11px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+        .back-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .menu-hub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 14px; }
+        .hub-card { 
+            background: var(--surface-card); 
+            border: 1px solid var(--border-color); 
+            padding: 16px; 
+            border-radius: var(--radius-box); 
+            cursor: pointer; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 6px; 
+            transition: transform 0.1s, border-color 0.1s;
+        }
+        .hub-card:hover { border-color: var(--primary); background: var(--surface-card-hover); transform: translateY(-1px); }
+        .hub-icon { font-size: 20px; }
+        .hub-title { font-size: 13px; font-weight: 700; color: var(--text-main); }
+        .hub-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px; }
+        .metric-card { background: var(--surface-card); border: 1px solid var(--border-color); padding: 14px; border-radius: var(--radius-box); position: relative; }
+        .metric-card::before { content:''; position: absolute; top:0; right:0; width: 3px; height: 100%; background: var(--primary); border-radius: 0 var(--radius-box) var(--radius-box) 0; }
+        body[dir="ltr"] .metric-card::before { right: auto; left: 0; border-radius: var(--radius-box) 0 0 var(--radius-box); }
+        .metric-card h4 { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .metric-card .val { font-size: 20px; font-weight: 800; color: var(--text-main); margin-top: 4px; font-family: monospace; }
+
+        .card { background: var(--surface-card); border: 1px solid var(--border-color); padding: 16px; border-radius: var(--radius-box); }
+        
+        .btn { background: var(--primary); color: #fff; border: 1px solid transparent; padding: 7px 14px; border-radius: var(--radius-btn); font-weight: 600; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+        .btn:hover { filter: brightness(1.1); }
+        
+        .btn-amber { background: var(--accent-amber); }
+        .btn-emerald { background: var(--accent-emerald); }
+        .btn-rose { background: var(--accent-rose); }
+        .btn-purple { background: var(--accent-purple); }
+
+        .table-container { background: var(--surface-card); border: 1px solid var(--border-color); border-radius: var(--radius-box); overflow-x: auto; margin-top: 12px; max-height: 600px; }
+        table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: inherit; }
+        th { background: var(--surface-input); color: var(--text-muted); padding: 10px 12px; border-bottom: 1px solid var(--border-color); font-weight: 700; text-transform: uppercase; position: sticky; top: 0; z-index: 10; }
+        td { padding: 8px 12px; border-bottom: 1px solid var(--border-color); color: var(--text-main); }
+        tr:hover td { background: var(--surface-card-hover); }
+
+        .modal { position: fixed; inset: 0; background: rgba(7, 10, 18, 0.85); display: none; justify-content: center; align-items: center; padding: 16px; z-index: 1000; }
+        .modal.active { display: flex; }
+        .modal-body { background: var(--modal-bg); border: 1px solid var(--border-color); width: 100%; max-width: 480px; padding: 22px; border-radius: var(--radius-box); max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.6); text-align: inherit; }
+        .form-group { margin-bottom: 12px; text-align: inherit; }
+        .form-group label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 4px; font-weight: 600; }
+        .form-control { width: 100%; background: var(--surface-input); border: 1px solid var(--border-color); padding: 8px 12px; border-radius: var(--radius-btn); color: var(--text-main); font-size: 11px; outline: none; text-align: inherit; }
+        .form-control:focus { border-color: var(--border-focus); }
+
+        .pm-history-box { background: var(--surface-input); border: 1px solid var(--border-color); border-radius: var(--radius-btn); padding: 10px; max-height: 150px; overflow-y: auto; margin-top: 6px; font-size: 11px; text-align: inherit; }
+        .pm-history-item { padding: 6px; border-bottom: 1px solid var(--border-color); margin-bottom: 4px; }
+
+        .sub-items-list { background: var(--surface-input); border: 1px solid var(--border-color); border-radius: var(--radius-btn); padding: 8px; margin-top: 6px; max-height: 130px; overflow-y: auto; }
+        .sub-item-chip { display: flex; justify-content: space-between; align-items: center; background: var(--surface-card); border: 1px solid var(--border-color); padding: 5px 8px; border-radius: 4px; margin-bottom: 4px; font-size: 11px; }
+
+        .user-profile-card { background: var(--surface-input); border: 1px solid var(--border-color); border-radius: var(--radius-box); padding: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+        .profile-avatar-lg { width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 1px solid var(--primary); }
+    </style>
+</head>
+<body dir="rtl">
+
+    <!-- صفحه قفل ورود امنیتی -->
+    <div id="login-screen">
+        <div class="login-card">
+            <div class="login-logo" data-i18n="login_title">ErfoNT pro ⚙️</div>
+            <div class="login-subtitle" data-i18n="login_subtitle">سامانه کنترل مرکزی و نگهداری تجهیزات صنعتی شوینده<br>جهت دسترسی، سمت خود را انتخاب و رمز عبور را وارد نمایید.</div>
+            
+            <div class="form-group">
+                <label data-i18n="login_role_label">انتخاب نقش کاربری:</label>
+                <select id="login-role-select" class="form-control">
+                    <option value="creator" data-i18n="role_creator">👑 سازنده (دسترسی کامل سیستم)</option>
+                    <option value="manager" data-i18n="role_manager">👔 مدیریت کارخانه</option>
+                    <option value="tech1" data-i18n="role_tech1">🔧 تکنسین ارشد خط</option>
+                    <option value="tech2" data-i18n="role_tech2">🔧 تکنسین شیفت</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label data-i18n="login_pass_label">کلمه عبور امنیتی:</label>
+                <input type="password" id="login-pass-input" class="form-control" placeholder="••••" onkeydown="if(event.key==='Enter') attemptLogin()">
+            </div>
+
+            <button onclick="attemptLogin()" class="btn btn-emerald" style="width: 100%; justify-content: center; margin-top: 8px; padding: 10px;" data-i18n="login_btn">
+                تایید و ورود به سامانه
+            </button>
+        </div>
+    </div>
+
+    <!-- قفل اضطراری لایسنس -->
+    <div id="license-lock-screen">
+        <div style="background:var(--surface-card); border:1px solid var(--accent-rose); padding:30px; border-radius:var(--radius-box); max-width:400px;">
+            <div style="font-size:24px; margin-bottom:10px; color:var(--accent-rose);">⚠️ سیستم قفل شد</div>
+            <h2 style="font-size:14px; font-weight:700; margin-bottom:8px;" data-i18n="locked_title">اعتبار لایسنس به پایان رسیده است</h2>
+            <p style="color:var(--text-muted); font-size:11px; line-height:1.5;" data-i18n="locked_desc">دسترسی به سیستم توسط سرور مرکزی محدود گردیده است.</p>
+        </div>
+    </div>
+
+    <!-- هدر صنعتی -->
+    <header>
+        <div class="logo-group">
+            <div class="logo" onclick="navigateTo('hub')">
+                <span>⚡</span> ErfoNT pro
+            </div>
+            <span class="badge" id="company-badge-text">NODE: erfont1995</span>
+            <button onclick="navigateTo('settings')" class="icon-btn" title="تنظیمات سیستم">⚙️</button>
+        </div>
+        
+        <div class="header-controls">
+            <button onclick="toggleLanguage()" class="icon-btn" id="lang-btn" title="تغییر زبان / Change Language">🌐 <span id="lang-label">English</span></button>
+            <button onclick="undoLastAction()" class="icon-btn undo-btn-head" id="btn-undo-head">🔄 <span data-i18n="undo">بازگشت</span></button>
+            <button onclick="toggleTheme()" class="icon-btn" id="theme-btn">🌙 <span data-i18n="theme">حالت تیره/روشن</span></button>
+            <span id="sync-status" class="sync-badge">همگام‌سازی توربو</span>
+            <div onclick="logoutApp()" class="role-display" id="current-role-badge" title="کلیک جهت خروج امن">
+                <img id="header-user-avatar" src="" class="user-avatar-head" style="display:none;">
+                <span>👤</span> <span id="role-text-span">نقش</span> 🔒
+            </div>
+        </div>
+    </header>
+
+    <!-- فضای کاری -->
+    <main class="workspace">
+
+        <div class="back-nav-bar" id="back-bar">
+            <button onclick="navigateTo('hub')" class="back-btn">
+                <span>◀</span> <span data-i18n="back_to_hub">بازگشت به کنترل پنل مرکزی</span>
+            </button>
+            <h3 id="current-page-title" style="font-size:13px; color:var(--primary); font-weight:700;"></h3>
+        </div>
+
+        <!-- تب 0: هاب مرکزی -->
+        <div id="tab-hub" class="tab-content active">
+            <div class="card-grid">
+                <div class="metric-card"><h4 data-i18n="mttr_title">شاخص MTTR (دقیقه)</h4><div class="val" id="val-mttr">0</div></div>
+                <div class="metric-card"><h4 data-i18n="mtbf_title">شاخص MTBF (ساعت)</h4><div class="val" id="val-mtbf">0</div></div>
+                <div class="metric-card"><h4 data-i18n="eq_count_title">تجهیزات تحت نظارت</h4><div class="val" id="dash-eq-count">30</div></div>
+                <div class="metric-card"><h4 data-i18n="reports_title">گزارش‌های ثبت‌شده</h4><div class="val" id="dash-reports">0</div></div>
+            </div>
+
+            <h3 style="font-size:12px; font-weight:700; margin-bottom:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;" data-i18n="modules_title">ماژول‌های عملیاتی سیستم نگهداری و تعمیرات</h3>
+
+            <div class="menu-hub-grid">
+                <div class="hub-card" onclick="navigateTo('equipment')">
+                    <div class="hub-icon">🏭</div>
+                    <div class="hub-title" data-i18n="mod_eq">مدیریت تجهیزات و زیرمجموعه</div>
+                    <div class="hub-desc" data-i18n="mod_eq_desc">پایش ۳۰ دستگاه صنعتی خطوط و زیرقطعات متصل.</div>
+                </div>
+
+                <div class="hub-card" onclick="navigateTo('pm')">
+                    <div class="hub-icon">📋</div>
+                    <div class="hub-title" data-i18n="mod_pm">چک‌لیست سرویس‌های PM</div>
+                    <div class="hub-desc" data-i18n="mod_pm_desc">برنامه‌ریزی، پایش ساعت کارکرد و سوابق دوره‌ای.</div>
+                </div>
+
+                <div class="hub-card" onclick="navigateTo('workorders')">
+                    <div class="hub-icon">🔧</div>
+                    <div class="hub-title" data-i18n="mod_wo">دستورات کار (EM / CM)</div>
+                    <div class="hub-desc" data-i18n="mod_wo_desc">مدیریت خرابی‌های اضطراری و دستورات تعمیراتی.</div>
+                </div>
+
+                <div class="hub-card" onclick="navigateTo('daily')">
+                    <div class="hub-icon">📊</div>
+                    <div class="hub-title" data-i18n="mod_daily">گزارش‌نویسی شیفت و خروجی CSV</div>
+                    <div class="hub-desc" data-i18n="mod_daily_desc">ثبت وضعیت خطوط تولید و گزارش تحویل شیفت.</div>
+                </div>
+
+                <div class="hub-card" onclick="navigateTo('inventory')">
+                    <div class="hub-icon">📦</div>
+                    <div class="hub-title" data-i18n="mod_inv">انبار فنی</div>
+                    <div class="hub-desc" data-i18n="mod_inv_desc">شامل ریزاقلام مصرفی (IEC 81346) و قطعات تخصصی.</div>
+                </div>
+
+                <div class="hub-card" onclick="navigateTo('logs')">
+                    <div class="hub-icon">📜</div>
+                    <div class="hub-title" data-i18n="mod_logs">لاگ رویدادهای زنده (Audit Trail)</div>
+                    <div class="hub-desc" data-i18n="mod_logs_desc">ثبت تمامی تغییرات و فعالیت‌های کاربران در سیستم.</div>
+                </div>
+
+                <div class="hub-card" onclick="navigateTo('ai')">
+                    <div class="hub-icon">🤖</div>
+                    <div class="hub-title" data-i18n="mod_ai">عیب‌یاب هوشمند صنعتی AI</div>
+                    <div class="hub-desc" data-i18n="mod_ai_desc">تحلیل خطاهای درایو، پمپ و تجهیزات برقی.</div>
+                </div>
+
+                <div class="hub-card" onclick="navigateTo('settings')">
+                    <div class="hub-icon">⚙️</div>
+                    <div class="hub-title" data-i18n="mod_settings">پروفایل، امنیت و تنظیمات</div>
+                    <div class="hub-desc" data-i18n="mod_settings_desc">مدیریت رمزها، گالری تصاویر و پشتیبان‌گیری ابری.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- تب 1: تجهیزات -->
+        <div id="tab-equipment" class="tab-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
+                <h3 style="font-size:12px; font-weight:700; text-transform:uppercase;" data-i18n="eq_list_title">لیست ماشین‌آلات و زیرقطعات</h3>
+                <button onclick="openModal('eq-modal')" class="btn" id="btn-add-eq" data-i18n="add_eq_btn">+ ثبت دستگاه جدید</button>
+            </div>
+            <div style="margin-bottom:10px;">
+                <input type="text" id="eq-search-input" onkeyup="filterEquipment()" placeholder="🔍 جستجو بر اساس نام تجهیز یا واحد..." class="form-control" data-i18n-ph="eq_search_ph">
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th data-i18n="th_row">#</th>
+                            <th data-i18n="th_eq_name">نام تجهیز / دستگاه</th>
+                            <th data-i18n="th_unit">واحد بهره‌برداری</th>
+                            <th data-i18n="th_hours">ساعت کارکرد</th>
+                            <th data-i18n="th_sub">زیرمجموعه‌ها</th>
+                            <th data-i18n="th_date">بازه زمانی</th>
+                            <th data-i18n="th_actions">عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="eq-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- تب 2: PM -->
+        <div id="tab-pm" class="tab-content">
+            <h3 style="font-size:12px; font-weight:700; margin-bottom:12px; text-transform:uppercase;" data-i18n="pm_page_title">پایش سرویس‌های دوره‌ای (PM)</h3>
+            <div class="card-grid" id="pm-cards-container"></div>
+        </div>
+
+        <!-- تب 3: دستورات کار -->
+        <div id="tab-workorders" class="tab-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h3 style="font-size:12px; font-weight:700; text-transform:uppercase;" data-i18n="wo_page_title">دستورات کار اضطراری و اصلاحی</h3>
+                <button onclick="openModal('wo-modal')" class="btn" data-i18n="add_wo_btn">+ ثبت دستور کار</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th data-i18n="th_wo_desc">شرح نقص / خرابی</th>
+                            <th data-i18n="th_wo_eq">تجهیز مربوطه</th>
+                            <th data-i18n="th_wo_priority">اولویت</th>
+                            <th data-i18n="th_wo_status">وضعیت</th>
+                            <th data-i18n="th_actions">عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="wo-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- تب 4: گزارش روزانه -->
+        <div id="tab-daily" class="tab-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h3 style="font-size:12px; font-weight:700; text-transform:uppercase;" data-i18n="daily_page_title">گزارش‌نویسی روزانه و تحویل شیفت</h3>
+                <div>
+                    <button onclick="exportDataToCSV()" class="btn btn-purple" style="margin-left:4px;" data-i18n="csv_btn">📥 خروجی CSV</button>
+                    <button onclick="openModal('daily-modal')" class="btn btn-amber" data-i18n="add_daily_btn">+ ثبت گزارش شیفت</button>
+                </div>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th data-i18n="th_time">زمان ثبت</th>
+                            <th data-i18n="th_shift">شیفت</th>
+                            <th data-i18n="th_author">ثبت‌کننده</th>
+                            <th data-i18n="th_desc">شرح گزارش</th>
+                        </tr>
+                    </thead>
+                    <tbody id="daily-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- تب 5: انبار فنی -->
+        <div id="tab-inventory" class="tab-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
+                <h3 style="font-size:12px; font-weight:700; text-transform:uppercase;" data-i18n="inv_page_title">انبار فنی (کدگذاری استاندارد IEC)</h3>
+                <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
+                    <button onclick="setInvCategory('all')" class="btn" data-i18n="inv_all">همه</button>
+                    <button onclick="setInvCategory('مصرفی‌ریز')" class="btn btn-amber" data-i18n="inv_misc">📌 ریزاقلام (-R)</button>
+                    <button onclick="setInvCategory('الکتریکال')" class="btn btn-purple" data-i18n="inv_elec">⚡ الکتریکال (-Q/-K)</button>
+                    <button onclick="setInvCategory('مکانیکال')" class="btn btn-emerald" data-i18n="inv_mech">⚙️ مکانیکال (-M)</button>
+                    <button onclick="setInvCategory('تاسیسات')" class="btn" style="background:#0284c7;" data-i18n="inv_util">🛠️ تاسیسات (-B)</button>
+                    <button onclick="openModal('inv-modal')" class="btn btn-emerald" data-i18n="add_inv_btn">+ قطعه جدید</button>
+                </div>
+            </div>
+            <div style="margin-bottom:10px;">
+                <input type="text" id="inv-search-input" onkeyup="filterInventory()" placeholder="🔍 جستجوی چسب برق نسوز، قطعات IEC..." class="form-control" data-i18n-ph="inv_search_ph">
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th data-i18n="th_cat">دسته</th>
+                            <th data-i18n="th_part_name">نام قطعه / اقلام مصرفی</th>
+                            <th data-i18n="th_code">کد فنی (IEC)</th>
+                            <th data-i18n="th_qty">موجودی</th>
+                            <th data-i18n="th_min">حداقل مجاز</th>
+                            <th data-i18n="th_status">وضعیت انبار</th>
+                            <th data-i18n="th_actions">عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inv-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- تب 6: لاگ رویدادها -->
+        <div id="tab-logs" class="tab-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <h3 style="font-size:12px; font-weight:700; color:var(--accent-amber); text-transform:uppercase;" data-i18n="logs_page_title">📜 گزارش ممیزی و رویدادهای زنده</h3>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th data-i18n="th_time">زمان</th>
+                            <th data-i18n="th_user">کاربر</th>
+                            <th data-i18n="th_action_desc">اقدام ثبت‌شده در سیستم</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logs-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- تب 7: عیب‌یاب هوشمند -->
+        <div id="tab-ai" class="tab-content">
+            <div class="card">
+                <h3 style="font-size:12px; font-weight:700; color:var(--primary); text-transform:uppercase;" data-i18n="ai_page_title">🤖 عیب‌یاب هوشمند تخصصی برق و مکانیک Erfont AI</h3>
+                <div style="display:flex; gap:8px; margin-top:10px;">
+                    <input type="text" id="ai-query" placeholder="مثلاً: خطای درایو INVT یا افت فشار پمپ..." class="form-control" style="margin:0;" data-i18n-ph="ai_ph">
+                    <button onclick="runAi()" class="btn" data-i18n="ai_btn">تحلیل مهندسی</button>
+                </div>
+                <div id="ai-res" style="display:none; margin-top:12px; background:var(--surface-input); padding:12px; border-radius:var(--radius-btn); font-size:11px; border:1px solid var(--border-color); line-height:1.5;"></div>
+            </div>
+        </div>
+
+        <!-- تب 8: تنظیمات -->
+        <div id="tab-settings" class="tab-content">
+            <h3 style="font-size:12px; font-weight:700; color:var(--primary); text-transform:uppercase; margin-bottom:14px;" data-i18n="settings_page_title">⚙️ تنظیمات سیستم و دسترسی کاربران</h3>
+            
+            <div class="card" id="creator-master-panel" style="display:none; margin-bottom:14px; border: 1px solid var(--accent-purple);">
+                <h4 style="font-size:11px; color:var(--accent-purple); font-weight:700; margin-bottom:8px; text-transform:uppercase;" data-i18n="master_panel_title">👑 پنل امنیت ارشد سازنده (رمزنگاری و لایسنس)</h4>
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:10px; margin-bottom:10px;">
+                    <div class="form-group"><label data-i18n="pass_creator">رمز سازنده:</label><input type="text" id="master-pass-creator" class="form-control"></div>
+                    <div class="form-group"><label data-i18n="pass_manager">رمز مدیریت:</label><input type="text" id="master-pass-manager" class="form-control"></div>
+                    <div class="form-group"><label data-i18n="pass_tech1">رمز تکنسین ۱:</label><input type="text" id="master-pass-tech1" class="form-control"></div>
+                    <div class="form-group"><label data-i18n="pass_tech2">رمز تکنسین ۲:</label><input type="text" id="master-pass-tech2" class="form-control"></div>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                    <button onclick="saveMasterPasswords()" class="btn btn-purple" data-i18n="update_pass_btn">بروزرسانی رمزها</button>
+                    <div style="display:flex; gap:6px; align-items:center;">
+                        <button onclick="toggleAppLicense(false)" class="btn btn-rose" data-i18n="lock_sys_btn">قفل اضطراری سامانه</button>
+                        <button onclick="toggleAppLicense(true)" class="btn btn-emerald" data-i18n="unlock_sys_btn">فعال‌سازی سیستم</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-bottom:14px;">
+                <h4 style="font-size:11px; color:var(--text-muted); font-weight:700; margin-bottom:8px; text-transform:uppercase;" data-i18n="profile_title">پروفایل کاربر فعال و آواتار</h4>
+                <div class="user-profile-card">
+                    <img id="settings-avatar-preview" src="" class="profile-avatar-lg" style="display:none;">
+                    <div style="flex-grow:1; display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:8px;">
+                        <div class="form-group"><label data-i18n="fullname_label">نام کامل:</label><input type="text" id="setUserFullname" class="form-control"></div>
+                        <div class="form-group"><label data-i18n="specialty_label">سمت تخصصی:</label><input type="text" id="setUserSpecialty" class="form-control"></div>
+                        <div class="form-group">
+                            <label data-i18n="avatar_label">بارگذاری تصویر:</label>
+                            <input type="file" id="setUserPhotoFile" accept="image/*" class="form-control" onchange="handleGalleryUpload(event)" style="padding:4px;">
+                        </div>
+                    </div>
+                </div>
+                <div style="display:flex; justify-content:flex-end;"><button onclick="saveUserProfile()" class="btn btn-emerald" data-i18n="save_profile_btn">ذخیره مشخصات</button></div>
+            </div>
+
+            <div class="card">
+                <h4 style="font-size:11px; color:var(--text-muted); font-weight:700; margin-bottom:8px; text-transform:uppercase;" data-i18n="backup_title">پشتیبان‌گیری دیتابیس</h4>
+                <div style="display:flex; gap:8px;">
+                    <button onclick="exportFullBackup()" class="btn btn-purple" data-i18n="backup_btn">دانلود فایل پشتیبان (JSON)</button>
+                    <button onclick="resetFactoryData()" class="btn btn-rose" data-i18n="reset_btn">بازنشانی پیش‌فرض کارخانه</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- مودال‌ها -->
+    <div id="eq-modal" class="modal">
+        <div class="modal-body">
+            <h3 style="font-size:12px; font-weight:700; color:var(--primary); margin-bottom:10px; text-transform:uppercase;" id="eq-modal-title" data-i18n="modal_add_eq">افزودن تجهیز جدید</h3>
+            <input type="hidden" id="edit-eq-id">
+            <div class="form-group"><label data-i18n="eq_name">نام تجهیز:</label><input type="text" id="new-eq-name" class="form-control"></div>
+            <div class="form-group"><label data-i18n="eq_unit">واحد / خط تولید:</label><input type="text" id="new-eq-unit" class="form-control"></div>
+            <div class="form-group"><label data-i18n="eq_hours">ساعت کارکرد اولیه:</label><input type="number" id="new-eq-hours" class="form-control" value="0"></div>
+            <div class="form-group"><label data-i18n="eq_start">تاریخ شروع بهره‌برداری:</label><input type="date" id="new-eq-start" class="form-control"></div>
+            <div class="form-group"><label data-i18n="eq_end">تاریخ پایان گارانتی / دوره:</label><input type="date" id="new-eq-end" class="form-control"></div>
+            <div style="display:flex; justify-content:flex-end; gap:6px; margin-top:12px;">
+                <button onclick="closeModal('eq-modal')" class="btn" style="background:#475569; color:#fff;" data-i18n="cancel">انصراف</button>
+                <button onclick="saveEquipmentData()" class="btn" data-i18n="submit">ثبت اطلاعات</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="eq-sub-modal" class="modal">
+        <div class="modal-body">
+            <h3 style="font-size:12px; font-weight:700; color:var(--primary); margin-bottom:10px; text-transform:uppercase;" id="eq-sub-title" data-i18n="modal_sub">مدیریت زیرمجموعه و قطعات متصل</h3>
+            <div style="display:flex; gap:6px; margin-bottom:10px;">
+                <input type="text" id="new-eq-subitem-input" class="form-control" placeholder="نام قطعه زیرمجموعه..." style="margin:0;" data-i18n-ph="sub_ph">
+                <button onclick="addEquipmentSubItem()" class="btn" style="white-space:nowrap;" data-i18n="add">+ افزودن</button>
+            </div>
+            <div id="eq-subitems-container" class="sub-items-list"></div>
+            <div style="display:flex; justify-content:flex-end; margin-top:12px;">
+                <button onclick="closeModal('eq-sub-modal')" class="btn btn-emerald" data-i18n="close">تایید و بستن</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="pm-exec-modal" class="modal">
+        <div class="modal-body">
+            <h3 id="pm-exec-title" style="font-size:12px; font-weight:700; color:var(--primary); margin-bottom:10px; text-transform:uppercase;" data-i18n="modal_pm">مدیریت و ثبت سوابق PM</h3>
+            <div class="form-group">
+                <label data-i18n="pm_update_hours">به‌روزرسانی ساعت کارکرد:</label>
+                <div style="display:flex; gap:6px;">
+                    <input type="number" id="pm-running-hours" class="form-control" style="margin:0;">
+                    <button onclick="resetRunningHours()" class="btn btn-rose" style="white-space:nowrap;" data-i18n="reset">صفر کردن</button>
+                </div>
+            </div>
+            <label style="font-size:11px; color:var(--text-muted); font-weight:600; margin-bottom:4px; display:block;" data-i18n="pm_checklist">چک‌لیست سرویس:</label>
+            <div id="pm-exec-items" style="max-height:110px; overflow-y:auto; font-size:11px; margin-bottom:8px; background:var(--surface-input); padding:6px; border-radius:var(--radius-btn); border:1px solid var(--border-color);"></div>
+            <div style="display:flex; gap:6px; margin-bottom:8px;">
+                <input type="text" id="quick-pm-input" class="form-control" placeholder="افزودن آیتم جدید به چک‌لیست..." style="margin:0;" data-i18n-ph="pm_ph">
+                <button onclick="addPmItemToActiveEq()" class="btn" style="white-space:nowrap;" data-i18n="add">+ افزودن</button>
+            </div>
+            <div class="form-group"><label data-i18n="pm_note">توضیحات تکنسین:</label><input type="text" id="pm-exec-note" class="form-control"></div>
+            <div style="margin-top:10px; border-top:1px solid var(--border-color); padding-top:8px;">
+                <h4 style="font-size:11px; color:var(--accent-amber); font-weight:700; margin-bottom:4px;" data-i18n="pm_history">سوابق پیشین PM:</h4>
+                <div id="pm-device-history" class="pm-history-box"></div>
+            </div>
+            <div style="display:flex; justify-content:flex-end; gap:6px; margin-top:12px;">
+                <button onclick="closeModal('pm-exec-modal')" class="btn" style="background:#475569; color:#fff;" data-i18n="cancel">انصراف</button>
+                <button onclick="savePMExec()" class="btn btn-emerald" data-i18n="pm_submit">ثبت نهایی سرویس</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="daily-modal" class="modal">
+        <div class="modal-body">
+            <h3 style="font-size:12px; font-weight:700; color:var(--accent-amber); margin-bottom:10px; text-transform:uppercase;" data-i18n="modal_daily">ثبت گزارش شیفت کاری</h3>
+            <div class="form-group"><label data-i18n="shift">شیفت:</label><select id="rep-shift" class="form-control"><option value="صبح" data-i18n="shift_morning">صبح</option><option value="عصر" data-i18n="shift_evening">عصر</option><option value="شب" data-i18n="shift_night">شب</option></select></div>
+            <div class="form-group"><label data-i18n="author">گزارش‌دهنده:</label><input type="text" id="rep-author" class="form-control"></div>
+            <div class="form-group"><label data-i18n="desc">شرح گزارش:</label><textarea id="rep-text" class="form-control" rows="3"></textarea></div>
+            <div style="display:flex; justify-content:flex-end; gap:6px; margin-top:12px;">
+                <button onclick="closeModal('daily-modal')" class="btn" style="background:#475569; color:#fff;" data-i18n="cancel">انصراف</button>
+                <button onclick="saveDailyReport()" class="btn btn-amber" data-i18n="submit_report">ثبت گزارش</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="wo-modal" class="modal">
+        <div class="modal-body">
+            <h3 style="font-size:12px; font-weight:700; color:var(--primary); margin-bottom:10px; text-transform:uppercase;" data-i18n="modal_wo">ثبت دستور کار اضطراری (EM)</h3>
+            <div class="form-group"><label data-i18n="wo_title_desc">شرح خرابی:</label><input type="text" id="wo-title" class="form-control"></div>
+            <div class="form-group"><label data-i18n="eq">تجهیز:</label><select id="wo-eq-select" class="form-control"></select></div>
+            <div class="form-group"><label data-i18n="priority">اولویت:</label><select id="wo-priority" class="form-control"><option value="عادی" data-i18n="p_normal">عادی</option><option value="فوری" data-i18n="p_urgent">فوری</option><option value="بحرانی" data-i18n="p_critical">بحرانی</option></select></div>
+            <div style="display:flex; justify-content:flex-end; gap:6px; margin-top:12px;">
+                <button onclick="closeModal('wo-modal')" class="btn" style="background:#475569; color:#fff;" data-i18n="cancel">انصراف</button>
+                <button onclick="saveWorkOrder()" class="btn" data-i18n="submit_wo">ثبت دستور کار</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="inv-modal" class="modal">
+        <div class="modal-body">
+            <h3 style="font-size:12px; font-weight:700; color:var(--primary); margin-bottom:10px; text-transform:uppercase;" data-i18n="modal_inv">مدیریت قطعه در انبار فنی</h3>
+            <input type="hidden" id="edit-inv-id">
+            <div class="form-group"><label data-i18n="cat">دسته بندی:</label><select id="inv-cat" class="form-control"><option value="مصرفی‌ریز" data-i18n="inv_misc">📌 ریزاقلام مصرفی (-R)</option><option value="الکتریکال" data-i18n="inv_elec">⚡ الکتریکال (-Q/-K)</option><option value="مکانیکال" data-i18n="inv_mech">⚙️ مکانیکال (-M)</option><option value="تاسیسات" data-i18n="inv_util">🛠️ تاسیسات (-B)</option></select></div>
+            <div class="form-group"><label data-i18n="part_name">نام قطعه:</label><input type="text" id="inv-name" class="form-control" placeholder="مثلا: چسب برق نسوز"></div>
+            <div class="form-group"><label data-i18n="part_code">کد فنی (استاندارد IEC):</label><input type="text" id="inv-code" class="form-control" placeholder="-R101 یا -Q201"></div>
+            <div class="form-group"><label data-i18n="qty">موجودی فعلی:</label><input type="number" id="inv-qty" class="form-control" value="0"></div>
+            <div class="form-group"><label data-i18n="min">حداقل مجاز:</label><input type="number" id="inv-min" class="form-control" value="1"></div>
+            <div style="display:flex; justify-content:flex-end; gap:6px; margin-top:12px;">
+                <button onclick="closeModal('inv-modal')" class="btn" style="background:#475569; color:#fff;" data-i18n="cancel">انصراف</button>
+                <button onclick="saveInventory()" class="btn" data-i18n="submit_inv">ذخیره در انبار</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- موتور اجرایی توربو و دوزبانه کاملاً هماهنگ -->
+    <script>
+        const translations = {
+            fa: {
+                login_title: "ErfoNT pro ⚙️",
+                login_subtitle: "سامانه کنترل مرکزی و نگهداری تجهیزات صنعتی شوینده<br>جهت دسترسی، سمت خود را انتخاب و رمز عبور را وارد نمایید.",
+                login_role_label: "انتخاب نقش کاربری:",
+                role_creator: "👑 سازنده (دسترسی کامل سیستم)",
+                role_manager: "👔 مدیریت کارخانه",
+                role_tech1: "🔧 تکنسین ارشد خط",
+                role_tech2: "🔧 تکنسین شیفت",
+                login_pass_label: "کلمه عبور امنیتی:",
+                login_btn: "تایید و ورود به سامانه",
+                locked_title: "اعتبار لایسنس به پایان رسیده است",
+                locked_desc: "دسترسی به سیستم توسط سرور مرکزی محدود گردیده است.",
+                undo: "بازگشت",
+                theme: "حالت تیره/روشن",
+                back_to_hub: "بازگشت به کنترل پنل مرکزی",
+                mttr_title: "شاخص MTTR (دقیقه)",
+                mtbf_title: "شاخص MTBF (ساعت)",
+                eq_count_title: "تجهیزات تحت نظارت",
+                reports_title: "گزارش‌های ثبت‌شده",
+                modules_title: "ماژول‌های عملیاتی سیستم نگهداری و تعمیرات",
+                mod_eq: "مدیریت تجهیزات و زیرمجموعه",
+                mod_eq_desc: "پایش ۳۰ دستگاه صنعتی خطوط و زیرقطعات متصل.",
+                mod_pm: "چک‌لیست سرویس‌های PM",
+                mod_pm_desc: "برنامه‌ریزی، پایش ساعت کارکرد و سوابق دوره‌ای.",
+                mod_wo: "دستورات کار (EM / CM)",
+                mod_wo_desc: "مدیریت خرابی‌های اضطراری و دستورات تعمیراتی.",
+                mod_daily: "گزارش‌نویسی شیفت و خروجی CSV",
+                mod_daily_desc: "ثبت وضعیت خطوط تولید و گزارش تحویل شیفت.",
+                mod_inv: "انبار فنی",
+                mod_inv_desc: "شامل ریزاقلام مصرفی (IEC 81346) و قطعات تخصصی.",
+                mod_logs: "لاگ رویدادهای زنده (Audit Trail)",
+                mod_logs_desc: "ثبت تمامی تغییرات و فعالیت‌های کاربران در سیستم.",
+                mod_ai: "عیب‌یاب هوشمند صنعتی AI",
+                mod_ai_desc: "تحلیل خطاهای درایو، پمپ و تجهیزات برقی.",
+                mod_settings: "پروفایل، امنیت و تنظیمات",
+                mod_settings_desc: "مدیریت رمزها، گالری تصاویر و پشتیبان‌گیری ابری.",
+                eq_list_title: "لیست ماشین‌آلات و زیرقطعات",
+                add_eq_btn: "+ ثبت دستگاه جدید",
+                eq_search_ph: "🔍 جستجو بر اساس نام تجهیز یا واحد...",
+                th_row: "#",
+                th_eq_name: "نام تجهیز / دستگاه",
+                th_unit: "واحد بهره‌برداری",
+                th_hours: "ساعت کارکرد",
+                th_sub: "زیرمجموعه‌ها",
+                th_date: "بازه زمانی",
+                th_actions: "عملیات",
+                pm_page_title: "پایش سرویس‌های دوره‌ای (PM)",
+                wo_page_title: "دستورات کار اضطراری و اصلاحی",
+                add_wo_btn: "+ ثبت دستور کار",
+                th_wo_desc: "شرح نقص / خرابی",
+                th_wo_eq: "تجهیز مربوطه",
+                th_wo_priority: "اولویت",
+                th_wo_status: "وضعیت",
+                daily_page_title: "گزارش‌نویسی روزانه و تحویل شیفت",
+                csv_btn: "📥 خروجی CSV",
+                add_daily_btn: "+ ثبت گزارش شیفت",
+                th_time: "زمان ثبت",
+                th_shift: "شیفت",
+                th_author: "ثبت‌کننده",
+                th_desc: "شرح گزارش",
+                inv_page_title: "انبار فنی (کدگذاری استاندارد IEC)",
+                inv_all: "همه",
+                inv_misc: "📌 ریزاقلام (-R)",
+                inv_elec: "⚡ الکتریکال (-Q/-K)",
+                inv_mech: "⚙️ مکانیکال (-M)",
+                inv_util: "🛠️ تاسیسات (-B)",
+                add_inv_btn: "+ قطعه جدید",
+                inv_search_ph: "🔍 جستجوی چسب برق نسوز، قطعات IEC...",
+                th_cat: "دسته",
+                th_part_name: "نام قطعه / اقلام مصرفی",
+                th_code: "کد فنی (IEC)",
+                th_qty: "موجودی",
+                th_min: "حداقل مجاز",
+                th_status: "وضعیت انبار",
+                logs_page_title: "📜 گزارش ممیزی و رویدادهای زنده",
+                th_user: "کاربر",
+                th_action_desc: "اقدام ثبت‌شده در سیستم",
+                ai_page_title: "🤖 عیب‌یاب هوشمند تخصصی برق و مکانیک Erfont AI",
+                ai_ph: "مثلاً: خطای درایو INVT یا افت فشار پمپ...",
+                ai_btn: "تحلیل مهندسی",
+                settings_page_title: "⚙️ تنظیمات سیستم و دسترسی کاربران",
+                master_panel_title: "👑 پنل امنیت ارشد سازنده (رمزنگاری و لایسنس)",
+                pass_creator: "رمز سازنده:",
+                pass_manager: "رمز مدیریت:",
+                pass_tech1: "رمز تکنسین ۱:",
+                pass_tech2: "رمز تکنسین ۲:",
+                update_pass_btn: "بروزرسانی رمزها",
+                lock_sys_btn: "قفل اضطراری سامانه",
+                unlock_sys_btn: "فعال‌سازی سیستم",
+                profile_title: "پروفایل کاربر فعال و آواتار",
+                fullname_label: "نام کامل:",
+                specialty_label: "سمت تخصصی:",
+                avatar_label: "بارگذاری تصویر:",
+                save_profile_btn: "ذخیره مشخصات",
+                backup_title: "پشتیبان‌گیری دیتابیس",
+                backup_btn: "دانلود فایل پشتیبان (JSON)",
+                reset_btn: "بازنشانی پیش‌فرض کارخانه",
+                modal_add_eq: "افزودن تجهیز جدید",
+                eq_name: "نام تجهیز:",
+                eq_unit: "واحد / خط تولید:",
+                eq_hours: "ساعت کارکرد اولیه:",
+                eq_start: "تاریخ شروع بهره‌برداری:",
+                eq_end: "تاریخ پایان گارانتی / دوره:",
+                cancel: "انصراف",
+                submit: "ثبت اطلاعات",
+                modal_sub: "مدیریت زیرمجموعه و قطعات متصل",
+                sub_ph: "نام قطعه زیرمجموعه...",
+                add: "+ افزودن",
+                close: "تایید و بستن",
+                modal_pm: "مدیریت و ثبت سوابق PM",
+                pm_update_hours: "به‌روزرسانی ساعت کارکرد:",
+                reset: "صفر کردن",
+                pm_checklist: "چک‌لیست سرویس:",
+                pm_ph: "افزودن آیتم جدید به چک‌لیست...",
+                pm_note: "توضیحات تکنسین:",
+                pm_history: "سوابق پیشین PM:",
+                pm_submit: "ثبت نهایی سرویس",
+                modal_daily: "ثبت گزارش شیفت کاری",
+                shift: "شیفت:",
+                shift_morning: "صبح",
+                shift_evening: "عصر",
+                shift_night: "شب",
+                author: "گزارش‌دهنده:",
+                submit_report: "ثبت گزارش",
+                modal_wo: "ثبت دستور کار اضطراری (EM)",
+                wo_title_desc: "شرح خرابی:",
+                eq: "تجهیز:",
+                priority: "اولویت:",
+                p_normal: "عادی",
+                p_urgent: "فوری",
+                p_critical: "بحرانی",
+                submit_wo: "ثبت دستور کار",
+                modal_inv: "مدیریت قطعه در انبار فنی",
+                cat: "دسته بندی:",
+                part_name: "نام قطعه:",
+                part_code: "کد فنی (استاندارد IEC):",
+                qty: "موجودی فعلی:",
+                min: "حداقل مجاز:",
+                submit_inv: "ذخیره در انبار"
+            },
+            en: {
+                login_title: "ErfoNT pro ⚙️",
+                login_subtitle: "Detergent Industrial Equipment SCADA & Maintenance System<br>Please select your role and enter security password.",
+                login_role_label: "Select User Role:",
+                role_creator: "👑 Creator (Full System Access)",
+                role_manager: "👔 Plant Manager",
+                role_tech1: "🔧 Senior Line Technician",
+                role_tech2: "🔧 Shift Technician",
+                login_pass_label: "Security Password:",
+                login_btn: "Login to System",
+                locked_title: "License Expired",
+                locked_desc: "System access has been restricted by the central server.",
+                undo: "Undo",
+                theme: "Dark/Light Mode",
+                back_to_hub: "Back to Central Hub",
+                mttr_title: "MTTR Index (min)",
+                mtbf_title: "MTBF Index (hours)",
+                eq_count_title: "Monitored Equipment",
+                reports_title: "Logged Reports",
+                modules_title: "CMMS & Maintenance Operational Modules",
+                mod_eq: "Equipment & Subparts Management",
+                mod_eq_desc: "Monitor 30 industrial production lines & connected parts.",
+                mod_pm: "PM Service Checklists",
+                mod_pm_desc: "Scheduling, running hours tracking and periodic logs.",
+                mod_wo: "Work Orders (EM / CM)",
+                mod_wo_desc: "Emergency breakdowns and corrective maintenance tasks.",
+                mod_daily: "Shift Reports & CSV Export",
+                mod_daily_desc: "Production line status logs and shift handover notes.",
+                mod_inv: "Technical Inventory",
+                mod_inv_desc: "IEC 81346 compliant spare parts and consumables.",
+                mod_logs: "Live Event Logs (Audit Trail)",
+                mod_logs_desc: "Real-time logging of all user activities and changes.",
+                mod_ai: "Erfont Industrial AI Diagnostic",
+                mod_ai_desc: "Analyze drive, pump, and electrical panel errors.",
+                mod_settings: "Profile, Security & Settings",
+                mod_settings_desc: "Manage passwords, image gallery, and cloud backups.",
+                eq_list_title: "Machinery & Subparts List",
+                add_eq_btn: "+ Add New Equipment",
+                eq_search_ph: "🔍 Search by equipment name or unit...",
+                th_row: "#",
+                th_eq_name: "Equipment / Machine Name",
+                th_unit: "Operating Unit",
+                th_hours: "Running Hours",
+                th_sub: "Subparts",
+                th_date: "Timeframe",
+                th_actions: "Actions",
+                pm_page_title: "Periodic Maintenance (PM) Monitoring",
+                wo_page_title: "Emergency & Corrective Work Orders",
+                add_wo_btn: "+ Create Work Order",
+                th_wo_desc: "Fault Description",
+                th_wo_eq: "Equipment",
+                th_wo_priority: "Priority",
+                th_wo_status: "Status",
+                daily_page_title: "Daily Shift Reporting & Handover",
+                csv_btn: "📥 CSV Export",
+                add_daily_btn: "+ Add Shift Report",
+                th_time: "Time",
+                th_shift: "Shift",
+                th_author: "Author",
+                th_desc: "Description",
+                inv_page_title: "Technical Inventory (IEC Standard Coding)",
+                inv_all: "All",
+                inv_misc: "📌 Consumables (-R)",
+                inv_elec: "⚡ Electrical (-Q/-K)",
+                inv_mech: "⚙️ Mechanical (-M)",
+                inv_util: "🛠️ Utilities (-B)",
+                add_inv_btn: "+ Add Part",
+                inv_search_ph: "🔍 Search parts, IEC codes...",
+                th_cat: "Category",
+                th_part_name: "Part Name",
+                th_code: "IEC Part Code",
+                th_qty: "Stock Qty",
+                th_min: "Min Limit",
+                th_status: "Stock Status",
+                logs_page_title: "📜 Audit Trail & Live Events",
+                th_user: "User",
+                th_action_desc: "Logged System Action",
+                ai_page_title: "🤖 Erfont AI Electrical & Mechanical Diagnostic",
+                ai_ph: "e.g., INVT drive error or pump pressure drop...",
+                ai_btn: "Engineering Analysis",
+                settings_page_title: "⚙️ System Settings & User Access",
+                master_panel_title: "👑 Creator Master Security Panel (Passwords & License)",
+                pass_creator: "Creator Password:",
+                pass_manager: "Manager Password:",
+                pass_tech1: "Tech 1 Password:",
+                pass_tech2: "Tech 2 Password:",
+                update_pass_btn: "Update Passwords",
+                lock_sys_btn: "Emergency Lock",
+                unlock_sys_btn: "Activate System",
+                profile_title: "Active User Profile & Avatar",
+                fullname_label: "Full Name:",
+                specialty_label: "Specialty / Title:",
+                avatar_label: "Upload Image:",
+                save_profile_btn: "Save Profile",
+                backup_title: "Database Backup",
+                backup_btn: "Download Backup (JSON)",
+                reset_btn: "Factory Reset",
+                modal_add_eq: "Add New Equipment",
+                eq_name: "Equipment Name:",
+                eq_unit: "Unit / Line:",
+                eq_hours: "Initial Running Hours:",
+                eq_start: "Commissioning Start Date:",
+                eq_end: "Warranty / Period End Date:",
+                cancel: "Cancel",
+                submit: "Save Information",
+                modal_sub: "Subparts & Connected Components",
+                sub_ph: "Subpart name...",
+                add: "+ Add",
+                close: "Confirm & Close",
+                modal_pm: "PM Records & Management",
+                pm_update_hours: "Update Running Hours:",
+                reset: "Reset 0",
+                pm_checklist: "Service Checklist:",
+                pm_ph: "Add item to checklist...",
+                pm_note: "Technician Notes:",
+                pm_history: "Previous PM History:",
+                pm_submit: "Submit Service",
+                modal_daily: "Log Shift Report",
+                shift: "Shift:",
+                shift_morning: "Morning",
+                shift_evening: "Evening",
+                shift_night: "Night",
+                author: "Reporter:",
+                submit_report: "Save Report",
+                modal_wo: "Create Emergency Work Order (EM)",
+                wo_title_desc: "Fault Description:",
+                eq: "Equipment:",
+                priority: "Priority:",
+                p_normal: "Normal",
+                p_urgent: "Urgent",
+                p_critical: "Critical",
+                submit_wo: "Create Work Order",
+                modal_inv: "Technical Inventory Part Management",
+                cat: "Category:",
+                part_name: "Part Name:",
+                part_code: "IEC Part Code:",
+                qty: "Current Quantity:",
+                min: "Minimum Limit:",
+                submit_inv: "Save to Inventory"
+            }
+        };
+
+        let currentLang = 'fa';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'fa' ? 'en' : 'fa';
+            document.body.setAttribute('dir', currentLang === 'fa' ? 'rtl' : 'ltr');
+            document.getElementById('lang-label').textContent = currentLang === 'fa' ? 'English' : 'فارسی';
+            applyTranslations();
+            renderAll();
+        }
+
+        function applyTranslations() {
+            const dict = translations[currentLang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key]) el.innerHTML = dict[key];
+            });
+            document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+                const key = el.getAttribute('data-i18n-ph');
+                if (dict[key]) el.placeholder = dict[key];
+            });
+        }
+
+        function sanitizeInput(str) {
+            if (typeof str !== 'string') return str;
+            return str.replace(/[&<>"']/g, function(m) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+            });
+        }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyD-ErfontCloudApiKey1995Example", 
+            authDomain: "erfont1995.firebaseapp.com",
+            databaseURL: "https://erfont1995-default-rtdb.firebaseio.com",
+            projectId: "erfont1995"
+        };
+
+        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+        const cloudDb = firebase.database();
+        const rootRef = cloudDb.ref('erfont_enterprise_scada_v1000_iec');
+
+        var defaultRolePasswords = { 'creator': '7890', 'manager': '2020', 'tech1': '1111', 'tech2': '2222' };
+        var currentRole = '';
+
+        const exactEquipmentList = [
+            { id: 1, name: "کمپروسور باد 1", unit: "تاسیسات مرکزی", runningHours: 1450, startDate: "1404/01/10", endDate: "1405/01/10", pmItems: ["بازرسی سطح روغن", "تخلیه رطوبت مخزن", "بازرسی فیلتر هوای ورودی"], pmHistory: [], subItems: ["فیلتر هوا", "روغن کمپرسور", "تسمه پروانه"] },
+            { id: 2, name: "کمپرسور باد 2", unit: "تاسیسات مرکزی", runningHours: 1320, startDate: "1404/01/20", endDate: "1405/01/20", pmItems: ["بازرسی فیلتر جداکننده", "تست سنسور فشار", "آچارکشی تسمه"], pmHistory: [], subItems: ["فیلتر سپراتور", "شیر برقی تخلیه", "سنسور فشار"] },
+            { id: 3, name: "برج خنک کننده", unit: "تاسیسات مرکزی", runningHours: 2100, startDate: "1403/07/10", endDate: "1404/07/10", pmItems: ["کنترل کیفیت و سختی آب حوضچه", "بازرسی تسمه و پولی فن", "شستشوی نازل‌ها"], pmHistory: [], subItems: ["نازل پاشش آب", "فن برج خنک‌کننده", "پمپ سیرکوله"] },
+            { id: 4, name: "دیزل ژنراتور", unit: "تاسیسات مرکزی", runningHours: 420, startDate: "1404/02/10", endDate: "1405/02/10", pmItems: ["سطح روغن موتور و ضد یخ", "تست استارت اضطراری و بار", "بازرسی باتری و شارژر"], pmHistory: [], subItems: ["فیلتر گازوئیل", "باتری 12 ولت", "استارتر موتور"] },
+            { id: 5, name: "کمپسور باد جرمگیر 3", unit: "خط جرمگیر", runningHours: 980, startDate: "1404/03/10", endDate: "1405/03/10", pmItems: ["بررسی شیرهای اطمینان", "تست لنت و فشار مخزن", "تخليه درین"], pmHistory: [], subItems: ["شیر اطمینان", "مخزن تحت فشار"] },
+            { id: 6, name: "دستگاه چسب زن", unit: "بسته‌بندی", runningHours: 750, startDate: "1404/04/10", endDate: "1405/04/10", pmItems: ["تنظیم دمای المنت چسب", "تمیزکاری نازل چسب هات‌ملت", "بررسی غلتک‌های فشار"], pmHistory: [], subItems: ["المنت حرارتی", "ترموکوپل", "نازل هات‌ملت"] },
+            { id: 7, name: "دستگاه جت پرینتر", unit: "بسته‌بندی", runningHours: 1900, startDate: "1404/01/15", endDate: "1405/01/15", pmItems: ["شستشوی هد با حلال تخصصی", "بررسی سطح جوهر و حلال", "تست پمپ و ویسکوزیته"], pmHistory: [], subItems: ["هد چاپگر", "فیلتر حلال", "پمپ جوهر"] },
+            { id: 8, name: "دستگاه سفید کننده", unit: "خط تولید", runningHours: 1600, startDate: "1404/01/30", endDate: "1405/01/30", pmItems: ["پمپ تزریق مواد سفیدکننده", "بازرسی شیرآلات ضداسید", "تست نشتی اتصالات"], pmHistory: [], subItems: ["پمپ دوزینگ اسید", "شیر برقی ضداسید"] },
+            { id: 9, name: "دستگاه گاز پاک کن", unit: "خط تولید", runningHours: 1150, startDate: "1404/03/25", endDate: "1405/03/25", pmItems: ["بررسی نازل‌های تزریق گاز", "سنسورهای ایمنی فشار", "کالیبراسیون"], pmHistory: [], subItems: ["نازل گاز", "سنسور فشار"] },
+            { id: 10, name: "دستگاه بهار ماشین P06", unit: "خطوط تولید", runningHours: 1250, startDate: "1404/02/20", endDate: "1405/02/20", pmItems: ["گریس‌کاری بیرینگ‌ها", "بازرسی تسمه نقاله", "تست سیستم پنوماتیک"], pmHistory: [], subItems: ["تسمه نقاله", "بلبرینگ SKF"] },
+            { id: 11, name: "دستگاه بهار ماشین P07", unit: "خطوط تولید", runningHours: 1300, startDate: "1404/02/25", endDate: "1405/02/25", pmItems: ["تنظیم سنسورهای فوتوسل", "بازرسی روغن گیربکس", "تست کلیدهای حرارتی"], pmHistory: [], subItems: ["فوتوسل مک‌سنس", "گیربکس صنعتی"] },
+            { id: 12, name: "دستگاه بهار ماشین P08", unit: "خطوط تولید", runningHours: 1400, startDate: "1404/02/30", endDate: "1405/02/30", pmItems: ["بازرسی تابلو فرمان ماشین", "تست الکتروموتور محرک", "آچارکشی مکانیکی"], pmHistory: [], subItems: ["کنتاکتور اشنایدر", "موتور الکتریکی"] },
+            { id: 13, name: "دستگاه لوله باز کن", unit: "تاسیسات", runningHours: 350, startDate: "1404/05/10", endDate: "1405/05/10", pmItems: ["بازرسی فنر و کابل", "تست سلامت موتور", "روغن‌کاری گیربکس"], pmHistory: [], subItems: ["فنر فولادی", "کلید کنترل"] },
+            { id: 14, name: "دستگاه جرمگیر", unit: "خط جرمگیر", runningHours: 850, startDate: "1404/03/20", endDate: "1405/03/20", pmItems: ["سرویس پمپ اسید", "شستشوی مسیرهای اسیدشویی", "تست شیرهای ضداسید"], pmHistory: [], subItems: ["پمپ دیافراگمی", "شیر پلاستیکی"] },
+            { id: 15, name: "دستگاه سرکج", unit: "خط تولید", runningHours: 920, startDate: "1404/03/30", endDate: "1405/03/30", pmItems: ["تنظیم زاویه نازل‌ها", "بررسی موتور محرک زاویه", "تست جک‌های پنوماتیک"], pmHistory: [], subItems: ["جک پنوماتیک", "شیر برقی بادی"] },
+            { id: 16, name: "موتور برق انبار", unit: "انبار", runningHours: 210, startDate: "1404/06/10", endDate: "1405/06/10", pmItems: ["تست باک و سوخت", "استارت دوره‌ای زیر بار", "بازرسی خروجی برق"], pmHistory: [], subItems: ["باک بنزین", "رگولاتور ولتاژ"] },
+            { id: 17, name: "پمپ های آب چاه", unit: "تاسیسات", runningHours: 3100, startDate: "1403/06/10", endDate: "1404/06/10", pmItems: ["تابلو فرمان چاه", "تست فشار خط و آب‌دهی", "بررسی آمپر مصرفی موتور"], pmHistory: [], subItems: ["پروانه استیل", "تابلو ستاره مثلث"] },
+            { id: 18, name: "پمپ های سالن تولید", unit: "تولید", runningHours: 2200, startDate: "1403/09/10", endDate: "1404/09/10", pmItems: ["آب‌بند مکانیکی (مکانیکال سیل)", "لرزش‌سنجی پمپ", "تست کوپلینگ"], pmHistory: [], subItems: ["مکانیکال سیل", "کوپلینگ لاستیکی"] },
+            { id: 19, name: "پمپ های تخلیه اسید و جرمگیر", unit: "تاسیسات", runningHours: 600, startDate: "1404/04/20", endDate: "1405/04/20", pmItems: ["بررسی دیافراگم و سوپاپ‌ها", "واشرهای مقاوم در برابر اسید", "تست نشتی"], pmHistory: [], subItems: ["دیافراگم PTFE", "اورینگ وایتون"] },
+            { id: 20, name: "پمپ های مخازن سفید کننده", unit: "تولید", runningHours: 1100, startDate: "1404/01/20", endDate: "1405/01/20", pmItems: ["نشت‌یابی اتصالات پمپ", "بازرسی پکینگ‌ها", "روغن‌کاری بیرینگ"], pmHistory: [], subItems: ["پکینگ آب‌بندی", "بیرینگ SKF"] },
+            { id: 21, name: "دستگاه OPP", unit: "بسته‌بندی", runningHours: 990, startDate: "1404/02/15", endDate: "1405/02/15", pmItems: ["تیغ برش لیبل OPP", "تنظیم حرارت دوخت", "تنظیم کشش رول"], pmHistory: [], subItems: ["تیغ برش لیبل", "سنسور ثبت علامت"] },
+            { id: 22, name: "دستگاه پشت چسب زن", unit: "بسته‌بندی", runningHours: 810, startDate: "1404/03/15", endDate: "1405/03/15", pmItems: ["غلتک فشار چسب", "تیغ برش کارتن", "سنسور تشخیص کارتن"], pmHistory: [], subItems: ["غلتک لاستیکی", "تیغه برش کارتن"] },
+            { id: 23, name: "الکترو موتور های گیربکس دار سالن تولید", unit: "تولید", runningHours: 2700, startDate: "1403/08/10", endDate: "1404/08/10", pmItems: ["تغییر و بازدید روغن گیربکس", "فن خنک‌کننده موتور", "آچارکشی پایه‌ها"], pmHistory: [], subItems: ["روغن گیربکس واسکازه", "فن خنک‌کننده"] },
+            { id: 24, name: "دستگاه تزریق پلاستیک", unit: "تزریق", runningHours: 3500, startDate: "1403/05/10", endDate: "1404/05/10", pmItems: ["هیترهای سیلندر تزریق", "روغن هیدرولیک و فیلترها", "گریس‌کاری toggle"], pmHistory: [], subItems: ["هیتر کمربندی", "فیلتر هیدرولیک"] },
+            { id: 25, name: "دستگاه پت", unit: "تزریق", runningHours: 2900, startDate: "1403/07/10", endDate: "1404/07/10", pmItems: ["قالب‌گیر و بازرسی پین‌ها", "سیستم باد فشار قوی PET", "فیلترهای هوای فشار قوی"], pmHistory: [], subItems: ["شیر فشار قوی", "فیلتر نهایی باد"] },
+            { id: 26, name: "دستگاه آسیاب", unit: "بازیافت", runningHours: 1800, startDate: "1404/01/25", endDate: "1405/01/25", pmItems: ["بازرسی و تیز کردن تیغه‌های آسیاب", "تسمه‌های انتقال قدرت", "بلبرینگ‌های سنگین"], pmHistory: [], subItems: ["تیغه‌های چکشی", "بلبرینگ صنعتی بزرگ"] },
+            { id: 27, name: "تابلو برق های ساختمان تزریق", unit: "برق تزریق", runningHours: 4300, startDate: "1403/01/10", endDate: "1404/01/10", pmItems: ["آچارکشی کامل شینه‌ها", "تست حرارتی ترموویژن قطعات", "تست رله‌های حفاظتی"], pmHistory: [], subItems: ["کلید اتوماتیک MCCB", "ترمینال ریلی"] },
+            { id: 28, name: "تابلو برق های ساختمان تولید", unit: "برق تولید", runningHours: 4300, startDate: "1403/01/10", endDate: "1404/01/10", pmItems: ["بررسی کلیدهای اتوماتیک هوایی", "تمیزکاری فیلتر فن‌های تابلو", "تست کنتاکتورها"], pmHistory: [], subItems: ["کلید هوایی ACB", "فیلتر فن تابلو برق"] },
+            { id: 29, name: "تابلو برق های انبار", unit: "برق انبار", runningHours: 4000, startDate: "1403/02/10", endDate: "1404/02/10", pmItems: ["بازرسی کلیدهای حرارتی", "تست فیوزها و ترمینال‌ها", "بررسی سیم‌کشی"], pmHistory: [], subItems: ["فیوز مینیاتوری", "چراغ سیگنال"] },
+            { id: 30, name: "تابلو برق های ساختمان جرمگیر", unit: "برق جرمگیر", runningHours: 4100, startDate: "1403/02/25", endDate: "1404/02/25", pmItems: ["رله‌های حفاظتی ضداسید", "ترمینال‌های قدرت", "تست چراغ سیگنال و آلارم"], pmHistory: [], subItems: ["رله کنترل فاز", "تایمر تاخیر در وصل"] }
+        ];
+
+        function generateMassiveInventory() {
+            let list = [
+                { id: 101, category: "مصرفی‌ریز", name: "چسب برق نسوز صنعتی (لنت برق) مشکی", code: "-R-101-TAPE", qty: 50, min: 10 },
+                { id: 102, category: "مصرفی‌ریز", name: "نوار تفلن پلس ایران / درنگ اعلا", code: "-R-102-SEAL", qty: 80, min: 15 },
+                { id: 103, category: "مصرفی‌ریز", name: "چسب ۱۲۳ (سیانواکریلات قطره‌ای + اسپری فعال‌کننده)", code: "-R-103-GLUE", qty: 25, min: 5 },
+                { id: 104, category: "مصرفی‌ریز", name: "پیچ سرمته فولادی 4 سانت بسته 100 عددی", code: "-R-104-SCREW", qty: 15, min: 3 },
+                { id: 105, category: "مصرفی‌ریز", name: "پیچ و مهره تمام رزوه استیل M8 و M10", code: "-R-105-BOLT", qty: 120, min: 20 },
+                { id: 106, category: "مصرفی‌ریز", name: "بست کمربندی پلاستیکی 20 و 30 سانتی", code: "-R-106-CABLE", qty: 300, min: 50 },
+                { id: 107, category: "مصرفی‌ریز", name: "چسب سیلیکون نسوز آکواریوم حرارتی", code: "-R-107-SIL", qty: 18, min: 4 },
+                { id: 108, category: "مصرفی‌ریز", name: "اسپری روانکار و ضدزنگ WD-40", code: "-R-108-LUB", qty: 30, min: 6 },
+                { id: 109, category: "مصرفی‌ریز", name: "وارنیش حرارتی سایزهای مختلف صنعتی", code: "-R-109-VRN", qty: 60, min: 20 },
+                { id: 110, category: "مصرفی‌ریز", name: "سرکابل و وایرشو برنجی روکش‌دار", code: "-R-110-WIR", qty: 500, min: 50 },
+                { id: 201, category: "الکتریکال", name: "کنتاکتور قدرت 32 آمپر اشنایدر", code: "-Q-201-CNT", qty: 8, min: 2 },
+                { id: 202, category: "الکتریکال", name: "کلید حرارتی موتوری (MPCB)", code: "-Q-202-MPCB", qty: 5, min: 1 },
+                { id: 203, category: "الکتریکال", name: "درایو کنترل دور موتور INVT GD20", code: "-K-203-INV", qty: 3, min: 1 },
+                { id: 204, category: "الکتریکال", name: "رله شیشه‌ای 8 پین 24VDC", code: "-K-204-RLY", qty: 20, min: 5 },
+                { id: 301, category: "مکانیکال", name: "شیر برقی ضداسید 1/2 اینچ", code: "-M-301-SOL", qty: 6, min: 2 },
+                { id: 302, category: "مکانیکال", name: "مکانیکال سیل پمپ استیل گریز از مرکز", code: "-M-302-SEC", qty: 4, min: 2 },
+                { id: 401, category: "تاسیسات", name: "فیلتر هوای ورودی کمپرسور اسکرو", code: "-B-401-FLT", qty: 10, min: 2 }
+            ];
+
+            const categories = ["مصرفی‌ریز", "الکتریکال", "مکانیکال", "تاسیسات"];
+            const iecPrefixes = { "مصرفی‌ریز": "-R", "الکتریکال": "-Q", "مکانیکال": "-M", "تاسیسات": "-B" };
+            const subNames = ["واشر", "اورینگ", "بلبرینگ", "پین", "فیوز", "ترمینال", "شیلنگ", "مهره", "واشر فنری", "سنبه", "فیلتر", "سنسور"];
+            
+            let idCounter = 5000;
+            for (let i = 1; i <= 1000; i++) {
+                let cat = categories[i % categories.length];
+                let prefix = iecPrefixes[cat];
+                let subName = subNames[i % subNames.length];
+                list.push({
+                    id: idCounter++,
+                    category: cat,
+                    name: `${subName} صنعتی مدل ${100 + i} - خط تولید شوینده`,
+                    code: `${prefix}-${7000 + i}`,
+                    qty: Math.floor(Math.random() * 50) + 2,
+                    min: 5
+                });
+            }
+            return list;
+        }
+
+        var db = {
+            equipment: exactEquipmentList,
+            workOrders: [],
+            inventory: generateMassiveInventory(),
+            activityLogs: [],
+            dailyReports: [],
+            profiles: {},
+            settings: { companyName: 'Erfont Industrial SCADA', appActive: true, passwords: defaultRolePasswords }
+        };
+
+        var localSaved = localStorage.getItem('erfont_turbo_db');
+        if(localSaved) {
+            try { db = JSON.parse(localSaved); } catch(e){}
+        }
+
+        var currentInvCategory = 'all';
+
+        window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('login-screen').style.display = 'flex';
+            
+            setTimeout(() => {
+                rootRef.once('value').then((snapshot) => {
+                    var data = snapshot.val();
+                    if (data) {
+                        db = data;
+                        if(!db.settings) db.settings = { companyName: 'Erfont Industrial SCADA', appActive: true, passwords: defaultRolePasswords };
+                        if(!db.settings.passwords) db.settings.passwords = defaultRolePasswords;
+                        if(!db.equipment || db.equipment.length === 0) db.equipment = exactEquipmentList;
+                        if(!db.inventory || db.inventory.length === 0) db.inventory = generateMassiveInventory();
+                        
+                        if(db.settings.appActive === false) {
+                            document.getElementById('license-lock-screen').style.display = 'flex';
+                        }
+                    }
+                }).catch(err => {});
+            }, 10);
+        });
+
+        function syncToCloud() {
+            localStorage.setItem('erfont_turbo_db', JSON.stringify(db));
+            rootRef.set(db).catch(err => {});
+        }
+
+        function attemptLogin() {
+            var role = document.getElementById('login-role-select').value;
+            var pass = document.getElementById('login-pass-input').value.trim();
+            var currentPasswords = (db.settings && db.settings.passwords) ? db.settings.passwords : defaultRolePasswords;
+            var correctPass = currentPasswords[role] || defaultRolePasswords[role];
+
+            if(pass === correctPass) {
+                currentRole = role;
+                document.getElementById('login-screen').style.display = 'none';
+                updateRoleDisplay();
+                renderAll();
+            } else {
+                alert(currentLang === 'fa' ? 'کلمه عبور امنیتی اشتباه است.' : 'Incorrect security password.');
+            }
+        }
+
+        function logoutApp() {
+            currentRole = '';
+            document.getElementById('login-pass-input').value = '';
+            document.getElementById('login-screen').style.display = 'flex';
+        }
+
+        function loadMasterSettings() {
+            if(currentRole === 'creator') {
+                document.getElementById('creator-master-panel').style.display = 'block';
+                var passMap = db.settings.passwords || defaultRolePasswords;
+                document.getElementById('master-pass-creator').value = passMap.creator || '';
+                document.getElementById('master-pass-manager').value = passMap.manager || '';
+                document.getElementById('master-pass-tech1').value = passMap.tech1 || '';
+                document.getElementById('master-pass-tech2').value = passMap.tech2 || '';
+            } else {
+                document.getElementById('creator-master-panel').style.display = 'none';
+            }
+        }
+
+        function saveMasterPasswords() {
+            if(currentRole !== 'creator') { alert('Unauthorized'); return; }
+            if(!db.settings.passwords) db.settings.passwords = {};
+            db.settings.passwords.creator = sanitizeInput(document.getElementById('master-pass-creator').value.trim());
+            db.settings.passwords.manager = sanitizeInput(document.getElementById('master-pass-manager').value.trim());
+            db.settings.passwords.tech1 = sanitizeInput(document.getElementById('master-pass-tech1').value.trim());
+            db.settings.passwords.tech2 = sanitizeInput(document.getElementById('master-pass-tech2').value.trim());
+            syncToCloud();
+            alert(currentLang === 'fa' ? 'رمزها به‌روزرسانی شدند.' : 'Passwords updated.');
+        }
+
+        function toggleAppLicense(status) {
+            if(currentRole !== 'creator') { alert('Unauthorized'); return; }
+            db.settings.appActive = status;
+            syncToCloud();
+            alert(status ? 'سیستم فعال شد' : 'سیستم قفل شد');
+        }
+
+        function navigateTo(targetTabId) {
+            var contents = document.querySelectorAll('.tab-content');
+            for(var i=0; i<contents.length; i++) { contents[i].classList.remove('active'); }
+            
+            var targetEl = document.getElementById('tab-' + targetTabId);
+            if(targetEl) targetEl.classList.add('active');
+
+            var backBar = document.getElementById('back-bar');
+            var pageTitle = document.getElementById('current-page-title');
+
+            if(targetTabId === 'hub') {
+                if(backBar) backBar.style.display = 'none';
+            } else {
+                if(backBar) backBar.style.display = 'flex';
+                const titles = { equipment: currentLang==='fa'?'تجهیزات و زیرمجموعه‌ها':'Equipment & Subparts', pm: currentLang==='fa'?'سرویس‌های دوره‌ای':'PM Service Checklist', workorders: currentLang==='fa'?'دستورات کار':'Work Orders', daily: currentLang==='fa'?'گزارش‌های روزانه':'Shift Reports', inventory: currentLang==='fa'?'انبار فنی':'Technical Inventory', logs: currentLang==='fa'?'لاگ رویدادها':'Live Logs', ai: currentLang==='fa'?'عیب‌یاب هوشمند':'AI Diagnostic', settings: currentLang==='fa'?'تنظیمات سیستم':'Settings' };
+                if(pageTitle) pageTitle.textContent = titles[targetTabId] || '';
+            }
+            if(targetTabId === 'settings') { loadSettingsToUI(); loadMasterSettings(); }
+            renderAll();
+            window.scrollTo({ top: 0, behavior: 'instant' });
+        }
+
+        function toggleTheme() {
+            if(document.body.classList.contains('light-theme')) {
+                document.body.classList.remove('light-theme');
+            } else {
+                document.body.classList.add('light-theme');
+            }
+        }
+
+        function updateRoleDisplay() {
+            if(!db.profiles) db.profiles = {};
+            var userProf = db.profiles[currentRole] || { fullname: '', avatar: '' };
+            var roleNames = currentLang === 'fa' ? { 'creator': 'سازنده', 'manager': 'مدیر', 'tech1': 'تکنسین ارشد', 'tech2': 'تکنسین شیفت' } : { 'creator': 'Creator', 'manager': 'Manager', 'tech1': 'Senior Tech', 'tech2': 'Shift Tech' };
+            
+            var roleSpan = document.getElementById('role-text-span');
+            if(roleSpan) roleSpan.textContent = userProf.fullname ? userProf.fullname : roleNames[currentRole];
+            
+            var avatarEl = document.getElementById('header-user-avatar');
+            if(avatarEl) {
+                if(userProf.avatar) { avatarEl.src = userProf.avatar; avatarEl.style.display = 'inline-block'; }
+                else { avatarEl.style.display = 'none'; }
+            }
+
+            var addEqBtn = document.getElementById('btn-add-eq');
+            if(currentRole === 'tech1' || currentRole === 'tech2') { if(addEqBtn) addEqBtn.style.display = 'none'; }
+            else { if(addEqBtn) addEqBtn.style.display = 'inline-block'; }
+        }
+
+        function handleGalleryUpload(event) {
+            var file = event.target.files[0];
+            if(file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var base64Img = e.target.result;
+                    if(!db.profiles) db.profiles = {};
+                    if(!db.profiles[currentRole]) db.profiles[currentRole] = {};
+                    db.profiles[currentRole].avatar = base64Img;
+                    var prevImg = document.getElementById('settings-avatar-preview');
+                    if(prevImg) { prevImg.src = base64Img; prevImg.style.display = 'block'; }
+                    updateRoleDisplay();
+                    syncToCloud();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function loadSettingsToUI() {
+            if(!db.profiles) db.profiles = {};
+            var userProf = db.profiles[currentRole] || { fullname: '', specialty: '', avatar: '' };
+            document.getElementById('setUserFullname').value = userProf.fullname || '';
+            document.getElementById('setUserSpecialty').value = userProf.specialty || '';
+            var prevImg = document.getElementById('settings-avatar-preview');
+            if(userProf.avatar) { prevImg.src = userProf.avatar; prevImg.style.display = 'block'; }
+            else { prevImg.style.display = 'none'; }
+        }
+
+        function saveUserProfile() {
+            if(!db.profiles) db.profiles = {};
+            if(!db.profiles[currentRole]) db.profiles[currentRole] = {};
+            db.profiles[currentRole].fullname = sanitizeInput(document.getElementById('setUserFullname').value.trim());
+            db.profiles[currentRole].specialty = sanitizeInput(document.getElementById('setUserSpecialty').value.trim());
+            logAct(currentLang === 'fa' ? 'به‌روزرسانی پروفایل کاربری' : 'Profile updated');
+            syncToCloud();
+            loadSettingsToUI();
+            updateRoleDisplay();
+            alert(currentLang === 'fa' ? 'با موفقیت ذخیره شد.' : 'Saved successfully.');
+        }
+
+        function exportFullBackup() {
+            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db, null, 2));
+            var downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "ErfoNT_pro_Backup.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function resetFactoryData() {
+            if(confirm(currentLang === 'fa' ? 'آیا از بازنشانی اطلاعات کارخانه مطمئن هستید؟' : 'Reset factory data?')) {
+                db.equipment = exactEquipmentList;
+                db.inventory = generateMassiveInventory();
+                syncToCloud();
+                renderAll();
+            }
+        }
+
+        var activePmIdx = null;
+        var activeEqSubIdx = null;
+        var undoHistoryStack = [];
+
+        function saveSnapshotForUndo() {
+            undoHistoryStack.push(JSON.stringify(db));
+            if(undoHistoryStack.length > 10) undoHistoryStack.shift();
+            document.getElementById('btn-undo-head').style.display = 'flex';
+        }
+
+        function undoLastAction() {
+            if(undoHistoryStack.length === 0) return;
+            db = JSON.parse(undoHistoryStack.pop());
+            if(undoHistoryStack.length === 0) document.getElementById('btn-undo-head').style.display = 'none';
+            syncToCloud();
+            renderAll();
+            alert(currentLang === 'fa' ? 'تغییرات بازگردانی شد.' : 'Restored.');
+        }
+
+        function logAct(text) {
+            var userProf = (db.profiles && db.profiles[currentRole]) ? db.profiles[currentRole] : null;
+            var userDesc = (userProf && userProf.fullname) ? userProf.fullname : currentRole;
+            var now = new Date().toLocaleTimeString('fa-IR');
+            if(!db.activityLogs) db.activityLogs = [];
+            db.activityLogs.unshift({ time: now, user: sanitizeInput(userDesc), action: sanitizeInput(text) });
+            syncToCloud();
+        }
+
+        function openModal(id){ 
+            if(id === 'inv-modal') {
+                document.getElementById('edit-inv-id').value = '';
+                document.getElementById('inv-name').value = '';
+                document.getElementById('inv-code').value = '';
+                document.getElementById('inv-qty').value = '0';
+                document.getElementById('inv-min').value = '5';
+            }
+            document.getElementById(id).classList.add('active'); 
+            if(id=='wo-modal'){ populateWoSelect(); } 
+        }
+        function closeModal(id){ document.getElementById(id).classList.remove('active'); }
+
+        function populateWoSelect() {
+            var sel = document.getElementById('wo-eq-select');
+            if(sel) {
+                sel.innerHTML = '';
+                for(var i=0; i<(db.equipment||[]).length; i++) {
+                    sel.innerHTML += '<option value="'+db.equipment[i].name+'">'+db.equipment[i].name+'</option>';
+                }
+            }
+        }
+
+        function saveEquipmentData() {
+            if(currentRole === 'tech1' || currentRole === 'tech2') { alert('دسترسی غیرمجاز'); return; }
+            saveSnapshotForUndo();
+            var editId = document.getElementById('edit-eq-id').value;
+            var name = sanitizeInput(document.getElementById('new-eq-name').value.trim());
+            var unit = sanitizeInput(document.getElementById('new-eq-unit').value.trim());
+            var hours = parseInt(document.getElementById('new-eq-hours').value) || 0;
+            var startDate = document.getElementById('new-eq-start').value;
+            var endDate = document.getElementById('new-eq-end').value;
+
+            if(!name) { alert(currentLang === 'fa' ? 'لطفا نام تجهیز را وارد کنید.' : 'Enter equipment name'); return; }
+            if(!db.equipment) db.equipment = [];
+
+            if(editId) {
+                for(var i=0; i<db.equipment.length; i++) {
+                    if(db.equipment[i].id == editId) {
+                        db.equipment[i].name = name; db.equipment[i].unit = unit;
+                        db.equipment[i].runningHours = hours; db.equipment[i].startDate = startDate; db.equipment[i].endDate = endDate;
+                        break;
+                    }
+                }
+                logAct(currentLang === 'fa' ? 'ویرایش تجهیز: ' + name : 'Edit Equipment: ' + name);
+            } else {
+                db.equipment.push({ id: Date.now(), name: name, unit: unit || 'عمومی', runningHours: hours, startDate: startDate, endDate: endDate, pmItems: ["بازرسی عمومی"], pmHistory: [], subItems: ["قطعه اصلی"] });
+                logAct(currentLang === 'fa' ? 'افزودن تجهیز: ' + name : 'Add Equipment: ' + name);
+            }
+            closeModal('eq-modal');
+            syncToCloud();
+            renderAll();
+        }
+
+        function editEquipment(id) {
+            if(currentRole === 'tech1' || currentRole === 'tech2') { alert('دسترسی غیرمجاز'); return; }
+            var eq = db.equipment.find(e => e.id == id);
+            if(!eq) return;
+            document.getElementById('edit-eq-id').value = eq.id;
+            document.getElementById('new-eq-name').value = eq.name;
+            document.getElementById('new-eq-unit').value = eq.unit;
+            document.getElementById('new-eq-hours').value = eq.runningHours;
+            document.getElementById('new-eq-start').value = eq.startDate || '';
+            document.getElementById('new-eq-end').value = eq.endDate || '';
+            openModal('eq-modal');
+        }
+
+        function deleteEquipment(id) {
+            if(currentRole !== 'creator' && currentRole !== 'manager') { alert('دسترسی غیرمجاز'); return; }
+            saveSnapshotForUndo();
+            db.equipment = db.equipment.filter(e => e.id != id);
+            logAct(currentLang === 'fa' ? 'حذف تجهیز' : 'Delete Equipment');
+            syncToCloud();
+            renderAll();
+        }
+
+        function openEqSubModal(idx) {
+            activeEqSubIdx = idx;
+            var eq = db.equipment[idx];
+            document.getElementById('eq-sub-title').textContent = (currentLang === 'fa' ? 'زیرمجموعه‌های دستگاه: ' : 'Subparts: ') + eq.name;
+            renderEqSubItems();
+            openModal('eq-sub-modal');
+        }
+
+        function renderEqSubItems() {
+            var eq = db.equipment[activeEqSubIdx];
+            var cont = document.getElementById('eq-subitems-container');
+            cont.innerHTML = '';
+            if(!eq.subItems || eq.subItems.length === 0) {
+                cont.innerHTML = `<p style="color:var(--text-muted); text-align:center;">${currentLang==='fa'?'بدون زیرمجموعه':'No subparts'}</p>`;
+            } else {
+                eq.subItems.forEach((sub, sIdx) => {
+                    cont.innerHTML += `<div class="sub-item-chip"><span>• ${sub}</span><button onclick="removeEquipmentSubItem(${sIdx})" style="background:none; border:none; color:var(--accent-rose); cursor:pointer;">✕</button></div>`;
+                });
+            }
+        }
+
+        function addEquipmentSubItem() {
+            var val = sanitizeInput(document.getElementById('new-eq-subitem-input').value.trim());
+            if(!val) return;
+            saveSnapshotForUndo();
+            var eq = db.equipment[activeEqSubIdx];
+            if(!eq.subItems) eq.subItems = [];
+            eq.subItems.push(val);
+            document.getElementById('new-eq-subitem-input').value = '';
+            renderEqSubItems();
+            syncToCloud();
+            renderAll();
+        }
+
+        function removeEquipmentSubItem(sIdx) {
+            saveSnapshotForUndo();
+            var eq = db.equipment[activeEqSubIdx];
+            eq.subItems.splice(sIdx, 1);
+            renderEqSubItems();
+            syncToCloud();
+            renderAll();
+        }
+
+        function openPmExecModal(idx) {
+            activePmIdx = idx;
+            var eq = db.equipment[idx];
+            document.getElementById('pm-running-hours').value = eq.runningHours || 0;
+            document.getElementById('pm-exec-note').value = '';
+            renderPmExecModalContent();
+            openModal('pm-exec-modal');
+        }
+
+        function resetRunningHours() { saveSnapshotForUndo(); document.getElementById('pm-running-hours').value = 0; }
+
+        function renderPmExecModalContent() {
+            var eq = db.equipment[activePmIdx];
+            if(!eq) return;
+            document.getElementById('pm-exec-title').textContent = (currentLang === 'fa' ? 'سرویس دوره‌ای PM: ' : 'PM Service: ') + eq.name;
+            var cont = document.getElementById('pm-exec-items');
+            cont.innerHTML = '';
+            (eq.pmItems || []).forEach((item, i) => {
+                cont.innerHTML += `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; background:var(--surface-card); padding:6px 8px; border-radius:4px;"><label style="display:flex; align-items:center; gap:6px; flex-grow:1; cursor:pointer;"><input type="checkbox" class="pm-chk" value="${item}"> ${item}</label><button onclick="removePmItem(${activePmIdx}, ${i})" style="background:none; border:none; color:var(--accent-rose); cursor:pointer;">✕</button></div>`;
+            });
+            var histBox = document.getElementById('pm-device-history');
+            histBox.innerHTML = '';
+            if(!eq.pmHistory || eq.pmHistory.length === 0) { histBox.innerHTML = `<p style="color:var(--text-muted); text-align:center;">${currentLang==='fa'?'بدون سابقه قبلی':'No history'}</p>`; }
+            else {
+                eq.pmHistory.forEach(log => {
+                    histBox.innerHTML += `<div class="pm-history-item"><div style="color:var(--primary); font-weight:600;">${log.date} - ${log.time} (${log.user})</div><div>${currentLang==='fa'?'ساعت: ':'Hours: '}${log.hours}h</div><div>${currentLang==='fa'?'انجام شده: ':'Done: '}${log.completedItems.join(', ')}</div></div>`;
+                });
+            }
+        }
+
+        function addPmItemToActiveEq() {
+            var txt = sanitizeInput(document.getElementById('quick-pm-input').value.trim());
+            if(!txt) return;
+            saveSnapshotForUndo();
+            if(!db.equipment[activePmIdx].pmItems) db.equipment[activePmIdx].pmItems = [];
+            db.equipment[activePmIdx].pmItems.push(txt);
+            document.getElementById('quick-pm-input').value = '';
+            renderPmExecModalContent();
+            syncToCloud();
+        }
+
+        function removePmItem(eqIdx, itemIdx) {
+            saveSnapshotForUndo();
+            db.equipment[eqIdx].pmItems.splice(itemIdx, 1);
+            renderPmExecModalContent();
+            syncToCloud();
+        }
+
+        function savePMExec() {
+            var chks = document.querySelectorAll('.pm-chk:checked');
+            var checkedItems = Array.from(chks).map(c => c.value);
+            if(checkedItems.length === 0) { alert(currentLang === 'fa' ? 'لطفا حداقل یک آیتم چک‌لیست را انتخاب کنید.' : 'Select at least one item'); return; }
+            saveSnapshotForUndo();
+            var newHours = parseInt(document.getElementById('pm-running-hours').value) || 0;
+            var note = sanitizeInput(document.getElementById('pm-exec-note').value.trim());
+            var eq = db.equipment[activePmIdx];
+            eq.runningHours = newHours;
+            eq.lastPm = new Date().toLocaleDateString(currentLang === 'fa' ? 'fa-IR' : 'en-US');
+            if(!eq.pmHistory) eq.pmHistory = [];
+            eq.pmHistory.unshift({ date: eq.lastPm, time: new Date().toLocaleTimeString(currentLang === 'fa' ? 'fa-IR' : 'en-US'), user: currentRole, hours: newHours, completedItems: checkedItems, note: note });
+            logAct(currentLang === 'fa' ? 'اجرای سرویس PM برای ' + eq.name : 'PM Executed for ' + eq.name);
+            syncToCloud();
+            closeModal('pm-exec-modal');
+            renderAll();
+            alert(currentLang === 'fa' ? 'سرویس با موفقیت ثبت شد.' : 'Saved.');
+        }
+
+        function saveDailyReport() {
+            saveSnapshotForUndo();
+            var shift = document.getElementById('rep-shift').value;
+            var author = sanitizeInput(document.getElementById('rep-author').value);
+            var text = sanitizeInput(document.getElementById('rep-text').value);
+            if(!text) return;
+            if(!db.dailyReports) db.dailyReports = [];
+            db.dailyReports.unshift({ time: new Date().toLocaleTimeString('fa-IR'), shift, author, text });
+            logAct(currentLang === 'fa' ? 'ثبت گزارش شیفت کاری' : 'Shift Report Added');
+            closeModal('daily-modal');
+            syncToCloud();
+            renderAll();
+        }
+
+        function saveWorkOrder() {
+            saveSnapshotForUndo();
+            var title = sanitizeInput(document.getElementById('wo-title').value);
+            var equipment = document.getElementById('wo-eq-select').value;
+            var priority = document.getElementById('wo-priority').value;
+            if(!title) return;
+            if(!db.workOrders) db.workOrders = [];
+            db.workOrders.unshift({ id: Date.now(), title, equipment, priority, status: currentLang==='fa'?'در انتظار':'Pending' });
+            logAct(currentLang === 'fa' ? 'ثبت دستور کار: ' + title : 'Work Order: ' + title);
+            closeModal('wo-modal');
+            syncToCloud();
+            renderAll();
+        }
+
+        function saveInventory() {
+            saveSnapshotForUndo();
+            var editId = document.getElementById('edit-inv-id').value;
+            var cat = document.getElementById('inv-cat').value;
+            var name = sanitizeInput(document.getElementById('inv-name').value);
+            var code = sanitizeInput(document.getElementById('inv-code').value);
+            var qty = parseInt(document.getElementById('inv-qty').value) || 0;
+            var min = parseInt(document.getElementById('inv-min').value) || 1;
+            
+            if(!name) { alert(currentLang === 'fa' ? 'لطفا نام قطعه را وارد کنید.' : 'Enter part name'); return; }
+            if(!db.inventory) db.inventory = [];
+
+            if(editId) {
+                var item = db.inventory.find(i => i.id == editId);
+                if(item) {
+                    item.category = cat;
+                    item.name = name;
+                    item.code = code;
+                    item.qty = qty;
+                    item.min = min;
+                }
+                logAct(currentLang === 'fa' ? 'ویرایش قطعه انبار: ' + name : 'Edit Inventory Part: ' + name);
+            } else {
+                db.inventory.unshift({ id: Date.now(), category: cat, name, code: code || '-R-000', qty, min });
+                logAct(currentLang === 'fa' ? 'افزودن قطعه به انبار: ' + name : 'Add Inventory Part: ' + name);
+            }
+            closeModal('inv-modal');
+            syncToCloud();
+            renderAll();
+        }
+
+        function editInventoryItem(id) {
+            var item = db.inventory.find(i => i.id == id);
+            if(!item) return;
+            document.getElementById('edit-inv-id').value = item.id;
+            document.getElementById('inv-cat').value = item.category || 'مصرفی‌ریز';
+            document.getElementById('inv-name').value = item.name || '';
+            document.getElementById('inv-code').value = item.code || '';
+            document.getElementById('inv-qty').value = item.qty || 0;
+            document.getElementById('inv-min').value = item.min || 1;
+            openModal('inv-modal');
+        }
+
+        function setInvCategory(cat) { currentInvCategory = cat; renderAll(); }
+
+        function deleteInventoryItem(id) {
+            if(currentRole !== 'creator' && currentRole !== 'manager') { alert('دسترسی غیرمجاز'); return; }
+            saveSnapshotForUndo();
+            db.inventory = db.inventory.filter(item => item.id !== id);
+            logAct(currentLang === 'fa' ? 'حذف قطعه از انبار' : 'Delete Inventory Part');
+            syncToCloud();
+            renderAll();
+        }
+
+        function filterEquipment() {
+            var filter = document.getElementById('eq-search-input').value.toLowerCase();
+            var trs = document.getElementById('eq-table-body').getElementsByTagName('tr');
+            for (var i = 0; i < trs.length; i++) {
+                var txt = trs[i].textContent.toLowerCase();
+                trs[i].style.display = txt.indexOf(filter) > -1 ? "" : "none";
+            }
+        }
+
+        function filterInventory() {
+            var filter = document.getElementById('inv-search-input').value.toLowerCase();
+            var trs = document.getElementById('inv-table-body').getElementsByTagName('tr');
+            for (var i = 0; i < trs.length; i++) {
+                var txt = trs[i].textContent.toLowerCase();
+                trs[i].style.display = txt.indexOf(filter) > -1 ? "" : "none";
+            }
+        }
+
+        function exportDataToCSV() {
+            var csv = "Time,Shift,Author,Description\n";
+            (db.dailyReports || []).forEach(r => { csv += `"${r.time}","${r.shift}","${r.author}","${r.text}"\n`; });
+            var link = document.createElement("a");
+            link.href = encodeURI("data:text/csv;charset=utf-8,\uFEFF" + csv);
+            link.download = "ErfoNT_pro_Report.csv";
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        }
+
+        function runAi() {
+            var q = sanitizeInput(document.getElementById('ai-query').value.trim());
+            var res = document.getElementById('ai-res');
+            if(!q) return;
+            res.style.display = 'block';
+            res.innerHTML = currentLang === 'fa' ? 'در حال پردازش منطق عیب‌یابی...' : 'Processing diagnostic logic...';
+            setTimeout(() => {
+                res.innerHTML = currentLang === 'fa' ? `<strong>تحلیل تخصصی برای "${q}":</strong><br>• بررسی ولتاژ تغذیه، پایش ارتعاشات بیرینگ و کالیبراسیون درایو پیشنهاد می‌گردد.` : `<strong>Engineering Analysis for "${q}":</strong><br>• Check supply voltage, bearing vibration monitoring, and drive calibration.`;
+            }, 100);
+        }
+
+        function renderAll() {
+            updateRoleDisplay();
+
+            var totalEqs = (db.equipment || []).length;
+            var totalWOs = (db.workOrders || []).length;
+            var totalReps = (db.dailyReports || []).length;
+
+            document.getElementById('dash-eq-count').textContent = totalEqs;
+            document.getElementById('dash-reports').textContent = totalReps;
+
+            var totalOpHours = (db.equipment || []).reduce((sum, eq) => sum + (eq.runningHours || 1000), 0);
+            var mtbfVal = totalWOs > 0 ? Math.round(totalOpHours / totalWOs) : 0; 
+            var mttrVal = totalWOs > 0 ? Math.round((totalWOs * 30) / totalWOs) : 0; 
+
+            document.getElementById('val-mttr').textContent = mttrVal;
+            document.getElementById('val-mtbf').textContent = mtbfVal;
+
+            if(db.settings && db.settings.companyName) {
+                document.getElementById('company-badge-text').textContent = 'NODE: ' + db.settings.companyName;
+            }
+
+            var eqBody = document.getElementById('eq-table-body');
+            var eqHtml = '';
+            (db.equipment || []).forEach((eq, i) => {
+                var editBtn = (currentRole === 'creator' || currentRole === 'manager') ? `<button onclick="editEquipment('${eq.id}')" class="btn-amber" style="padding:3px 8px; border-radius:4px; border:none; cursor:pointer;">${currentLang==='fa'?'ویرایش':'Edit'}</button>` : '';
+                var delBtn = (currentRole === 'creator' || currentRole === 'manager') ? `<button onclick="deleteEquipment('${eq.id}')" class="btn-rose" style="padding:3px 8px; border-radius:4px; border:none; cursor:pointer; margin-right:4px;">${currentLang==='fa'?'حذف':'Del'}</button>` : '-';
+                var subText = (eq.subItems && eq.subItems.length > 0) ? eq.subItems.join('، ') : (currentLang==='fa'?'بدون زیرمجموعه':'No subparts');
+
+                eqHtml += `<tr>
+                    <td>${i+1}</td>
+                    <td style="font-weight:600;">${eq.name}</td>
+                    <td>${eq.unit}</td>
+                    <td style="color:var(--primary); font-family:monospace; font-weight:700;">${eq.runningHours || 0} ساعت</td>
+                    <td style="font-size:11px; color:var(--text-muted);">${subText}</td>
+                    <td style="font-size:11px;">${eq.startDate || '-'} تا ${eq.endDate || '-'}</td>
+                    <td>
+                        <button onclick="openEqSubModal(${i})" class="btn-amber" style="padding:3px 8px; border-radius:4px; border:none; cursor:pointer; font-size:11px; margin-left:4px;">${currentLang==='fa'?'زیرمجموعه':'Subparts'}</button>
+                        ${editBtn} ${delBtn}
+                    </td>
+                </tr>`;
+            });
+            eqBody.innerHTML = eqHtml;
+
+            var pmCont = document.getElementById('pm-cards-container');
+            var pmHtml = '';
+            (db.equipment || []).forEach((eq, j) => {
+                pmHtml += `<div class="card"><h4>${eq.unit}</h4><h3 style="font-size:12px; font-weight:700; margin:6px 0;">${eq.name}</h3><p style="font-size:11px; color:var(--primary); font-family:monospace;">${currentLang==='fa'?'ساعت کارکرد: ':'Hours: '}${eq.runningHours||0} ساعت</p><p style="font-size:11px; color:var(--accent-amber); margin-bottom:8px;">${currentLang==='fa'?'آخرین سرویس: ':'Last PM: '}${eq.lastPm || (currentLang==='fa'?'انجام نشده':'N/A')}</p><button onclick="openPmExecModal(${j})" class="btn" style="width:100%; justify-content:center;">${currentLang==='fa'?'مدیریت سوابق و PM':'PM Management'}</button></div>`;
+            });
+            pmCont.innerHTML = pmHtml;
+
+            var woBody = document.getElementById('wo-table-body');
+            var woHtml = '';
+            (db.workOrders || []).forEach(wo => {
+                woHtml += `<tr><td style="font-weight:600;">${wo.title}</td><td>${wo.equipment}</td><td>${wo.priority}</td><td style="color:var(--accent-amber); font-weight:600;">${wo.status}</td><td><button onclick="delWo(${wo.id})" style="background:none; border:none; color:var(--accent-rose); cursor:pointer;">${currentLang==='fa'?'حذف':'Del'}</button></td></tr>`;
+            });
+            woBody.innerHTML = woHtml;
+
+            var dBody = document.getElementById('daily-table-body');
+            var dHtml = '';
+            (db.dailyReports || []).forEach(r => {
+                dHtml += `<tr><td style="font-family:monospace;">${r.time}</td><td style="color:var(--accent-amber); font-weight:600;">${r.shift}</td><td style="font-weight:600;">${r.author}</td><td>${r.text}</td></tr>`;
+            });
+            dBody.innerHTML = dHtml;
+
+            var invBody = document.getElementById('inv-table-body');
+            var invHtml = '';
+            let count = 0;
+            (db.inventory || []).forEach((inv) => {
+                if(currentInvCategory !== 'all' && inv.category !== currentInvCategory) return;
+                if(count > 150) return; 
+                count++;
+                var isLow = inv.qty <= (inv.min || 1);
+                var status = isLow ? `<span style="color:var(--accent-rose); font-weight:700;">${currentLang==='fa'?'کسری انبار':'Low Stock'}</span>` : `<span style="color:var(--accent-emerald);">${currentLang==='fa'?'نرمال':'Normal'}</span>`;
+                
+                var editInvBtn = `<button onclick="editInventoryItem(${inv.id})" class="btn-amber" style="padding:3px 8px; border-radius:4px; border:none; cursor:pointer; font-size:11px; margin-left:4px;">${currentLang==='fa'?'ویرایش':'Edit'}</button>`;
+                var delInvBtn = (currentRole === 'creator' || currentRole === 'manager') ? `<button onclick="deleteInventoryItem(${inv.id})" class="btn-rose" style="padding:3px 8px; border-radius:4px; border:none; cursor:pointer; font-size:11px;">${currentLang==='fa'?'حذف':'Del'}</button>` : '';
+
+                invHtml += `<tr>
+                    <td style="font-weight:600; color:var(--primary);">${inv.category}</td>
+                    <td style="font-weight:600;">${inv.name}</td>
+                    <td style="font-family:monospace; font-weight:700; color:var(--accent-emerald);">${inv.code || '-'}</td>
+                    <td style="font-weight:700; font-family:monospace; color:${isLow?'var(--accent-rose)':'inherit'}">${inv.qty}</td>
+                    <td style="font-family:monospace;">${inv.min}</td>
+                    <td>${status}</td>
+                    <td>${editInvBtn} ${delInvBtn}</td>
+                </tr>`;
+            });
+            invBody.innerHTML = invHtml;
+
+            var logBody = document.getElementById('logs-table-body');
+            var logHtml = '';
+            (db.activityLogs || []).forEach(lg => {
+                logHtml += `<tr><td style="font-family:monospace;">${lg.time}</td><td style="color:var(--primary); font-weight:600;">${lg.user}</td><td>${lg.action}</td></tr>`;
+            });
+            logBody.innerHTML = logHtml;
+        }
+
+        function delWo(id) {
+            saveSnapshotForUndo();
+            db.workOrders = db.workOrders.filter(w => w.id !== id);
+            syncToCloud();
+            renderAll();
+        }
+    </script>
+</body>
+</html>
