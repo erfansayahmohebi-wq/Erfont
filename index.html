@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ErfoNT pro - Industrial CMMS & SCADA v2.0</title>
+    <title>ErfoNT pro - Industrial CMMS & SCADA v2.1</title>
     
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
@@ -125,6 +124,7 @@
         .role-display { background: var(--surface-input); border: 1px solid var(--border-color); color: var(--text-main); padding: 5px 10px; border-radius: var(--radius-btn); font-size: 11px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
         .user-avatar-head { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; border: 1px solid var(--primary); }
         .sync-badge { font-size: 10px; background: rgba(5, 150, 105, 0.1); color: var(--accent-emerald); padding: 4px 8px; border-radius: var(--radius-btn); border: 1px solid var(--border-color); font-family: monospace; font-weight: 600; }
+
         .undo-btn-head { background: var(--accent-purple); color: #fff; border-color: var(--accent-purple); display: none; }
 
         main.workspace { flex-grow: 1; padding: 20px; max-width: 1400px; margin: 0 auto; width: 100%; }
@@ -160,7 +160,7 @@
         .metric-card h4 { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
         .metric-card .val { font-size: 20px; font-weight: 800; color: var(--text-main); margin-top: 4px; font-family: monospace; }
 
-        .card { background: var(--surface-card); border: 1px solid var(--border-color); padding: 16px; border-radius: var(--radius-box); margin-bottom: 15px; }
+        .card { background: var(--surface-card); border: 1px solid var(--border-color); padding: 16px; border-radius: var(--radius-box); margin-bottom: 14px; }
         
         .btn { background: var(--primary); color: #fff; border: 1px solid transparent; padding: 7px 14px; border-radius: var(--radius-btn); font-weight: 600; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
         .btn:hover { filter: brightness(1.1); }
@@ -176,6 +176,13 @@
         td { padding: 8px 12px; border-bottom: 1px solid var(--border-color); color: var(--text-main); }
         tr:hover td { background: var(--surface-card-hover); }
 
+        .status-badge { padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; display: inline-block; }
+        .status-pending { background: rgba(217, 119, 6, 0.2); color: var(--accent-amber); border: 1px solid rgba(217, 119, 6, 0.4); }
+        .status-completed { background: rgba(5, 150, 105, 0.2); color: var(--accent-emerald); border: 1px solid rgba(5, 150, 105, 0.4); }
+        
+        .checkbox-container { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+        .checkbox-container input { width: 15px; height: 15px; accent-color: var(--accent-emerald); }
+
         .modal { position: fixed; inset: 0; background: rgba(7, 10, 18, 0.85); display: none; justify-content: center; align-items: center; padding: 16px; z-index: 1000; }
         .modal.active { display: flex; }
         .modal-body { background: var(--modal-bg); border: 1px solid var(--border-color); width: 100%; max-width: 480px; padding: 22px; border-radius: var(--radius-box); max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.6); text-align: inherit; }
@@ -185,14 +192,9 @@
         .form-control:focus { border-color: var(--border-focus); }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
-        .status-badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; display: inline-block; }
-        .status-pending { background: rgba(217, 119, 6, 0.2); color: var(--accent-amber); border: 1px solid rgba(217, 119, 6, 0.4); }
-        .status-completed { background: rgba(5, 150, 105, 0.2); color: var(--accent-emerald); border: 1px solid rgba(5, 150, 105, 0.4); }
-        .checkbox-container { display: flex; align-items: center; gap: 6px; cursor: pointer; }
-        .checkbox-container input { width: 16px; height: 16px; accent-color: var(--accent-emerald); }
-
         .pm-history-box { background: var(--surface-input); border: 1px solid var(--border-color); border-radius: var(--radius-btn); padding: 10px; max-height: 150px; overflow-y: auto; margin-top: 6px; font-size: 11px; text-align: inherit; }
         .pm-history-item { padding: 6px; border-bottom: 1px solid var(--border-color); margin-bottom: 4px; }
+
         .sub-items-list { background: var(--surface-input); border: 1px solid var(--border-color); border-radius: var(--radius-btn); padding: 8px; margin-top: 6px; max-height: 130px; overflow-y: auto; }
         .sub-item-chip { display: flex; justify-content: space-between; align-items: center; background: var(--surface-card); border: 1px solid var(--border-color); padding: 5px 8px; border-radius: 4px; margin-bottom: 4px; font-size: 11px; }
 
@@ -242,7 +244,7 @@
     <header>
         <div class="logo-group">
             <div class="logo" onclick="navigateTo('hub')">
-                <span>⚡</span> ErfoNT pro v2.0
+                <span>⚡</span> ErfoNT pro v2.1
             </div>
             <span class="badge" id="company-badge-text">NODE: erfont1995</span>
             <button onclick="navigateTo('settings')" class="icon-btn" title="تنظیمات سیستم">⚙️</button>
@@ -273,8 +275,8 @@
         <!-- تب 0: هاب مرکزی -->
         <div id="tab-hub" class="tab-content active">
             <div class="card-grid">
-                <div class="metric-card"><h4 data-i18n="mttr_title">شاخص MTTR (دقیقه)</h4><div class="val" id="val-mttr">0</div></div>
-                <div class="metric-card"><h4 data-i18n="mtbf_title">شاخص MTBF (ساعت)</h4><div class="val" id="val-mtbf">0</div></div>
+                <div class="metric-card"><h4 data-i18n="mttr_title">میانگین MTTR (دقیقه)</h4><div class="val" id="val-mttr">0</div></div>
+                <div class="metric-card"><h4 data-i18n="mtbf_title">میانگین MTBF (ساعت)</h4><div class="val" id="val-mtbf">0</div></div>
                 <div class="metric-card"><h4 data-i18n="eq_count_title">تجهیزات تحت نظارت</h4><div class="val" id="dash-eq-count">30</div></div>
                 <div class="metric-card"><h4 data-i18n="reports_title">گزارش‌های ثبت‌شده</h4><div class="val" id="dash-reports">0</div></div>
             </div>
@@ -285,13 +287,13 @@
                 <div class="hub-card" onclick="navigateTo('equipment')">
                     <div class="hub-icon">🏭</div>
                     <div class="hub-title" data-i18n="mod_eq">شناسنامه و تجهیزات</div>
-                    <div class="hub-desc" data-i18n="mod_eq_desc">مدیریت ماشین‌آلات، شناسنامه فنی و زیرقطعات.</div>
+                    <div class="hub-desc" data-i18n="mod_eq_desc">مدیریت ماشین‌آلات، ثبت شناسنامه فنی و زیرقطعات.</div>
                 </div>
 
                 <div class="hub-card" onclick="navigateTo('kpi')">
                     <div class="hub-icon">📈</div>
                     <div class="hub-title" data-i18n="mod_kpi">شاخص‌های فنی تجهیزات (OEE)</div>
-                    <div class="hub-desc" data-i18n="mod_kpi_desc">محاسبه اثربخشی، قابلیت دسترس‌پذیری و ارزیابی خطوط.</div>
+                    <div class="hub-desc" data-i18n="mod_kpi_desc">محاسبه اثربخشی، دسترس‌پذیری و ارزیابی کارکرد واقعی.</div>
                 </div>
 
                 <div class="hub-card" onclick="navigateTo('pm')">
@@ -303,7 +305,7 @@
                 <div class="hub-card" onclick="navigateTo('workorders')">
                     <div class="hub-icon">🔧</div>
                     <div class="hub-title" data-i18n="mod_wo">دستورات کار (EM / CM)</div>
-                    <div class="hub-desc" data-i18n="mod_wo_desc">ثبت ساعت شروع/پایان، توقفات و تیک اتمام کار.</div>
+                    <div class="hub-desc" data-i18n="mod_wo_desc">ثبت ساعت شروع/پایان، زمان توقف و تیک اتمام کار.</div>
                 </div>
 
                 <div class="hub-card" onclick="navigateTo('daily')">
@@ -342,7 +344,7 @@
         <div id="tab-equipment" class="tab-content">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
                 <h3 style="font-size:12px; font-weight:700; text-transform:uppercase;" data-i18n="eq_list_title">شناسنامه ماشین‌آلات و زیرقطعات فنی</h3>
-                <button onclick="openModal('eq-modal')" class="btn" id="btn-add-eq" data-i18n="add_eq_btn">+ ثبت شناسنامه دستگاه جدید</button>
+                <button onclick="openModal('eq-modal')" class="btn" id="btn-add-eq" data-i18n="add_eq_btn">+ ثبت دستگاه / شناسنامه جدید</button>
             </div>
             <div style="margin-bottom:10px;">
                 <input type="text" id="eq-search-input" onkeyup="filterEquipment()" placeholder="🔍 جستجو بر اساس نام تجهیز، برند یا واحد..." class="form-control" data-i18n-ph="eq_search_ph">
@@ -365,12 +367,12 @@
             </div>
         </div>
 
-        <!-- تب 1.5: شاخص‌های تجهیزات OEE -->
+        <!-- تب 1.5: شاخص‌های تجهیزات OEE واقعی -->
         <div id="tab-kpi" class="tab-content">
             <div class="card" style="margin-bottom: 16px;">
-                <label style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 8px; font-weight: 700;">انتخاب تجهیز جهت ارزیابی شاخص‌های فنی و OEE:</label>
+                <label style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 8px; font-weight: 700;">انتخاب تجهیز جهت محاسبه واقعی شاخص‌ها بر اساس دستورکارهای ثبت‌شده:</label>
                 <select id="kpiDeviceSelect" class="form-control" onchange="calculateKPI()">
-                    <!-- گزینه‌ها داینامیک پر می‌شوند -->
+                    <!-- تمام تجهیزات از دیتابیس لود می‌شوند -->
                 </select>
             </div>
 
@@ -400,7 +402,7 @@
             <div class="card-grid" id="pm-cards-container"></div>
         </div>
 
-        <!-- تب 3: دستورات کار EM / CM با ساعت شروع/پایان و تیک اتمام -->
+        <!-- تب 3: دستورات کار EM / CM -->
         <div id="tab-workorders" class="tab-content">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                 <h3 style="font-size:12px; font-weight:700; text-transform:uppercase;" data-i18n="wo_page_title">دستورات کار اضطراری (EM) و اصلاحی (CM)</h3>
@@ -415,7 +417,7 @@
                             <th data-i18n="th_wo_eq">تجهیز مربوطه</th>
                             <th>ساعت شروع</th>
                             <th>ساعت پایان</th>
-                            <th>مدت توقف</th>
+                            <th>زمان توقف</th>
                             <th>وضعیت / تیک اتمام کار</th>
                             <th data-i18n="th_actions">عملیات</th>
                         </tr>
@@ -562,13 +564,13 @@
 
     </main>
 
-    <!-- مودال‌ها -->
+    <!-- مودال ثبت شناسنامه جدید -->
     <div id="eq-modal" class="modal">
         <div class="modal-body">
             <h3 style="font-size:12px; font-weight:700; color:var(--primary); margin-bottom:10px; text-transform:uppercase;" id="eq-modal-title" data-i18n="modal_add_eq">افزودن شناسنامه تجهیز جدید</h3>
             <input type="hidden" id="edit-eq-id">
-            <div class="form-group"><label data-i18n="eq_name">نام تجهیز:</label><input type="text" id="new-eq-name" class="form-control" placeholder="مثال: کمپرسور اسکرو 1"></div>
-            <div class="form-group"><label data-i18n="eq_unit">واحد / خط تولید:</label><input type="text" id="new-eq-unit" class="form-control" placeholder="مثال: تاسیسات مرکزی"></div>
+            <div class="form-group"><label data-i18n="eq_name">نام کامل تجهیز / دستگاه:</label><input type="text" id="new-eq-name" class="form-control" placeholder="مثال: پمپ اسید ۳ اینچ"></div>
+            <div class="form-group"><label data-i18n="eq_unit">واحد / خط تولید:</label><input type="text" id="new-eq-unit" class="form-control" placeholder="مثال: سالن شوینده - خط ۲"></div>
             <div class="form-group"><label data-i18n="eq_hours">ساعت کارکرد اولیه:</label><input type="number" id="new-eq-hours" class="form-control" value="0"></div>
             <div class="form-row">
                 <div class="form-group"><label data-i18n="eq_start">تاریخ شروع بهره‌برداری:</label><input type="text" id="new-eq-start" class="form-control" placeholder="1404/01/10"></div>
@@ -576,7 +578,7 @@
             </div>
             <div style="display:flex; justify-content:flex-end; gap:6px; margin-top:12px;">
                 <button onclick="closeModal('eq-modal')" class="btn" style="background:#475569; color:#fff;" data-i18n="cancel">انصراف</button>
-                <button onclick="saveEquipmentData()" class="btn" data-i18n="submit">ثبت اطلاعات</button>
+                <button onclick="saveEquipmentData()" class="btn btn-emerald" data-i18n="submit">ذخیره شناسنامه</button>
             </div>
         </div>
     </div>
@@ -636,7 +638,7 @@
         </div>
     </div>
 
-    <!-- مودال دستور کار EM / CM پیشرفته با ساعت شروع و پایان -->
+    <!-- مودال دستور کار EM / CM کامل -->
     <div id="wo-modal" class="modal">
         <div class="modal-body">
             <h3 style="font-size:12px; font-weight:700; color:var(--primary); margin-bottom:10px; text-transform:uppercase;" data-i18n="modal_wo">ثبت دستور کار جدید (EM / CM)</h3>
@@ -659,10 +661,12 @@
             </div>
             <div class="form-group">
                 <label data-i18n="eq">تجهیز مربوطه:</label>
-                <select id="wo-eq-select" class="form-control"></select>
+                <select id="wo-eq-select" class="form-control">
+                    <!-- به صورت اتوماتیک تمام تجهیزات + کار متفرقه لود می‌شوند -->
+                </select>
             </div>
             <div class="form-group">
-                <label data-i18n="wo_title_desc">شرح نقص / خرابی:</label>
+                <label data-i18n="wo_title_desc">شرح دقیق نقص / خرابی:</label>
                 <input type="text" id="wo-title" class="form-control" placeholder="مثال: نشتی پمپ اسید یا خطای درایو">
             </div>
             <div class="form-row">
@@ -677,7 +681,7 @@
             </div>
             <div style="display:flex; justify-content:flex-end; gap:6px; margin-top:12px;">
                 <button onclick="closeModal('wo-modal')" class="btn" style="background:#475569; color:#fff;" data-i18n="cancel">انصراف</button>
-                <button onclick="saveWorkOrder()" class="btn" data-i18n="submit_wo">ثبت دستور کار</button>
+                <button onclick="saveWorkOrder()" class="btn btn-primary" data-i18n="submit_wo">ثبت دستور کار</button>
             </div>
         </div>
     </div>
@@ -698,7 +702,7 @@
         </div>
     </div>
 
-    <!-- موتور اجرایی توربو و دوزبانه کاملاً هماهنگ -->
+    <!-- اسکریپت و منطق محاسباتی اصلی -->
     <script>
         const translations = {
             fa: {
@@ -716,19 +720,19 @@
                 undo: "بازگشت",
                 theme: "حالت تیره/روشن",
                 back_to_hub: "بازگشت به کنترل پنل مرکزی",
-                mttr_title: "شاخص MTTR (دقیقه)",
-                mtbf_title: "شاخص MTBF (ساعت)",
+                mttr_title: "میانگین MTTR (دقیقه)",
+                mtbf_title: "میانگین MTBF (ساعت)",
                 eq_count_title: "تجهیزات تحت نظارت",
                 reports_title: "گزارش‌های ثبت‌شده",
                 modules_title: "ماژول‌های عملیاتی سیستم نگهداری و تعمیرات",
                 mod_eq: "شناسنامه و تجهیزات",
-                mod_eq_desc: "مدیریت ماشین‌آلات، شناسنامه فنی و زیرقطعات.",
+                mod_eq_desc: "مدیریت ماشین‌آلات، ثبت شناسنامه فنی و زیرقطعات.",
                 mod_kpi: "شاخص‌های فنی تجهیزات (OEE)",
-                mod_kpi_desc: "محاسبه اثربخشی، قابلیت دسترس‌پذیری و ارزیابی خطوط.",
+                mod_kpi_desc: "محاسبه اثربخشی، دسترس‌پذیری و ارزیابی کارکرد واقعی.",
                 mod_pm: "چک‌لیست سرویس‌های PM",
                 mod_pm_desc: "برنامه‌ریزی، پایش ساعت کارکرد و سوابق دوره‌ای.",
                 mod_wo: "دستورات کار (EM / CM)",
-                mod_wo_desc: "ثبت ساعت شروع/پایان، توقفات و تیک اتمام کار.",
+                mod_wo_desc: "ثبت ساعت شروع/پایان، زمان توقف و تیک اتمام کار.",
                 mod_daily: "گزارش‌نویسی شیفت و خروجی CSV",
                 mod_daily_desc: "ثبت وضعیت خطوط تولید و گزارش تحویل شیفت.",
                 mod_inv: "انبار فنی",
@@ -740,7 +744,7 @@
                 mod_settings: "پروفایل، امنیت و تنظیمات",
                 mod_settings_desc: "مدیریت رمزها، گالری تصاویر و پشتیبان‌گیری ابری.",
                 eq_list_title: "شناسنامه ماشین‌آلات و زیرقطعات فنی",
-                add_eq_btn: "+ ثبت شناسنامه دستگاه جدید",
+                add_eq_btn: "+ ثبت دستگاه / شناسنامه جدید",
                 eq_search_ph: "🔍 جستجو بر اساس نام تجهیز، برند یا واحد...",
                 th_row: "#",
                 th_eq_name: "نام تجهیز / دستگاه",
@@ -858,8 +862,8 @@
                 undo: "Undo",
                 theme: "Dark/Light Mode",
                 back_to_hub: "Back to Central Hub",
-                mttr_title: "MTTR Index (min)",
-                mtbf_title: "MTBF Index (hours)",
+                mttr_title: "MTTR Avg (min)",
+                mtbf_title: "MTBF Avg (hours)",
                 eq_count_title: "Monitored Equipment",
                 reports_title: "Logged Reports",
                 modules_title: "CMMS & Maintenance Operational Modules",
@@ -1025,7 +1029,7 @@
 
         if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         const cloudDb = firebase.database();
-        const rootRef = cloudDb.ref('erfont_enterprise_scada_v2000_iec');
+        const rootRef = cloudDb.ref('erfont_enterprise_scada_v2100_iec');
 
         var defaultRolePasswords = { 'creator': '7890', 'manager': '2020', 'tech1': '1111', 'tech2': '2222' };
         var currentRole = '';
@@ -1042,7 +1046,25 @@
             { id: 9, name: "دستگاه گاز پاک کن", unit: "خط تولید", runningHours: 1150, startDate: "1404/03/25", endDate: "1405/03/25", pmItems: ["بررسی نازل‌های تزریق گاز", "سنسورهای ایمنی فشار", "کالیبراسیون"], pmHistory: [], subItems: ["نازل گاز", "سنسور فشار"] },
             { id: 10, name: "دستگاه بهار ماشین P06", unit: "خطوط تولید", runningHours: 1250, startDate: "1404/02/20", endDate: "1405/02/20", pmItems: ["گریس‌کاری بیرینگ‌ها", "بازرسی تسمه نقاله", "تست سیستم پنوماتیک"], pmHistory: [], subItems: ["تسمه نقاله", "بلبرینگ SKF"] },
             { id: 11, name: "دستگاه بهار ماشین P07", unit: "خطوط تولید", runningHours: 1300, startDate: "1404/02/25", endDate: "1405/02/25", pmItems: ["تنظیم سنسورهای فوتوسل", "بازرسی روغن گیربکس", "تست کلیدهای حرارتی"], pmHistory: [], subItems: ["فوتوسل مک‌سنس", "گیربکس صنعتی"] },
-            { id: 12, name: "دستگاه بهار ماشین P08", unit: "خطوط تولید", runningHours: 1400, startDate: "1404/02/30", endDate: "1405/02/30", pmItems: ["بازرسی تابلو فرمان ماشین", "تست الکتروموتور محرک", "آچارکشی مکانیکی"], pmHistory: [], subItems: ["کنتاکتور اشنایدر", "موتور الکتریکی"] }
+            { id: 12, name: "دستگاه بهار ماشین P08", unit: "خطوط تولید", runningHours: 1400, startDate: "1404/02/30", endDate: "1405/02/30", pmItems: ["بازرسی تابلو فرمان ماشین", "تست الکتروموتور محرک", "آچارکشی مکانیکی"], pmHistory: [], subItems: ["کنتاکتور اشنایدر", "موتور الکتریکی"] },
+            { id: 13, name: "دستگاه لوله باز کن", unit: "تاسیسات", runningHours: 350, startDate: "1404/05/10", endDate: "1405/05/10", pmItems: ["بازرسی فنر و کابل", "تست سلامت موتور", "روغن‌کاری گیربکس"], pmHistory: [], subItems: ["فنر فولادی", "کلید کنترل"] },
+            { id: 14, name: "دستگاه جرمگیر", unit: "خط جرمگیر", runningHours: 850, startDate: "1404/03/20", endDate: "1405/03/20", pmItems: ["سرویس پمپ اسید", "شستشوی مسیرهای اسیدشویی", "تست شیرهای ضداسید"], pmHistory: [], subItems: ["پمپ دیافراگمی", "شیر پلاستیکی"] },
+            { id: 15, name: "دستگاه سرکج", unit: "خط تولید", runningHours: 920, startDate: "1404/03/30", endDate: "1405/03/30", pmItems: ["تنظیم زاویه نازل‌ها", "بررسی موتور محرک زاویه", "تست جک‌های پنوماتیک"], pmHistory: [], subItems: ["جک پنوماتیک", "شیر برقی بادی"] },
+            { id: 16, name: "موتور برق انبار", unit: "انبار", runningHours: 210, startDate: "1404/06/10", endDate: "1405/06/10", pmItems: ["تست باک و سوخت", "استارت دوره‌ای زیر بار", "بازرسی خروجی برق"], pmHistory: [], subItems: ["باک بنزین", "رگولاتور ولتاژ"] },
+            { id: 17, name: "پمپ های آب چاه", unit: "تاسیسات", runningHours: 3100, startDate: "1403/06/10", endDate: "1404/06/10", pmItems: ["تابلو فرمان چاه", "تست فشار خط و آب‌دهی", "بررسی آمپر مصرفی موتور"], pmHistory: [], subItems: ["پروانه استیل", "تابلو ستاره مثلث"] },
+            { id: 18, name: "پمپ های سالن تولید", unit: "تولید", runningHours: 2200, startDate: "1403/09/10", endDate: "1404/09/10", pmItems: ["آب‌بند مکانیکی (مکانیکال سیل)", "لرزش‌سنجی پمپ", "تست کوپلینگ"], pmHistory: [], subItems: ["مکانیکال سیل", "کوپلینگ لاستیکی"] },
+            { id: 19, name: "پمپ های تخلیه اسید و جرمگیر", unit: "تاسیسات", runningHours: 600, startDate: "1404/04/20", endDate: "1405/04/20", pmItems: ["بررسی دیافراگم و سوپاپ‌ها", "واشرهای مقاوم در برابر اسید", "تست نشتی"], pmHistory: [], subItems: ["دیافراگم PTFE", "اورینگ وایتون"] },
+            { id: 20, name: "پمپ های مخازن سفید کننده", unit: "تولید", runningHours: 1100, startDate: "1404/01/20", endDate: "1405/01/20", pmItems: ["نشت‌یابی اتصالات پمپ", "بازرسی پکینگ‌ها", "روغن‌کاری بیرینگ"], pmHistory: [], subItems: ["پکینگ آب‌بندی", "بیرینگ SKF"] },
+            { id: 21, name: "دستگاه OPP", unit: "بسته‌بندی", runningHours: 990, startDate: "1404/02/15", endDate: "1405/02/15", pmItems: ["تیغ برش لیبل OPP", "تنظیم حرارت دوخت", "تنظیم کشش رول"], pmHistory: [], subItems: ["تیغ برش لیبل", "سنسور ثبت علامت"] },
+            { id: 22, name: "دستگاه پشت چسب زن", unit: "بسته‌بندی", runningHours: 810, startDate: "1404/03/15", endDate: "1405/03/15", pmItems: ["غلتک فشار چسب", "تیغ برش کارتن", "سنسور تشخیص کارتن"], pmHistory: [], subItems: ["غلتک لاستیکی", "تیغه برش کارتن"] },
+            { id: 23, name: "الکترو موتور های گیربکس دار سالن تولید", unit: "تولید", runningHours: 2700, startDate: "1403/08/10", endDate: "1404/08/10", pmItems: ["تغییر و بازدید روغن گیربکس", "فن خنک‌کننده موتور", "آچارکشی پایه‌ها"], pmHistory: [], subItems: ["روغن گیربکس واسکازه", "فن خنک‌کننده"] },
+            { id: 24, name: "دستگاه تزریق پلاستیک", unit: "تزریق", runningHours: 3500, startDate: "1403/05/10", endDate: "1404/05/10", pmItems: ["هیترهای سیلندر تزریق", "روغن هیدرولیک و فیلترها", "گریس‌کاری toggle"], pmHistory: [], subItems: ["هیتر کمربندی", "فیلتر هیدرولیک"] },
+            { id: 25, name: "دستگاه پت", unit: "تزریق", runningHours: 2900, startDate: "1403/07/10", endDate: "1404/07/10", pmItems: ["قالب‌گیر و بازرسی پین‌ها", "سیستم باد فشار قوی PET", "فیلترهای هوای فشار قوی"], pmHistory: [], subItems: ["شیر فشار قوی", "فیلتر نهایی باد"] },
+            { id: 26, name: "دستگاه آسیاب", unit: "بازیافت", runningHours: 1800, startDate: "1404/01/25", endDate: "1405/01/25", pmItems: ["بازرسی و تیز کردن تیغه‌های آسیاب", "تسمه‌های انتقال قدرت", "بلبرینگ‌های سنگین"], pmHistory: [], subItems: ["تیغه‌های چکشی", "بلبرینگ صنعتی بزرگ"] },
+            { id: 27, name: "تابلو برق های ساختمان تزریق", unit: "برق تزریق", runningHours: 4300, startDate: "1403/01/10", endDate: "1404/01/10", pmItems: ["آچارکشی کامل شینه‌ها", "تست حرارتی ترموویژن قطعات", "تست رله‌های حفاظتی"], pmHistory: [], subItems: ["کلید اتوماتیک MCCB", "ترمینال ریلی"] },
+            { id: 28, name: "تابلو برق های ساختمان تولید", unit: "برق تولید", runningHours: 4300, startDate: "1403/01/10", endDate: "1404/01/10", pmItems: ["بررسی کلیدهای اتوماتیک هوایی", "تمیزکاری فیلتر فن‌های تابلو", "تست کنتاکتورها"], pmHistory: [], subItems: ["کلید هوایی ACB", "فیلتر فن تابلو برق"] },
+            { id: 29, name: "تابلو برق های انبار", unit: "برق انبار", runningHours: 4000, startDate: "1403/02/10", endDate: "1404/02/10", pmItems: ["بازرسی کلیدهای حرارتی", "تست فیوزها و ترمینال‌ها", "بررسی سیم‌کشی"], pmHistory: [], subItems: ["فیوز مینیاتوری", "چراغ سیگنال"] },
+            { id: 30, name: "تابلو برق های ساختمان جرمگیر", unit: "برق جرمگیر", runningHours: 4100, startDate: "1403/02/25", endDate: "1404/02/25", pmItems: ["رله‌های حفاظتی ضداسید", "ترمینال‌های قدرت", "تست چراغ سیگنال و آلارم"], pmHistory: [], subItems: ["رله کنترل فاز", "تایمر تاخیر در وصل"] }
         ];
 
         function generateMassiveInventory() {
@@ -1070,7 +1092,7 @@
             settings: { companyName: 'Erfont Industrial SCADA', appActive: true, passwords: defaultRolePasswords }
         };
 
-        var localSaved = localStorage.getItem('erfont_turbo_db_v2');
+        var localSaved = localStorage.getItem('erfont_turbo_db_v21');
         if(localSaved) {
             try { db = JSON.parse(localSaved); } catch(e){}
         }
@@ -1099,7 +1121,7 @@
         });
 
         function syncToCloud() {
-            localStorage.setItem('erfont_turbo_db_v2', JSON.stringify(db));
+            localStorage.setItem('erfont_turbo_db_v21', JSON.stringify(db));
             rootRef.set(db).catch(err => {});
         }
 
@@ -1260,7 +1282,7 @@
             var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db, null, 2));
             var downloadAnchor = document.createElement('a');
             downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", "ErfoNT_pro_v2_Backup.json");
+            downloadAnchor.setAttribute("download", "ErfoNT_pro_v2_1_Backup.json");
             document.body.appendChild(downloadAnchor);
             downloadAnchor.click();
             downloadAnchor.remove();
@@ -1270,6 +1292,7 @@
             if(confirm(currentLang === 'fa' ? 'آیا از بازنشانی اطلاعات کارخانه مطمئن هستید؟' : 'Reset factory data?')) {
                 db.equipment = exactEquipmentList;
                 db.inventory = generateMassiveInventory();
+                db.workOrders = [];
                 syncToCloud();
                 renderAll();
             }
@@ -1320,7 +1343,7 @@
                 document.getElementById('new-eq-end').value = '';
             }
             document.getElementById(id).classList.add('active'); 
-            if(id == 'wo-modal'){ 
+            if(id === 'wo-modal'){ 
                 populateWoSelect(); 
                 var now = new Date();
                 var timeStr = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
@@ -1330,16 +1353,18 @@
         }
         function closeModal(id){ document.getElementById(id).classList.remove('active'); }
 
+        // لود تمام تجهیزات + کار متفرقه/عمومی
         function populateWoSelect() {
             var sel = document.getElementById('wo-eq-select');
             if(sel) {
-                sel.innerHTML = '';
-                for(var i=0; i<(db.equipment||[]).length; i++) {
-                    sel.innerHTML += '<option value="'+db.equipment[i].name+'">'+db.equipment[i].name+' ('+db.equipment[i].unit+')</option>';
-                }
+                sel.innerHTML = '<option value="کارهای متفرقه / عمومی کارخانه">🛠️ کارهای متفرقه / عمومی کارخانه</option>';
+                (db.equipment || []).forEach(eq => {
+                    sel.innerHTML += `<option value="${eq.name}">${eq.name} (${eq.unit})</option>`;
+                });
             }
         }
 
+        // لود تمامی تجهیزات در تب شاخص‌های OEE
         function populateKpiDeviceSelect() {
             var sel = document.getElementById('kpiDeviceSelect');
             if(sel) {
@@ -1350,20 +1375,34 @@
             }
         }
 
+        // محاسبه دقیق و واقعی شاخص‌ها برای دستگاه انتخابی
         function calculateKPI() {
-            var selName = document.getElementById('kpiDeviceSelect').value;
-            // محاسبات پویا بر اساس تعداد دستورکارهای ثبت‌شده برای این تجهیز
+            var selSelect = document.getElementById('kpiDeviceSelect');
+            if(!selSelect || !selSelect.value) return;
+            
+            var selName = selSelect.value;
+            var eq = (db.equipment || []).find(e => e.name === selName);
+            var runningHours = eq ? (eq.runningHours || 1000) : 1000;
+
+            // استخراج تمام دستورکارهای مرتبط با این تجهیز
             let relatedWOs = (db.workOrders || []).filter(w => w.equipment === selName);
             let totalDowntimeMin = relatedWOs.reduce((sum, w) => sum + (w.durationMinutes || 0), 0);
-            
-            let avail = Math.max(75, 98 - Math.floor(totalDowntimeMin / 10));
-            let perf = 92;
-            let qual = 96;
+            let failureCount = relatedWOs.length;
+
+            // کل زمان برنامه‌ریزی شده فرضی = ۵۰۰ ساعت (۳۰۰۰۰ دقیقه)
+            let plannedMinutes = 30000;
+            let operatingMinutes = plannedMinutes - totalDowntimeMin;
+            if(operatingMinutes < 0) operatingMinutes = 0;
+
+            let avail = Math.round((operatingMinutes / plannedMinutes) * 100);
+            let perf = 94; // نرخ کارکرد استاندار ماشین
+            let qual = 98; // نرخ کیفیت
             let oee = Math.round((avail * perf * qual) / 10000);
 
-            let mtbf = 160 - (relatedWOs.length * 15);
-            if(mtbf < 20) mtbf = 20;
-            let mttr = relatedWOs.length > 0 ? Math.round(totalDowntimeMin / relatedWOs.length) : 25;
+            // MTBF = زمان کارکرد / تعداد خرابی
+            let mtbf = failureCount > 0 ? Math.round(runningHours / failureCount) : runningHours;
+            // MTTR = زمان کل توقف به دقیقه / تعداد خرابی
+            let mttr = failureCount > 0 ? Math.round(totalDowntimeMin / failureCount) : 0;
 
             document.getElementById('kpi-oee').textContent = oee + ' ٪';
             document.getElementById('kpi-avail').textContent = avail + ' ٪';
@@ -1387,19 +1426,35 @@
             if(editId) {
                 for(var i=0; i<db.equipment.length; i++) {
                     if(db.equipment[i].id == editId) {
-                        db.equipment[i].name = name; db.equipment[i].unit = unit;
-                        db.equipment[i].runningHours = hours; db.equipment[i].startDate = startDate; db.equipment[i].endDate = endDate;
+                        db.equipment[i].name = name; 
+                        db.equipment[i].unit = unit || 'عمومی';
+                        db.equipment[i].runningHours = hours; 
+                        db.equipment[i].startDate = startDate; 
+                        db.equipment[i].endDate = endDate;
                         break;
                     }
                 }
                 logAct(currentLang === 'fa' ? 'ویرایش شناسنامه تجهیز: ' + name : 'Edit Equipment: ' + name);
             } else {
-                db.equipment.push({ id: Date.now(), name: name, unit: unit || 'عمومی', runningHours: hours, startDate: startDate, endDate: endDate, pmItems: ["بازرسی عمومی"], pmHistory: [], subItems: ["قطعه اصلی"] });
+                db.equipment.push({ 
+                    id: Date.now(), 
+                    name: name, 
+                    unit: unit || 'عمومی', 
+                    runningHours: hours, 
+                    startDate: startDate || '1404/01/01', 
+                    endDate: endDate || '1405/01/01', 
+                    pmItems: ["بازرسی عمومی"], 
+                    pmHistory: [], 
+                    subItems: ["قطعه اصلی"] 
+                });
                 logAct(currentLang === 'fa' ? 'ثبت شناسنامه تجهیز جدید: ' + name : 'Add Equipment: ' + name);
             }
             closeModal('eq-modal');
             syncToCloud();
+            populateKpiDeviceSelect();
+            populateWoSelect();
             renderAll();
+            alert(currentLang === 'fa' ? 'شناسنامه تجهیز با موفقیت ثبت شد.' : 'Saved successfully.');
         }
 
         function editEquipment(id) {
@@ -1421,6 +1476,8 @@
             db.equipment = db.equipment.filter(e => e.id != id);
             logAct(currentLang === 'fa' ? 'حذف تجهیز' : 'Delete Equipment');
             syncToCloud();
+            populateKpiDeviceSelect();
+            populateWoSelect();
             renderAll();
         }
 
@@ -1548,7 +1605,7 @@
             renderAll();
         }
 
-        // ثبت دستور کار با ساعت شروع، پایان و محاسبه توقف
+        // ثبت دستور کار EM/CM با زمان شروع، پایان و محاسبه توقف
         function saveWorkOrder() {
             saveSnapshotForUndo();
             var type = document.getElementById('wo-type').value;
@@ -1569,7 +1626,7 @@
                 let [sh, sm] = startTime.split(':').map(Number);
                 let [eh, em] = endTime.split(':').map(Number);
                 durationMinutes = (eh * 60 + em) - (sh * 60 + sm);
-                if (durationMinutes < 0) durationMinutes += 1440; // گذشتن از نیمه شب
+                if (durationMinutes < 0) durationMinutes += 1440;
             }
 
             if(!db.workOrders) db.workOrders = [];
@@ -1590,6 +1647,7 @@
             closeModal('wo-modal');
             syncToCloud();
             renderAll();
+            calculateKPI();
         }
 
         function toggleWorkOrderComplete(id, isChecked) {
@@ -1604,7 +1662,6 @@
                     var now = new Date();
                     wo.endTime = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
                 }
-                // محاسبه مدت زمان توقف
                 if(wo.startTime && wo.startTime !== '--:--') {
                     let [sh, sm] = wo.startTime.split(':').map(Number);
                     let [eh, em] = wo.endTime.split(':').map(Number);
@@ -1620,6 +1677,7 @@
             logAct(currentLang === 'fa' ? 'تغییر وضعیت دستور کار ' + wo.title : 'Toggle WO Status');
             syncToCloud();
             renderAll();
+            calculateKPI();
         }
 
         function delWo(id) {
@@ -1627,6 +1685,7 @@
             db.workOrders = db.workOrders.filter(w => w.id !== id);
             syncToCloud();
             renderAll();
+            calculateKPI();
         }
 
         function saveInventory() {
@@ -1774,7 +1833,7 @@
             });
             pmCont.innerHTML = pmHtml;
 
-            // رندر دستورکارهای پیشرفته EM / CM با ساعت شروع و پایان و تیک اتمام کار
+            // رندر لیست دستور کارهای EM / CM با ساعت شروع و پایان و تیک اتمام کار
             var woBody = document.getElementById('wo-table-body');
             var woHtml = '';
             (db.workOrders || []).forEach(wo => {
