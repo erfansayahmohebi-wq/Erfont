@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ErfoNT pro - Industrial CMMS & SCADA v2.1</title>
+    <title>ErfoNT pro - Industrial CMMS & SCADA v2.3</title>
+    <meta name="theme-color" content="#0b0f19">
+    <meta name="application-name" content="ErfoNT pro">
     
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
@@ -261,6 +264,7 @@
             </div>
         </div>
     </header>
+    <div id="connectivity-status" role="status" aria-live="polite" style="position:sticky;top:0;z-index:900;background:#172033;color:#cbd5e1;padding:5px 12px;font-size:11px;text-align:center;border-bottom:1px solid #334155;">ذخیره محلی فعال است؛ وضعیت همگام‌سازی ابری در حال بررسی است.</div>
 
     <!-- فضای کاری -->
     <main class="workspace">
@@ -406,7 +410,7 @@
         <div id="tab-workorders" class="tab-content">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                 <h3 style="font-size:12px; font-weight:700; text-transform:uppercase;" data-i18n="wo_page_title">دستورات کار اضطراری (EM) و اصلاحی (CM)</h3>
-                <button onclick="openModal('wo-modal')" class="btn" data-i18n="add_wo_btn">+ ثبت دستور کار جدید</button>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;"><button onclick="enableAppNotifications()" class="btn btn-amber">🔔 فعال‌سازی اعلان‌ها</button><button onclick="openModal('wo-modal')" class="btn" data-i18n="add_wo_btn">+ ثبت دستور کار جدید</button></div>
             </div>
             <div class="table-container">
                 <table>
@@ -462,6 +466,8 @@
                     <button onclick="setInvCategory('مکانیکال')" class="btn btn-emerald" data-i18n="inv_mech">⚙️ مکانیکال (-M)</button>
                     <button onclick="setInvCategory('تاسیسات')" class="btn" style="background:#0284c7;" data-i18n="inv_util">🛠️ تاسیسات (-B)</button>
                     <button onclick="openModal('inv-modal')" class="btn btn-emerald" data-i18n="add_inv_btn">+ قطعه جدید</button>
+                    <button onclick="exportInventoryExcel()" class="btn btn-purple">📊 خروجی اکسل موجودی</button>
+                    <button onclick="enableAppNotifications()" class="btn btn-amber">🔔 فعال‌سازی اعلان‌های سیستم</button>
                 </div>
             </div>
             <div style="margin-bottom:10px;">
@@ -1027,9 +1033,19 @@
             projectId: "erfont1995"
         };
 
-        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
-        const cloudDb = firebase.database();
-        const rootRef = cloudDb.ref('erfont_enterprise_scada_v2100_iec');
+        var cloudDb = null;
+        var rootRef = null;
+        var cloudReady = false;
+        try {
+            if (window.firebase && firebase.apps && !firebase.apps.length) firebase.initializeApp(firebaseConfig);
+            if (window.firebase && firebase.database) {
+                cloudDb = firebase.database();
+                rootRef = cloudDb.ref('erfont_enterprise_scada_v2100_iec');
+                cloudReady = true;
+            }
+        } catch (firebaseInitError) {
+            console.warn('Firebase initialization unavailable; local-first mode enabled.', firebaseInitError);
+        }
 
         var defaultRolePasswords = { 'creator': '7890', 'manager': '2020', 'tech1': '1111', 'tech2': '2222' };
         var currentRole = '';
@@ -1068,18 +1084,35 @@
         ];
 
         function generateMassiveInventory() {
-            let list = [
-                { id: 101, category: "مصرفی‌ریز", name: "چسب برق نسوز صنعتی (لنت برق) مشکی", code: "-R-101-TAPE", qty: 50, min: 10 },
-                { id: 102, category: "مصرفی‌ریز", name: "نوار تفلن پلس ایران / درنگ اعلا", code: "-R-102-SEAL", qty: 80, min: 15 },
-                { id: 103, category: "مصرفی‌ریز", name: "چسب ۱۲۳ (سیانواکریلات قطره‌ای + اسپری فعال‌کننده)", code: "-R-103-GLUE", qty: 25, min: 5 },
-                { id: 201, category: "الکتریکال", name: "کنتاکتور قدرت 32 آمپر اشنایدر", code: "-Q-201-CNT", qty: 8, min: 2 },
-                { id: 202, category: "الکتریکال", name: "کلید حرارتی موتوری (MPCB)", code: "-Q-202-MPCB", qty: 5, min: 1 },
-                { id: 203, category: "الکتریکال", name: "درایو کنترل دور موتور INVT GD20", code: "-K-203-INV", qty: 3, min: 1 },
-                { id: 301, category: "مکانیکال", name: "شیر برقی ضداسید 1/2 اینچ", code: "-M-301-SOL", qty: 6, min: 2 },
-                { id: 302, category: "مکانیکال", name: "مکانیکال سیل پمپ استیل گریز از مرکز", code: "-M-302-SEC", qty: 4, min: 2 },
-                { id: 401, category: "تاسیسات", name: "فیلتر هوای ورودی کمپرسور اسکرو", code: "-B-401-FLT", qty: 10, min: 2 }
+            // Initial master list for a typical industrial maintenance store.
+            // All stock quantities start at zero; users enter counted stock themselves.
+            const base = [
+                ["مصرفی‌ریز","چسب برق PVC مشکی","R-001-TAPE",10],["مصرفی‌ریز","نوار تفلون","R-002-PTFE",10],["مصرفی‌ریز","چسب ۱۲۳ و اسپری فعال‌کننده","R-003-GLUE",3],["مصرفی‌ریز","بست کمربندی ۱۵ سانتی","R-004-TIE150",50],["مصرفی‌ریز","بست کمربندی ۳۰ سانتی","R-005-TIE300",50],["مصرفی‌ریز","روغن روانکار چندمنظوره","R-006-LUBE",2],["مصرفی‌ریز","اسپری کنتاکت‌شوی","R-007-CONTACT",2],["مصرفی‌ریز","اسپری WD-40 یا مشابه","R-008-SPRAY",2],["مصرفی‌ریز","الکترود جوشکاری","R-009-ROD",5],["مصرفی‌ریز","صفحه برش آهن ۱۱۵","R-010-CUT115",10],["مصرفی‌ریز","صفحه ساب ۱۱۵","R-011-GRIND115",10],["مصرفی‌ریز","مته آهن مجموعه‌ای","R-012-DRILL",5],["مصرفی‌ریز","پیچ و مهره متریک متنوع","R-013-BOLT",100],["مصرفی‌ریز","واشر تخت متریک متنوع","R-014-WASHER",100],["مصرفی‌ریز","واشر فنری متریک متنوع","R-015-SPRINGW",100],["مصرفی‌ریز","اورینگ NBR مجموعه‌ای","R-016-ORING",10],["مصرفی‌ریز","اورینگ وایتون مجموعه‌ای","R-017-FKM",5],["مصرفی‌ریز","نخ آب‌بندی و خمیر رزوه","R-018-SEALANT",3],["مصرفی‌ریز","فیوز شیشه‌ای و کارتریجی متنوع","R-019-FUSE",10],["مصرفی‌ریز","سرسیم و وایرشو مجموعه‌ای","R-020-FERRULE",100],
+                ["الکتریکال","کنتاکتور ۹ آمپر","E-001-CONT09",2],["الکتریکال","کنتاکتور ۱۸ آمپر","E-002-CONT18",2],["الکتریکال","کنتاکتور ۳۲ آمپر","E-003-CONT32",2],["الکتریکال","رله حرارتی ۱ تا ۱.۶ آمپر","E-004-OLR16",1],["الکتریکال","رله حرارتی ۴ تا ۶ آمپر","E-005-OLR6",1],["الکتریکال","رله حرارتی ۹ تا ۱۳ آمپر","E-006-OLR13",1],["الکتریکال","کلید مینیاتوری تک‌پل ۶ آمپر","E-007-MCB1P6",2],["الکتریکال","کلید مینیاتوری تک‌پل ۱۶ آمپر","E-008-MCB1P16",2],["الکتریکال","کلید مینیاتوری سه‌پل ۱۶ آمپر","E-009-MCB3P16",1],["الکتریکال","کلید مینیاتوری سه‌پل ۳۲ آمپر","E-010-MCB3P32",1],["الکتریکال","کلید اتوماتیک MCCB","E-011-MCCB",1],["الکتریکال","کلید محافظ جان دوپل","E-012-RCCB2P",1],["الکتریکال","کلید محافظ جان چهارپل","E-013-RCCB4P",1],["الکتریکال","رله کمکی ۲۴ ولت DC","E-014-RELAY24",3],["الکتریکال","رله کمکی ۲۲۰ ولت AC","E-015-RELAY220",3],["الکتریکال","پایه رله ریلی","E-016-RELAYBASE",3],["الکتریکال","چراغ سیگنال قرمز ۲۲۰ ولت","E-017-LAMPRED",3],["الکتریکال","چراغ سیگنال سبز ۲۲۰ ولت","E-018-LAMPGREEN",3],["الکتریکال","چراغ سیگنال زرد ۲۲۰ ولت","E-019-LAMPYELLOW",2],["الکتریکال","شستی استارت سبز","E-020-START",3],["الکتریکال","شستی استاپ قرمز","E-021-STOP",3],["الکتریکال","شستی دوبل استارت/استاپ","E-022-STARTSTOP",2],["الکتریکال","کلید سلکتوری دوحالته","E-023-SELECTOR",2],["الکتریکال","ترمینال ریلی ۲.۵ میلی‌متر","E-024-TERM25",20],["الکتریکال","ترمینال ارت ریلی","E-025-TERMPE",10],["الکتریکال","ریل DIN","E-026-DINRAIL",3],["الکتریکال","داکت سیم‌کشی تابلو","E-027-DUCT",3],["الکتریکال","فن تابلو برق ۱۲۰ میلی‌متر","E-028-PANELFAN",1],["الکتریکال","فیلتر فن تابلو","E-029-FANFILTER",2],["الکتریکال","منبع تغذیه ۲۴ ولت DC","E-030-PSU24",1],["الکتریکال","ترانس کنترل ۲۲۰/۲۴ ولت","E-031-TRANS24",1],["الکتریکال","فیوز مینیاتوری شیشه‌ای نگهدارنده","E-032-FUSEHOLDER",2],["الکتریکال","کابل افشان ۳×۱.۵ میلی‌متر","E-033-CABLE315",20],["الکتریکال","کابل افشان ۳×۲.۵ میلی‌متر","E-034-CABLE325",20],["الکتریکال","کابل افشان ۴×۲.۵ میلی‌متر","E-035-CABLE425",20],["الکتریکال","کابل فرمان چند رشته","E-036-CONTROLCABLE",20],["الکتریکال","گلند کابل سایزهای متنوع","E-037-GLAND",10],["الکتریکال","سرکابل و کابلشو مسی","E-038-LUG",10],["الکتریکال","سنسور القایی M18 PNP","E-039-INDUCTIVE",2],["الکتریکال","سنسور نوری فوتوسل","E-040-PHOTOEYE",2],["الکتریکال","سنسور القایی M12","E-041-INDUCTIVE12",2],["الکتریکال","لیمیت سوئیچ صنعتی","E-042-LIMIT",2],["الکتریکال","رله کنترل فاز","E-043-PHASE",1],["الکتریکال","تایمر صنعتی ریلی","E-044-TIMER",1],["الکتریکال","اینورتر ۱.۵ کیلووات","E-045-VFD15",1],["الکتریکال","اینورتر ۲.۲ کیلووات","E-046-VFD22",1],["الکتریکال","باتری PLC/RTC در صورت نیاز مدل تجهیز","E-047-PLCBAT",1],
+                ["مکانیکال","بلبرینگ 6202","M-001-BRG6202",2],["مکانیکال","بلبرینگ 6203","M-002-BRG6203",2],["مکانیکال","بلبرینگ 6204","M-003-BRG6204",2],["مکانیکال","بلبرینگ 6205","M-004-BRG6205",2],["مکانیکال","بلبرینگ 6305","M-005-BRG6305",2],["مکانیکال","بلبرینگ 6306","M-006-BRG6306",2],["مکانیکال","بلبرینگ خودتنظیم و پایه‌دار متنوع","M-007-PILLOW",1],["مکانیکال","کاسه‌نمد شفت متنوع","M-008-OILSEAL",3],["مکانیکال","کوپلینگ الاستومری","M-009-COUPLING",1],["مکانیکال","تسمه صنعتی A و B متنوع","M-010-BELT",2],["مکانیکال","زنجیر صنعتی و قفل زنجیر","M-011-CHAIN",2],["مکانیکال","چرخ‌دنده و زنجیرچرخ متنوع","M-012-SPROCKET",1],["مکانیکال","مکانیکال سیل پمپ","M-013-MECHANICALSEAL",1],["مکانیکال","پکینگ پمپ","M-014-PACKING",3],["مکانیکال","دیافراگم پمپ دوزینگ","M-015-DIAPHRAGM",1],["مکانیکال","پروانه پمپ متنوع","M-016-IMPELLER",1],["مکانیکال","واشر فلنجی مقاوم شیمیایی","M-017-FLANGEGASKET",5],["مکانیکال","شیر توپی استیل ۱/۲ اینچ","M-018-BALL12",1],["مکانیکال","شیر توپی استیل ۱ اینچ","M-019-BALL1",1],["مکانیکال","شیر توپی استیل ۲ اینچ","M-020-BALL2",1],["مکانیکال","شیر یکطرفه صنعتی","M-021-CHECKVALVE",1],["مکانیکال","شیر برقی ۲۲۰ ولت","M-022-SOL220",2],["مکانیکال","شیر برقی ۲۴ ولت DC","M-023-SOL24",2],["مکانیکال","شیر پنوماتیک ۵/۲","M-024-PNEU52",1],["مکانیکال","سیلندر پنوماتیک متنوع","M-025-CYLINDER",1],["مکانیکال","شیلنگ پنوماتیک ۶ و ۸ میلی‌متر","M-026-PUHOSE",10],["مکانیکال","اتصالات پنوماتیک فیتینگی","M-027-FITTING",10],["مکانیکال","رگلاتور فشار هوا","M-028-REGULATOR",1],["مکانیکال","واحد مراقبت پنوماتیک فیلتر/رگلاتور","M-029-FRL",1],["مکانیکال","شلنگ فشارقوی پمپ","M-030-HOSE",2],["مکانیکال","بست شیلنگ استیل","M-031-HOSECLAMP",10],["مکانیکال","فیلتر مکش پمپ استیل","M-032-STRAINER",1],["مکانیکال","صافی Y استیل","M-033-YSTRAINER",1],["مکانیکال","فنر سوپاپ ورودی/خروجی","M-034-VALVESPRING",10],["مکانیکال","پیچ مغزی و خار شفت","M-035-KEY",10],["مکانیکال","گریس صنعتی","M-036-GREASE",2],["مکانیکال","روغن گیربکس صنعتی","M-037-GEAROIL",2],["مکانیکال","روغن هیدرولیک","M-038-HYDROIL",2],["مکانیکال","فیلتر روغن کمپرسور","M-039-OILFILTER",1],["مکانیکال","فیلتر سپراتور کمپرسور","M-040-SEPARATOR",1],["مکانیکال","فیلتر هوای کمپرسور","M-041-AIRFILTER",1],
+                ["تاسیسات","شیر فلکه برنجی ۱/۲ اینچ","U-001-GATE12",1],["تاسیسات","شیر فلکه ۱ اینچ","U-002-GATE1",1],["تاسیسات","شیر فلکه ۲ اینچ","U-003-GATE2",1],["تاسیسات","اتصال و مهره ماسوره متنوع","U-004-UNION",5],["تاسیسات","زانویی و سه‌راهی PVC/PP","U-005-ELBOW",10],["تاسیسات","لوله و اتصالات PP-R","U-006-PPR",5],["تاسیسات","لوله و اتصالات UPVC","U-007-UPVC",5],["تاسیسات","شیلنگ آب تقویت‌شده","U-008-WATERHOSE",2],["تاسیسات","فلوتر مخزن","U-009-FLOAT",1],["تاسیسات","مانومتر فشار","U-010-PRESSUREGAUGE",1],["تاسیسات","ترموستات صنعتی","U-011-THERMOSTAT",1],["تاسیسات","المنت حرارتی متنوع","U-012-HEATER",1],["تاسیسات","ترموکوپل و سنسور دما","U-013-THERMOCOUPLE",1],["تاسیسات","فیلتر تصفیه آب","U-014-WATERFILTER",2],["تاسیسات","ممبران تصفیه آب مطابق مدل","U-015-MEMBRANE",1],["تاسیسات","لامپ LED صنعتی","U-016-LED",5],["تاسیسات","پروژکتور LED","U-017-FLOODLIGHT",1],["تاسیسات","کلید و پریز صنعتی","U-018-SOCKET",2],
+                ["مصرفی‌ریز","دستکش ایمنی کار","R-021-GLOVE",10],["مصرفی‌ریز","عینک ایمنی","R-022-GLASSES",5],["مصرفی‌ریز","گوشی صداگیر","R-023-EARPROTECT",5],["مصرفی‌ریز","ماسک و فیلتر تنفسی مناسب ماده","R-024-MASK",5],["مصرفی‌ریز","جعبه کمک‌های اولیه اقلام مصرفی","R-025-FIRSTAID",1],["مصرفی‌ریز","چراغ قوه صنعتی","R-026-FLASHLIGHT",1],["مصرفی‌ریز","آچار آلن مجموعه‌ای","R-027-ALLEN",1],["مصرفی‌ریز","آچار تخت و رینگی مجموعه‌ای","R-028-WRENCH",1],["مصرفی‌ریز","پیچ‌گوشتی عایق برق","R-029-INSULATED",2],["مصرفی‌ریز","انبردست و سیم‌چین","R-030-PLIERS",1],["مصرفی‌ریز","متر و کولیس","R-031-MEASURE",1]
             ];
-            return list;
+            return base.map((r, i) => ({ id: 5000 + i, category: r[0], name: r[1], code: r[2], qty: 0, min: r[3] }));
+        }
+
+        function seedStandardInventoryCatalog() {
+            if (!db.settings) db.settings = {};
+            if (db.settings.inventoryCatalogV23Seeded === true) return false;
+            if (!Array.isArray(db.inventory)) db.inventory = [];
+            const existingCodes = new Set(db.inventory.map(x => String(x.code || '').trim().toLowerCase()).filter(Boolean));
+            const existingNames = new Set(db.inventory.map(x => String(x.name || '').trim().toLowerCase()).filter(Boolean));
+            const catalog = generateMassiveInventory();
+            let added = 0;
+            catalog.forEach(item => {
+                if (existingCodes.has(item.code.toLowerCase()) || existingNames.has(item.name.toLowerCase())) return;
+                db.inventory.push(item); added++;
+            });
+            db.settings.inventoryCatalogV23Seeded = true;
+            db.settings.schemaVersion = 23;
+            if (!Array.isArray(db.activityLogs)) db.activityLogs = [];
+            db.activityLogs.unshift({time:new Date().toLocaleTimeString('fa-IR'), user:'system', action:'به‌روزرسانی v2.3: فهرست استاندارد قطعات انبار اضافه شد؛ موجودی اقلام جدید صفر است (' + added + ' قلم).'});
+            return true;
         }
 
         var db = {
@@ -1092,38 +1125,175 @@
             settings: { companyName: 'Erfont Industrial SCADA', appActive: true, passwords: defaultRolePasswords }
         };
 
-        var localSaved = localStorage.getItem('erfont_turbo_db_v21');
+        var localSaved = null;
+        try { localSaved = localStorage.getItem('erfont_turbo_db_v21'); } catch(storageErr) { console.warn('Local storage unavailable', storageErr); }
         if(localSaved) {
-            try { db = JSON.parse(localSaved); } catch(e){}
+            try { db = JSON.parse(localSaved); } catch(e) { console.warn('Saved local data could not be parsed; defaults retained.', e); }
         }
 
         var currentInvCategory = 'all';
+        var cloudSyncInProgress = false;
+        var cloudSyncQueued = false;
+        var cloudLastError = '';
+        var cloudRetryCount = 0;
+
+        function safeLocalSave() {
+            try {
+                localStorage.setItem('erfont_turbo_db_v21', JSON.stringify(db));
+                return true;
+            } catch (e) {
+                console.error('Local save failed', e);
+                setConnectivityStatus('ذخیره محلی ناموفق بود؛ فضای ذخیره‌سازی گوشی را بررسی کنید.', true);
+                return false;
+            }
+        }
+
+        function setConnectivityStatus(message, warning) {
+            var el = document.getElementById('connectivity-status');
+            if (!el) return;
+            el.textContent = message;
+            el.style.color = warning ? '#fecaca' : '#cbd5e1';
+            el.style.background = warning ? '#451a1a' : '#172033';
+        }
+
+        function mergeById(localArr, cloudArr) {
+            var map = new Map();
+            function put(x, source, index) {
+                if (!x || typeof x !== 'object') return;
+                // Some legacy records (notably activity logs and shift reports) have no id.
+                // Preserve them using a content-based key rather than silently dropping them.
+                var key = x.id !== undefined && x.id !== null ? 'id:' + String(x.id) : 'legacy:' + JSON.stringify(x);
+                map.set(key, x);
+            }
+            (Array.isArray(cloudArr) ? cloudArr : []).forEach(put);
+            (Array.isArray(localArr) ? localArr : []).forEach(put); // local version wins for matching ids
+            return Array.from(map.values());
+        }
+
+        function mergeCloudAndLocal(cloudData, localData) {
+            var merged = Object.assign({}, cloudData || {}, localData || {});
+            ['equipment','workOrders','inventory','activityLogs','dailyReports'].forEach(key => {
+                if (Array.isArray(cloudData && cloudData[key]) || Array.isArray(localData && localData[key])) {
+                    merged[key] = mergeById(localData && localData[key], cloudData && cloudData[key]);
+                }
+            });
+            merged.settings = Object.assign({}, (cloudData && cloudData.settings) || {}, (localData && localData.settings) || {});
+            merged.profiles = Object.assign({}, (cloudData && cloudData.profiles) || {}, (localData && localData.profiles) || {});
+            if (!Array.isArray(merged.equipment) || !merged.equipment.length) merged.equipment = exactEquipmentList;
+            if (!Array.isArray(merged.inventory)) merged.inventory = generateMassiveInventory();
+            if (!Array.isArray(merged.workOrders)) merged.workOrders = [];
+            if (!Array.isArray(merged.activityLogs)) merged.activityLogs = [];
+            if (!Array.isArray(merged.dailyReports)) merged.dailyReports = [];
+            if (!merged.settings.companyName) merged.settings.companyName = 'Erfont Industrial SCADA';
+            if (!merged.settings.passwords) merged.settings.passwords = defaultRolePasswords;
+            return merged;
+        }
+
+        function applyV22InventoryMigration() {
+            if (!db.settings) db.settings = {};
+            if (db.settings.inventoryQtyZeroedV22 !== true) {
+                // Keep a recoverable snapshot of the pre-migration data before changing stock quantities.
+                try { localStorage.setItem('erfont_backup_pre_v22', JSON.stringify(db)); } catch(backupErr) { console.warn('Pre-migration backup could not be stored.', backupErr); }
+                (db.inventory || []).forEach(item => { item.qty = 0; });
+                db.settings.inventoryQtyZeroedV22 = true;
+                db.settings.schemaVersion = 22;
+                if (!Array.isArray(db.activityLogs)) db.activityLogs = [];
+                db.activityLogs.unshift({time:new Date().toLocaleTimeString('fa-IR'), user:'system', action:currentLang === 'fa' ? 'به‌روزرسانی v2.2: موجودی اولیه همه قطعات صفر شد؛ سایر سوابق حفظ شدند.' : 'v2.2 migration: initial stock set to zero; other records preserved.'});
+            }
+            seedStandardInventoryCatalog();
+        }
 
         window.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('login-screen').style.display = 'flex';
-            
-            setTimeout(() => {
-                rootRef.once('value').then((snapshot) => {
-                    var data = snapshot.val();
-                    if (data) {
-                        db = data;
-                        if(!db.settings) db.settings = { companyName: 'Erfont Industrial SCADA', appActive: true, passwords: defaultRolePasswords };
-                        if(!db.settings.passwords) db.settings.passwords = defaultRolePasswords;
-                        if(!db.equipment || db.equipment.length === 0) db.equipment = exactEquipmentList;
-                        if(!db.inventory || db.inventory.length === 0) db.inventory = generateMassiveInventory();
-                        
-                        if(db.settings.appActive === false) {
-                            document.getElementById('license-lock-screen').style.display = 'flex';
-                        }
-                    }
-                }).catch(err => {});
-            }, 10);
+            var loginScreen = document.getElementById('login-screen');
+            if (loginScreen) loginScreen.style.display = 'flex';
+            updateConnectivityStatus();
+            if (!rootRef) {
+                applyV22InventoryMigration();
+                safeLocalSave();
+                setConnectivityStatus('حالت آفلاین/محلی فعال است؛ اطلاعات روی همین دستگاه ذخیره می‌شود.', true);
+                return;
+            }
+            // Load cloud data without allowing a stale/empty cloud snapshot to erase local records.
+            rootRef.once('value').then((snapshot) => {
+                var cloudData = snapshot.val();
+                if (cloudData) db = mergeCloudAndLocal(cloudData, db);
+                applyV22InventoryMigration();
+                safeLocalSave();
+                setConnectivityStatus('اتصال ابری برقرار است؛ اطلاعات محلی و ابری ادغام و ذخیره شدند.', false);
+                if(db.settings && db.settings.appActive === false) {
+                    var lock = document.getElementById('license-lock-screen');
+                    if(lock) lock.style.display = 'flex';
+                }
+                if (currentRole) renderAll();
+                checkLowStockNotifications(false);
+            }).catch(err => {
+                applyV22InventoryMigration();
+                safeLocalSave();
+                cloudLastError = err && err.message ? err.message : 'cloud unavailable';
+                setConnectivityStatus('اینترنت/سرور ابری در دسترس نیست؛ برنامه در حالت محلی کار می‌کند و اطلاعات محلی حفظ می‌شود.', true);
+                console.warn('Cloud read failed; local-first mode remains active.', err);
+            });
         });
 
-        function syncToCloud() {
-            localStorage.setItem('erfont_turbo_db_v21', JSON.stringify(db));
-            rootRef.set(db).catch(err => {});
+        function updateConnectivityStatus() {
+            if (!navigator.onLine) {
+                setConnectivityStatus('اینترنت قطع است؛ تغییرات روی دستگاه ذخیره می‌شوند و پس از اتصال دوباره تلاش می‌شود.', true);
+            } else if (!rootRef) {
+                setConnectivityStatus('حالت محلی فعال است؛ پیکربندی Firebase/اتصال ابری در دسترس نیست.', true);
+            } else {
+                setConnectivityStatus('اتصال اینترنت برقرار است؛ وضعیت همگام‌سازی ابری در حال بررسی است.', false);
+            }
         }
+
+        function syncToCloud() {
+            safeLocalSave();
+            checkLowStockNotifications(false);
+            if (!rootRef || !navigator.onLine) {
+                setConnectivityStatus('اطلاعات روی دستگاه ذخیره شد؛ همگام‌سازی ابری پس از اتصال دوباره انجام می‌شود.', true);
+                cloudSyncQueued = true;
+                return;
+            }
+            if (cloudSyncInProgress) { cloudSyncQueued = true; return; }
+            cloudSyncInProgress = true;
+            // Transaction merges records instead of blindly replacing the entire cloud root.
+            rootRef.transaction(function(remote) {
+                if (!remote) return db;
+                return mergeCloudAndLocal(remote, db);
+            }, function(error, committed) {
+                cloudSyncInProgress = false;
+                if (error || !committed) {
+                    cloudLastError = error && error.message ? error.message : 'cloud sync not committed';
+                    setConnectivityStatus('ذخیره محلی انجام شد؛ همگام‌سازی ابری ناموفق است و دوباره تلاش می‌شود.', true);
+                    console.warn('Cloud sync failed', error);
+                    if (navigator.onLine && cloudRetryCount < 3) { cloudRetryCount++; setTimeout(() => syncToCloud(), 2500 * cloudRetryCount); }
+                } else {
+                    cloudLastError = '';
+                    cloudRetryCount = 0;
+                    setConnectivityStatus('ذخیره محلی و همگام‌سازی ابری انجام شد.', false);
+                }
+                if (cloudSyncQueued) { cloudSyncQueued = false; setTimeout(() => syncToCloud(), 1200); }
+            }, false);
+        }
+
+        window.addEventListener('online', () => { updateConnectivityStatus(); if (cloudSyncQueued) syncToCloud(); else if (rootRef) syncToCloud(); });
+        window.addEventListener('offline', updateConnectivityStatus);
+        // Mobile browsers may suspend a page while another app is in the foreground. Resume gracefully.
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) {
+                updateConnectivityStatus();
+                try { db = mergeCloudAndLocal(db, JSON.parse(localStorage.getItem('erfont_turbo_db_v21') || '{}')); } catch(e) {}
+                if (rootRef && navigator.onLine) rootRef.once('value').then(snap => {
+                    if (snap.val()) db = mergeCloudAndLocal(snap.val(), db);
+                    safeLocalSave();
+                    if (currentRole) renderAll();
+                }).catch(err => console.warn('Resume cloud refresh failed; local data retained.', err));
+                checkLowStockNotifications(false);
+            }
+        });
+        window.addEventListener('pageshow', () => { updateConnectivityStatus(); checkLowStockNotifications(false); });
+
+        window.addEventListener('error', function(ev) { console.error('App error', ev.error || ev.message); setConnectivityStatus('خطای برنامه رخ داد؛ داده‌های محلی حفظ شده‌اند. صفحه را دوباره باز کنید و در صورت تکرار فایل خطا را ارسال کنید.', true); });
+        window.addEventListener('unhandledrejection', function(ev) { console.warn('Async operation failed; local data retained.', ev.reason); });
 
         function attemptLogin() {
             var role = document.getElementById('login-role-select').value;
@@ -1282,7 +1452,7 @@
             var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db, null, 2));
             var downloadAnchor = document.createElement('a');
             downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", "ErfoNT_pro_v2_1_Backup.json");
+            downloadAnchor.setAttribute("download", "ErfoNT_pro_v2_2_Backup.json");
             document.body.appendChild(downloadAnchor);
             downloadAnchor.click();
             downloadAnchor.remove();
@@ -1291,7 +1461,8 @@
         function resetFactoryData() {
             if(confirm(currentLang === 'fa' ? 'آیا از بازنشانی اطلاعات کارخانه مطمئن هستید؟' : 'Reset factory data?')) {
                 db.equipment = exactEquipmentList;
-                db.inventory = generateMassiveInventory();
+                db.inventory = generateMassiveInventory().map(item => Object.assign({}, item, {qty: 0}));
+                if (db.settings) db.settings.inventoryQtyZeroedV22 = true;
                 db.workOrders = [];
                 syncToCloud();
                 renderAll();
@@ -1644,6 +1815,7 @@
             });
 
             logAct(currentLang === 'fa' ? 'ثبت دستور کار ' + type + ': ' + title : 'Work Order ' + type + ': ' + title);
+            notifyWorkOrderCreated({type:type, title:title, equipment:equipment, priority:priority, id:db.workOrders[0].id});
             closeModal('wo-modal');
             syncToCloud();
             renderAll();
@@ -1688,14 +1860,93 @@
             calculateKPI();
         }
 
+        function exportInventoryExcel() {
+            var rows = (db.inventory || []).map(item => ({
+                'دسته‌بندی': item.category || '', 'نام قطعه': item.name || '', 'کد فنی': item.code || '',
+                'موجودی فعلی': Number(item.qty) || 0, 'حداقل موجودی': Number(item.min) || 0,
+                'وضعیت': (Number(item.qty) || 0) <= (Number(item.min) || 0) ? 'کسری انبار' : 'نرمال'
+            }));
+            if (!rows.length) { alert('فهرست انبار خالی است.'); return; }
+            var filename = 'ErfoNT_Inventory_' + new Date().toISOString().slice(0,10);
+            if (window.XLSX && XLSX.utils) {
+                var ws = XLSX.utils.json_to_sheet(rows);
+                ws['!cols'] = [{wch:18},{wch:34},{wch:20},{wch:14},{wch:14},{wch:16}];
+                var wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'Inventory');
+                XLSX.writeFile(wb, filename + '.xlsx');
+            } else {
+                // Excel opens UTF-8 CSV even if the optional XLSX CDN is unavailable.
+                var headers = Object.keys(rows[0]);
+                var csv = '\uFEFF' + [headers.join(','), ...rows.map(row => headers.map(h => '"' + String(row[h]).replace(/"/g,'""') + '"').join(','))].join('\r\n');
+                var blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+                var url = URL.createObjectURL(blob);
+                var a = document.createElement('a'); a.href = url; a.download = filename + '.csv';
+                document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+            }
+        }
+
+        function enableAppNotifications() {
+            if (!('Notification' in window)) {
+                alert('این مرورگر اعلان سیستمی را پشتیبانی نمی‌کند. هشدارهای کمبود در جدول انبار قابل مشاهده است.');
+                return;
+            }
+            Notification.requestPermission().then(permission => {
+                if (permission === 'granted') {
+                    try { localStorage.setItem('erfont_app_notifications_enabled', '1'); localStorage.setItem('erfont_stock_notifications_enabled', '1'); } catch(e) {}
+                    checkLowStockNotifications(true);
+                    try { new Notification('ErfoNT Pro', {body:'اعلان‌های انبار و دستورکارهای EM/CM فعال شدند.'}); } catch(e) {}
+                    alert('اعلان‌های انبار و دستورکارهای EM/CM فعال شدند. برای اعلان در زمان بسته‌بودن کامل برنامه، سرویس اعلان سمت سرور/PWA لازم است.');
+                } else {
+                    alert('اجازه اعلان داده نشد؛ مجوز اعلان را از تنظیمات مرورگر فعال کنید.');
+                }
+            }).catch(() => alert('فعال‌سازی اعلان در این محیط امکان‌پذیر نیست.'));
+        }
+
+        function notifyWorkOrderCreated(wo) {
+            var enabled = false;
+            try { enabled = localStorage.getItem('erfont_app_notifications_enabled') === '1'; } catch(e) {}
+            if (!enabled || !('Notification' in window) || Notification.permission !== 'granted') return;
+            var typeLabel = wo.type === 'EM' ? 'EM اضطراری' : 'CM اصلاحی';
+            var priorityLabel = wo.priority ? ' | اولویت: ' + wo.priority : '';
+            var body = typeLabel + ': ' + wo.title + (wo.equipment ? ' | تجهیز: ' + wo.equipment : '') + priorityLabel;
+            try {
+                var n = new Notification('ErfoNT | دستورکار جدید', {body:body, tag:'erfont-wo-' + wo.id});
+                n.onclick = function() { window.focus(); if (typeof navigateTo === 'function') navigateTo('workorders'); n.close(); };
+            } catch(e) { console.warn('Work-order notification failed', e); }
+        }
+
+        function enableStockNotifications() { enableAppNotifications(); }
+
+        function checkLowStockNotifications(forceSummary) {
+            var items = Array.isArray(db.inventory) ? db.inventory : [];
+            var low = items.filter(i => Number(i.qty || 0) <= Number(i.min == null ? 1 : i.min));
+            var enabled = false;
+            try { enabled = localStorage.getItem('erfont_stock_notifications_enabled') === '1'; } catch(e) {}
+            if (!enabled || !('Notification' in window) || Notification.permission !== 'granted') return;
+            var prior = {};
+            try { prior = JSON.parse(localStorage.getItem('erfont_low_stock_notified') || '{}'); } catch(e) {}
+            var newlyLow = low.filter(i => !prior[String(i.id)]);
+            low.forEach(i => { prior[String(i.id)] = true; });
+            items.filter(i => Number(i.qty || 0) > Number(i.min == null ? 1 : i.min)).forEach(i => { delete prior[String(i.id)]; });
+            try { localStorage.setItem('erfont_low_stock_notified', JSON.stringify(prior)); } catch(e) {}
+            if (forceSummary && low.length) {
+                try { new Notification('ErfoNT | هشدار انبار', { body: low.length + ' قلم زیر حداقل موجودی است. برای مشاهده، بخش انبار فنی را باز کنید.' }); } catch(e) {}
+            } else if (newlyLow.length) {
+                var names = newlyLow.slice(0, 4).map(i => i.name).join('، ');
+                var suffix = newlyLow.length > 4 ? ' و ' + (newlyLow.length - 4) + ' قلم دیگر' : '';
+                try { new Notification('ErfoNT | کسری موجودی', { body: names + suffix + ' — موجودی از حداقل مجاز کمتر/برابر است.' }); } catch(e) {}
+            }
+        }
+
         function saveInventory() {
             saveSnapshotForUndo();
             var editId = document.getElementById('edit-inv-id').value;
             var cat = document.getElementById('inv-cat').value;
             var name = sanitizeInput(document.getElementById('inv-name').value);
             var code = sanitizeInput(document.getElementById('inv-code').value);
-            var qty = parseInt(document.getElementById('inv-qty').value) || 0;
-            var min = parseInt(document.getElementById('inv-min').value) || 1;
+            var qty = Math.max(0, parseInt(document.getElementById('inv-qty').value) || 0);
+            var minInput = parseInt(document.getElementById('inv-min').value);
+            var min = Number.isFinite(minInput) ? Math.max(0, minInput) : 1;
             
             if(!name) { alert(currentLang === 'fa' ? 'لطفا نام قطعه را وارد کنید.' : 'Enter part name'); return; }
             if(!db.inventory) db.inventory = [];
@@ -1784,6 +2035,7 @@
 
         function renderAll() {
             updateRoleDisplay();
+            checkLowStockNotifications(false);
 
             var totalEqs = (db.equipment || []).length;
             var totalWOs = (db.workOrders || []).length;
@@ -1870,9 +2122,8 @@
             let count = 0;
             (db.inventory || []).forEach((inv) => {
                 if(currentInvCategory !== 'all' && inv.category !== currentInvCategory) return;
-                if(count > 150) return; 
                 count++;
-                var isLow = inv.qty <= (inv.min || 1);
+                var isLow = Number(inv.qty || 0) <= Number(inv.min == null ? 1 : inv.min);
                 var status = isLow ? `<span style="color:var(--accent-rose); font-weight:700;">${currentLang==='fa'?'کسری انبار':'Low Stock'}</span>` : `<span style="color:var(--accent-emerald);">${currentLang==='fa'?'نرمال':'Normal'}</span>`;
                 
                 var editInvBtn = `<button onclick="editInventoryItem(${inv.id})" class="btn-amber" style="padding:3px 8px; border-radius:4px; border:none; cursor:pointer; font-size:11px; margin-left:4px;">${currentLang==='fa'?'ویرایش':'Edit'}</button>`;
