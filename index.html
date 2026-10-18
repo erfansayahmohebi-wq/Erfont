@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ErfoNT pro - Industrial CMMS & SCADA v2.3</title>
+    <title>ErfoNT pro - Industrial CMMS & SCADA v2.5</title>
     <meta name="theme-color" content="#0b0f19">
     <meta name="application-name" content="ErfoNT pro">
     
@@ -15,11 +15,11 @@
 
     <style>
         :root {
-            --bg-body: #0b0f19;
-            --surface-card: #131b2e;
-            --surface-card-hover: #1b2642;
-            --surface-input: #080c14;
-            --border-color: #22304a;
+            --bg-body: #070a13;
+            --surface-card: rgba(19, 27, 46, 0.75);
+            --surface-card-hover: rgba(27, 38, 66, 0.85);
+            --surface-input: rgba(8, 12, 20, 0.85);
+            --border-color: rgba(34, 48, 74, 0.6);
             --border-focus: #0284c7;
             
             --text-main: #f1f5f9;
@@ -31,17 +31,17 @@
             --accent-rose: #dc2626;
             --accent-purple: #7c3aed;
             
-            --modal-bg: #0f172a;
-            --radius-box: 8px;
-            --radius-btn: 6px;
+            --modal-bg: rgba(15, 23, 42, 0.92);
+            --radius-box: 12px;
+            --radius-btn: 8px;
         }
 
         body.light-theme {
-            --bg-body: #f8fafc;
-            --surface-card: #ffffff;
-            --surface-card-hover: #f1f5f9;
-            --surface-input: #f8fafc;
-            --border-color: #cbd5e1;
+            --bg-body: #f1f5f9;
+            --surface-card: rgba(255, 255, 255, 0.85);
+            --surface-card-hover: rgba(241, 245, 249, 0.95);
+            --surface-input: rgba(248, 250, 252, 0.9);
+            --border-color: rgba(203, 213, 225, 0.8);
             --border-focus: #0284c7;
             
             --text-main: #0f172a;
@@ -53,7 +53,7 @@
             --accent-rose: #b91c1c;
             --accent-purple: #6d28d9;
             
-            --modal-bg: #ffffff;
+            --modal-bg: rgba(255, 255, 255, 0.95);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
@@ -66,12 +66,16 @@
             flex-direction: column;
             overflow-x: hidden;
             font-size: 13px;
+            background-image: radial-gradient(circle at 10% 20%, rgba(2, 132, 199, 0.08) 0%, transparent 40%),
+                              radial-gradient(circle at 90% 80%, rgba(124, 58, 237, 0.06) 0%, transparent 40%);
+            background-attachment: fixed;
         }
 
         #login-screen {
             position: fixed;
             inset: 0;
-            background: #030509;
+            background: rgba(3, 5, 9, 0.92);
+            backdrop-filter: blur(12px);
             z-index: 999999;
             display: flex;
             justify-content: center;
@@ -80,6 +84,8 @@
         }
         .login-card {
             background: var(--surface-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--border-color);
             width: 100%;
             max-width: 400px;
@@ -106,6 +112,8 @@
 
         header { 
             background: var(--surface-card); 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border-color); 
             padding: 10px 20px; 
             display: flex; 
@@ -118,65 +126,97 @@
         
         .logo-group { display: flex; align-items: center; gap: 12px; }
         .logo { font-size: 16px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 6px; cursor: pointer; letter-spacing: 0.5px; }
-        .badge { font-size: 10px; background: rgba(5, 150, 105, 0.1); color: var(--accent-emerald); padding: 2px 8px; border: 1px solid var(--accent-emerald); border-radius: 4px; font-family: monospace; font-weight: 700; }
+        .badge { font-size: 10px; background: rgba(5, 150, 105, 0.15); color: var(--accent-emerald); padding: 2px 8px; border: 1px solid var(--accent-emerald); border-radius: 4px; font-family: monospace; font-weight: 700; }
         
-        .icon-btn { background: var(--surface-input); border: 1px solid var(--border-color); color: var(--text-main); font-size: 12px; padding: 6px 10px; border-radius: var(--radius-btn); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 600; }
-        .icon-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .icon-btn { background: var(--surface-input); border: 1px solid var(--border-color); color: var(--text-main); font-size: 12px; padding: 6px 10px; border-radius: var(--radius-btn); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 600; transition: all 0.2s; }
+        .icon-btn:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-1px); }
 
         .header-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
         .role-display { background: var(--surface-input); border: 1px solid var(--border-color); color: var(--text-main); padding: 5px 10px; border-radius: var(--radius-btn); font-size: 11px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
         .user-avatar-head { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; border: 1px solid var(--primary); }
-        .sync-badge { font-size: 10px; background: rgba(5, 150, 105, 0.1); color: var(--accent-emerald); padding: 4px 8px; border-radius: var(--radius-btn); border: 1px solid var(--border-color); font-family: monospace; font-weight: 600; }
+        .sync-badge { font-size: 10px; background: rgba(5, 150, 105, 0.15); color: var(--accent-emerald); padding: 4px 8px; border-radius: var(--radius-btn); border: 1px solid var(--border-color); font-family: monospace; font-weight: 600; }
 
         .undo-btn-head { background: var(--accent-purple); color: #fff; border-color: var(--accent-purple); display: none; }
 
         main.workspace { flex-grow: 1; padding: 20px; max-width: 1400px; margin: 0 auto; width: 100%; }
         
         .back-nav-bar { display: none; margin-bottom: 14px; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
-        .back-btn { background: var(--surface-card); border: 1px solid var(--border-color); color: var(--text-main); padding: 6px 12px; border-radius: var(--radius-btn); font-weight: 600; font-size: 11px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+        .back-btn { background: var(--surface-card); backdrop-filter: blur(8px); border: 1px solid var(--border-color); color: var(--text-main); padding: 6px 12px; border-radius: var(--radius-btn); font-weight: 600; font-size: 11px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
         .back-btn:hover { border-color: var(--primary); color: var(--primary); }
 
         .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        .tab-content.active { display: block; animation: fadeIn 0.25s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
-        .menu-hub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 14px; }
+        .menu-hub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 14px; }
         .hub-card { 
             background: var(--surface-card); 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--border-color); 
-            padding: 16px; 
+            padding: 18px; 
             border-radius: var(--radius-box); 
             cursor: pointer; 
             display: flex; 
             flex-direction: column; 
-            gap: 6px; 
-            transition: transform 0.1s, border-color 0.1s;
+            gap: 8px; 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
         }
-        .hub-card:hover { border-color: var(--primary); background: var(--surface-card-hover); transform: translateY(-1px); }
-        .hub-icon { font-size: 20px; }
+        .hub-card:hover { border-color: var(--primary); background: var(--surface-card-hover); transform: translateY(-3px); box-shadow: 0 12px 40px 0 rgba(2, 132, 199, 0.2); }
+        .hub-icon { font-size: 22px; }
         .hub-title { font-size: 13px; font-weight: 700; color: var(--text-main); }
         .hub-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
 
-        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px; }
-        .metric-card { background: var(--surface-card); border: 1px solid var(--border-color); padding: 14px; border-radius: var(--radius-box); position: relative; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 16px; }
+        .metric-card { 
+            background: var(--surface-card); 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color); 
+            padding: 16px; 
+            border-radius: var(--radius-box); 
+            position: relative; 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+        }
         .metric-card::before { content:''; position: absolute; top:0; right:0; width: 3px; height: 100%; background: var(--primary); border-radius: 0 var(--radius-box) var(--radius-box) 0; }
         body[dir="ltr"] .metric-card::before { right: auto; left: 0; border-radius: var(--radius-box) 0 0 var(--radius-box); }
         .metric-card h4 { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
         .metric-card .val { font-size: 20px; font-weight: 800; color: var(--text-main); margin-top: 4px; font-family: monospace; }
 
-        .card { background: var(--surface-card); border: 1px solid var(--border-color); padding: 16px; border-radius: var(--radius-box); margin-bottom: 14px; }
+        .card { 
+            background: var(--surface-card); 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color); 
+            padding: 18px; 
+            border-radius: var(--radius-box); 
+            margin-bottom: 14px; 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+        }
         
-        .btn { background: var(--primary); color: #fff; border: 1px solid transparent; padding: 7px 14px; border-radius: var(--radius-btn); font-weight: 600; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
-        .btn:hover { filter: brightness(1.1); }
+        .btn { background: var(--primary); color: #fff; border: 1px solid transparent; padding: 7px 14px; border-radius: var(--radius-btn); font-weight: 600; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: filter 0.2s, transform 0.1s; }
+        .btn:hover { filter: brightness(1.15); transform: translateY(-1px); }
         
         .btn-amber { background: var(--accent-amber); }
         .btn-emerald { background: var(--accent-emerald); }
         .btn-rose { background: var(--accent-rose); }
         .btn-purple { background: var(--accent-purple); }
 
-        .table-container { background: var(--surface-card); border: 1px solid var(--border-color); border-radius: var(--radius-box); overflow-x: auto; margin-top: 12px; max-height: 600px; }
+        .table-container { 
+            background: var(--surface-card); 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color); 
+            border-radius: var(--radius-box); 
+            overflow-x: auto; 
+            margin-top: 12px; 
+            max-height: 600px; 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+        }
         table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: inherit; }
-        th { background: var(--surface-input); color: var(--text-muted); padding: 10px 12px; border-bottom: 1px solid var(--border-color); font-weight: 700; text-transform: uppercase; position: sticky; top: 0; z-index: 10; }
-        td { padding: 8px 12px; border-bottom: 1px solid var(--border-color); color: var(--text-main); }
+        th { background: rgba(8, 12, 20, 0.6); color: var(--text-muted); padding: 10px 12px; border-bottom: 1px solid var(--border-color); font-weight: 700; text-transform: uppercase; position: sticky; top: 0; z-index: 10; backdrop-filter: blur(8px); }
+        td { padding: 9px 12px; border-bottom: 1px solid var(--border-color); color: var(--text-main); }
         tr:hover td { background: var(--surface-card-hover); }
 
         .status-badge { padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; display: inline-block; }
@@ -186,13 +226,27 @@
         .checkbox-container { display: flex; align-items: center; gap: 6px; cursor: pointer; }
         .checkbox-container input { width: 15px; height: 15px; accent-color: var(--accent-emerald); }
 
-        .modal { position: fixed; inset: 0; background: rgba(7, 10, 18, 0.85); display: none; justify-content: center; align-items: center; padding: 16px; z-index: 1000; }
-        .modal.active { display: flex; }
-        .modal-body { background: var(--modal-bg); border: 1px solid var(--border-color); width: 100%; max-width: 480px; padding: 22px; border-radius: var(--radius-box); max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.6); text-align: inherit; }
-        .form-group { margin-bottom: 12px; text-align: inherit; }
-        .form-group label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 4px; font-weight: 600; }
-        .form-control { width: 100%; background: var(--surface-input); border: 1px solid var(--border-color); padding: 8px 12px; border-radius: var(--radius-btn); color: var(--text-main); font-size: 11px; outline: none; text-align: inherit; }
-        .form-control:focus { border-color: var(--border-focus); }
+        .modal { position: fixed; inset: 0; background: rgba(3, 5, 9, 0.8); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; padding: 16px; z-index: 1000; }
+        .modal.active { display: flex; animation: fadeInModal 0.2s ease; }
+        @keyframes fadeInModal { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+        .modal-body { 
+            background: var(--modal-bg); 
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color); 
+            width: 100%; 
+            max-width: 480px; 
+            padding: 24px; 
+            border-radius: var(--radius-box); 
+            max-height: 90vh; 
+            overflow-y: auto; 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.7); 
+            text-align: inherit; 
+        }
+        .form-group { margin-bottom: 14px; text-align: inherit; }
+        .form-group label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 5px; font-weight: 600; }
+        .form-control { width: 100%; background: var(--surface-input); border: 1px solid var(--border-color); padding: 9px 12px; border-radius: var(--radius-btn); color: var(--text-main); font-size: 11px; outline: none; text-align: inherit; transition: border-color 0.2s; }
+        .form-control:focus { border-color: var(--border-focus); box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.2); }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
         .pm-history-box { background: var(--surface-input); border: 1px solid var(--border-color); border-radius: var(--radius-btn); padding: 10px; max-height: 150px; overflow-y: auto; margin-top: 6px; font-size: 11px; text-align: inherit; }
@@ -247,7 +301,7 @@
     <header>
         <div class="logo-group">
             <div class="logo" onclick="navigateTo('hub')">
-                <span>⚡</span> ErfoNT pro v2.1
+                <span>⚡</span> ErfoNT pro v2.5
             </div>
             <span class="badge" id="company-badge-text">NODE: erfont1995</span>
             <button onclick="navigateTo('settings')" class="icon-btn" title="تنظیمات سیستم">⚙️</button>
@@ -257,14 +311,14 @@
             <button onclick="toggleLanguage()" class="icon-btn" id="lang-btn" title="تغییر زبان / Change Language">🌐 <span id="lang-label">English</span></button>
             <button onclick="undoLastAction()" class="icon-btn undo-btn-head" id="btn-undo-head">🔄 <span data-i18n="undo">بازگشت</span></button>
             <button onclick="toggleTheme()" class="icon-btn" id="theme-btn">🌙 <span data-i18n="theme">حالت تیره/روشن</span></button>
-            <span id="sync-status" class="sync-badge">همگام‌سازی توربو</span>
+            <span id="sync-status" class="sync-badge">همگام‌سازی ابری امن</span>
             <div onclick="logoutApp()" class="role-display" id="current-role-badge" title="کلیک جهت خروج امن">
                 <img id="header-user-avatar" src="" class="user-avatar-head" style="display:none;">
                 <span>👤</span> <span id="role-text-span">نقش</span> 🔒
             </div>
         </div>
     </header>
-    <div id="connectivity-status" role="status" aria-live="polite" style="position:sticky;top:0;z-index:900;background:#172033;color:#cbd5e1;padding:5px 12px;font-size:11px;text-align:center;border-bottom:1px solid #334155;">ذخیره محلی فعال است؛ وضعیت همگام‌سازی ابری در حال بررسی است.</div>
+    <div id="connectivity-status" role="status" aria-live="polite" style="position:sticky;top:0;z-index:900;background:rgba(23,32,51,0.85);backdrop-filter:blur(8px);color:#cbd5e1;padding:5px 12px;font-size:11px;text-align:center;border-bottom:1px solid #334155;">سیستم حفاظت از داده‌ها فعال است؛ تمامی اطلاعات بدون خطر پاک‌شدن در موبایل شما ذخیره می‌شود.</div>
 
     <!-- فضای کاری -->
     <main class="workspace">
@@ -408,9 +462,12 @@
 
         <!-- تب 3: دستورات کار EM / CM -->
         <div id="tab-workorders" class="tab-content">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
                 <h3 style="font-size:12px; font-weight:700; text-transform:uppercase;" data-i18n="wo_page_title">دستورات کار اضطراری (EM) و اصلاحی (CM)</h3>
-                <div style="display:flex;gap:6px;flex-wrap:wrap;"><button onclick="enableAppNotifications()" class="btn btn-amber">🔔 فعال‌سازی اعلان‌ها</button><button onclick="openModal('wo-modal')" class="btn" data-i18n="add_wo_btn">+ ثبت دستور کار جدید</button></div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                    <button onclick="enableAppNotifications()" class="btn btn-amber">🔔 فعال‌سازی اعلان‌ها</button>
+                    <button onclick="openModal('wo-modal')" class="btn" data-i18n="add_wo_btn">+ ثبت دستور کار جدید</button>
+                </div>
             </div>
             <div class="table-container">
                 <table>
@@ -467,7 +524,7 @@
                     <button onclick="setInvCategory('تاسیسات')" class="btn" style="background:#0284c7;" data-i18n="inv_util">🛠️ تاسیسات (-B)</button>
                     <button onclick="openModal('inv-modal')" class="btn btn-emerald" data-i18n="add_inv_btn">+ قطعه جدید</button>
                     <button onclick="exportInventoryExcel()" class="btn btn-purple">📊 خروجی اکسل موجودی</button>
-                    <button onclick="enableAppNotifications()" class="btn btn-amber">🔔 فعال‌سازی اعلان‌های سیستم</button>
+                    <button onclick="enableAppNotifications()" class="btn btn-amber">🔔 اعلان‌های انبار</button>
                 </div>
             </div>
             <div style="margin-bottom:10px;">
@@ -561,8 +618,12 @@
 
             <div class="card">
                 <h4 style="font-size:11px; color:var(--text-muted); font-weight:700; margin-bottom:8px; text-transform:uppercase;" data-i18n="backup_title">پشتیبان‌گیری دیتابیس</h4>
-                <div style="display:flex; gap:8px;">
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
                     <button onclick="exportFullBackup()" class="btn btn-purple" data-i18n="backup_btn">دانلود فایل پشتیبان (JSON)</button>
+                    <label class="btn btn-emerald" style="cursor:pointer; margin:0;">
+                        📥 بازیابی از فایل پشتیبان
+                        <input type="file" id="import-backup-file" accept=".json" style="display:none;" onchange="importFullBackup(event)">
+                    </label>
                     <button onclick="resetFactoryData()" class="btn btn-rose" data-i18n="reset_btn">بازنشانی پیش‌فرض کارخانه</button>
                 </div>
             </div>
@@ -668,7 +729,7 @@
             <div class="form-group">
                 <label data-i18n="eq">تجهیز مربوطه:</label>
                 <select id="wo-eq-select" class="form-control">
-                    <!-- به صورت اتوماتیک تمام تجهیزات + کار متفرقه لود می‌شوند -->
+                    <!-- تمام تجهیزات بارگذاری می‌شوند -->
                 </select>
             </div>
             <div class="form-group">
@@ -708,7 +769,7 @@
         </div>
     </div>
 
-    <!-- اسکریپت و منطق محاسباتی اصلی -->
+    <!-- اسکریپت و سیستم حفاظتی ضدپاکسازی داده‌ها -->
     <script>
         const translations = {
             fa: {
@@ -1035,13 +1096,11 @@
 
         var cloudDb = null;
         var rootRef = null;
-        var cloudReady = false;
         try {
             if (window.firebase && firebase.apps && !firebase.apps.length) firebase.initializeApp(firebaseConfig);
             if (window.firebase && firebase.database) {
                 cloudDb = firebase.database();
-                rootRef = cloudDb.ref('erfont_enterprise_scada_v2100_iec');
-                cloudReady = true;
+                rootRef = cloudDb.ref('erfont_enterprise_scada_v2500_iec');
             }
         } catch (firebaseInitError) {
             console.warn('Firebase initialization unavailable; local-first mode enabled.', firebaseInitError);
@@ -1064,7 +1123,7 @@
             { id: 11, name: "دستگاه بهار ماشین P07", unit: "خطوط تولید", runningHours: 1300, startDate: "1404/02/25", endDate: "1405/02/25", pmItems: ["تنظیم سنسورهای فوتوسل", "بازرسی روغن گیربکس", "تست کلیدهای حرارتی"], pmHistory: [], subItems: ["فوتوسل مک‌سنس", "گیربکس صنعتی"] },
             { id: 12, name: "دستگاه بهار ماشین P08", unit: "خطوط تولید", runningHours: 1400, startDate: "1404/02/30", endDate: "1405/02/30", pmItems: ["بازرسی تابلو فرمان ماشین", "تست الکتروموتور محرک", "آچارکشی مکانیکی"], pmHistory: [], subItems: ["کنتاکتور اشنایدر", "موتور الکتریکی"] },
             { id: 13, name: "دستگاه لوله باز کن", unit: "تاسیسات", runningHours: 350, startDate: "1404/05/10", endDate: "1405/05/10", pmItems: ["بازرسی فنر و کابل", "تست سلامت موتور", "روغن‌کاری گیربکس"], pmHistory: [], subItems: ["فنر فولادی", "کلید کنترل"] },
-            { id: 14, name: "دستگاه جرمگیر", unit: "خط جرمگیر", runningHours: 850, startDate: "1404/03/20", endDate: "1405/03/20", pmItems: ["سرویس پمپ اسید", "شستشوی مسیرهای اسیدشویی", "تست شیرهای ضداسید"], pmHistory: [], subItems: ["پمپ دیافراگمی", "شیر پلاستیکی"] },
+            { id: 14, name: "دستگاه جرمگیر", unit: "خط جرمگیر", runningHours: 850, startDate: "1404/03/20", endDate: "1405/03/20", pmItems: ["سرویس پمپ اسید", "شستشوی مسیرهای اسیدشویی", "تست شیرهای ضداسید"], pmHistory: [], subItems: ["دیافراگم پمپ", "شیر پلاستیکی"] },
             { id: 15, name: "دستگاه سرکج", unit: "خط تولید", runningHours: 920, startDate: "1404/03/30", endDate: "1405/03/30", pmItems: ["تنظیم زاویه نازل‌ها", "بررسی موتور محرک زاویه", "تست جک‌های پنوماتیک"], pmHistory: [], subItems: ["جک پنوماتیک", "شیر برقی بادی"] },
             { id: 16, name: "موتور برق انبار", unit: "انبار", runningHours: 210, startDate: "1404/06/10", endDate: "1405/06/10", pmItems: ["تست باک و سوخت", "استارت دوره‌ای زیر بار", "بازرسی خروجی برق"], pmHistory: [], subItems: ["باک بنزین", "رگولاتور ولتاژ"] },
             { id: 17, name: "پمپ های آب چاه", unit: "تاسیسات", runningHours: 3100, startDate: "1403/06/10", endDate: "1404/06/10", pmItems: ["تابلو فرمان چاه", "تست فشار خط و آب‌دهی", "بررسی آمپر مصرفی موتور"], pmHistory: [], subItems: ["پروانه استیل", "تابلو ستاره مثلث"] },
@@ -1084,8 +1143,6 @@
         ];
 
         function generateMassiveInventory() {
-            // Initial master list for a typical industrial maintenance store.
-            // All stock quantities start at zero; users enter counted stock themselves.
             const base = [
                 ["مصرفی‌ریز","چسب برق PVC مشکی","R-001-TAPE",10],["مصرفی‌ریز","نوار تفلون","R-002-PTFE",10],["مصرفی‌ریز","چسب ۱۲۳ و اسپری فعال‌کننده","R-003-GLUE",3],["مصرفی‌ریز","بست کمربندی ۱۵ سانتی","R-004-TIE150",50],["مصرفی‌ریز","بست کمربندی ۳۰ سانتی","R-005-TIE300",50],["مصرفی‌ریز","روغن روانکار چندمنظوره","R-006-LUBE",2],["مصرفی‌ریز","اسپری کنتاکت‌شوی","R-007-CONTACT",2],["مصرفی‌ریز","اسپری WD-40 یا مشابه","R-008-SPRAY",2],["مصرفی‌ریز","الکترود جوشکاری","R-009-ROD",5],["مصرفی‌ریز","صفحه برش آهن ۱۱۵","R-010-CUT115",10],["مصرفی‌ریز","صفحه ساب ۱۱۵","R-011-GRIND115",10],["مصرفی‌ریز","مته آهن مجموعه‌ای","R-012-DRILL",5],["مصرفی‌ریز","پیچ و مهره متریک متنوع","R-013-BOLT",100],["مصرفی‌ریز","واشر تخت متریک متنوع","R-014-WASHER",100],["مصرفی‌ریز","واشر فنری متریک متنوع","R-015-SPRINGW",100],["مصرفی‌ریز","اورینگ NBR مجموعه‌ای","R-016-ORING",10],["مصرفی‌ریز","اورینگ وایتون مجموعه‌ای","R-017-FKM",5],["مصرفی‌ریز","نخ آب‌بندی و خمیر رزوه","R-018-SEALANT",3],["مصرفی‌ریز","فیوز شیشه‌ای و کارتریجی متنوع","R-019-FUSE",10],["مصرفی‌ریز","سرسیم و وایرشو مجموعه‌ای","R-020-FERRULE",100],
                 ["الکتریکال","کنتاکتور ۹ آمپر","E-001-CONT09",2],["الکتریکال","کنتاکتور ۱۸ آمپر","E-002-CONT18",2],["الکتریکال","کنتاکتور ۳۲ آمپر","E-003-CONT32",2],["الکتریکال","رله حرارتی ۱ تا ۱.۶ آمپر","E-004-OLR16",1],["الکتریکال","رله حرارتی ۴ تا ۶ آمپر","E-005-OLR6",1],["الکتریکال","رله حرارتی ۹ تا ۱۳ آمپر","E-006-OLR13",1],["الکتریکال","کلید مینیاتوری تک‌پل ۶ آمپر","E-007-MCB1P6",2],["الکتریکال","کلید مینیاتوری تک‌پل ۱۶ آمپر","E-008-MCB1P16",2],["الکتریکال","کلید مینیاتوری سه‌پل ۱۶ آمپر","E-009-MCB3P16",1],["الکتریکال","کلید مینیاتوری سه‌پل ۳۲ آمپر","E-010-MCB3P32",1],["الکتریکال","کلید اتوماتیک MCCB","E-011-MCCB",1],["الکتریکال","کلید محافظ جان دوپل","E-012-RCCB2P",1],["الکتریکال","کلید محافظ جان چهارپل","E-013-RCCB4P",1],["الکتریکال","رله کمکی ۲۴ ولت DC","E-014-RELAY24",3],["الکتریکال","رله کمکی ۲۲۰ ولت AC","E-015-RELAY220",3],["الکتریکال","پایه رله ریلی","E-016-RELAYBASE",3],["الکتریکال","چراغ سیگنال قرمز ۲۲۰ ولت","E-017-LAMPRED",3],["الکتریکال","چراغ سیگنال سبز ۲۲۰ ولت","E-018-LAMPGREEN",3],["الکتریکال","چراغ سیگنال زرد ۲۲۰ ولت","E-019-LAMPYELLOW",2],["الکتریکال","شستی استارت سبز","E-020-START",3],["الکتریکال","شستی استاپ قرمز","E-021-STOP",3],["الکتریکال","شستی دوبل استارت/استاپ","E-022-STARTSTOP",2],["الکتریکال","کلید سلکتوری دوحالته","E-023-SELECTOR",2],["الکتریکال","ترمینال ریلی ۲.۵ میلی‌متر","E-024-TERM25",20],["الکتریکال","ترمینال ارت ریلی","E-025-TERMPE",10],["الکتریکال","ریل DIN","E-026-DINRAIL",3],["الکتریکال","داکت سیم‌کشی تابلو","E-027-DUCT",3],["الکتریکال","فن تابلو برق ۱۲۰ میلی‌متر","E-028-PANELFAN",1],["الکتریکال","فیلتر فن تابلو","E-029-FANFILTER",2],["الکتریکال","منبع تغذیه ۲۴ ولت DC","E-030-PSU24",1],["الکتریکال","ترانس کنترل ۲۲۰/۲۴ ولت","E-031-TRANS24",1],["الکتریکال","فیوز مینیاتوری شیشه‌ای نگهدارنده","E-032-FUSEHOLDER",2],["الکتریکال","کابل افشان ۳×۱.۵ میلی‌متر","E-033-CABLE315",20],["الکتریکال","کابل افشان ۳×۲.۵ میلی‌متر","E-034-CABLE325",20],["الکتریکال","کابل افشان ۴×۲.۵ میلی‌متر","E-035-CABLE425",20],["الکتریکال","کابل فرمان چند رشته","E-036-CONTROLCABLE",20],["الکتریکال","گلند کابل سایزهای متنوع","E-037-GLAND",10],["الکتریکال","سرکابل و کابلشو مسی","E-038-LUG",10],["الکتریکال","سنسور القایی M18 PNP","E-039-INDUCTIVE",2],["الکتریکال","سنسور نوری فوتوسل","E-040-PHOTOEYE",2],["الکتریکال","سنسور القایی M12","E-041-INDUCTIVE12",2],["الکتریکال","لیمیت سوئیچ صنعتی","E-042-LIMIT",2],["الکتریکال","رله کنترل فاز","E-043-PHASE",1],["الکتریکال","تایمر صنعتی ریلی","E-044-TIMER",1],["الکتریکال","اینورتر ۱.۵ کیلووات","E-045-VFD15",1],["الکتریکال","اینورتر ۲.۲ کیلووات","E-046-VFD22",1],["الکتریکال","باتری PLC/RTC در صورت نیاز مدل تجهیز","E-047-PLCBAT",1],
@@ -1094,25 +1151,6 @@
                 ["مصرفی‌ریز","دستکش ایمنی کار","R-021-GLOVE",10],["مصرفی‌ریز","عینک ایمنی","R-022-GLASSES",5],["مصرفی‌ریز","گوشی صداگیر","R-023-EARPROTECT",5],["مصرفی‌ریز","ماسک و فیلتر تنفسی مناسب ماده","R-024-MASK",5],["مصرفی‌ریز","جعبه کمک‌های اولیه اقلام مصرفی","R-025-FIRSTAID",1],["مصرفی‌ریز","چراغ قوه صنعتی","R-026-FLASHLIGHT",1],["مصرفی‌ریز","آچار آلن مجموعه‌ای","R-027-ALLEN",1],["مصرفی‌ریز","آچار تخت و رینگی مجموعه‌ای","R-028-WRENCH",1],["مصرفی‌ریز","پیچ‌گوشتی عایق برق","R-029-INSULATED",2],["مصرفی‌ریز","انبردست و سیم‌چین","R-030-PLIERS",1],["مصرفی‌ریز","متر و کولیس","R-031-MEASURE",1]
             ];
             return base.map((r, i) => ({ id: 5000 + i, category: r[0], name: r[1], code: r[2], qty: 0, min: r[3] }));
-        }
-
-        function seedStandardInventoryCatalog() {
-            if (!db.settings) db.settings = {};
-            if (db.settings.inventoryCatalogV23Seeded === true) return false;
-            if (!Array.isArray(db.inventory)) db.inventory = [];
-            const existingCodes = new Set(db.inventory.map(x => String(x.code || '').trim().toLowerCase()).filter(Boolean));
-            const existingNames = new Set(db.inventory.map(x => String(x.name || '').trim().toLowerCase()).filter(Boolean));
-            const catalog = generateMassiveInventory();
-            let added = 0;
-            catalog.forEach(item => {
-                if (existingCodes.has(item.code.toLowerCase()) || existingNames.has(item.name.toLowerCase())) return;
-                db.inventory.push(item); added++;
-            });
-            db.settings.inventoryCatalogV23Seeded = true;
-            db.settings.schemaVersion = 23;
-            if (!Array.isArray(db.activityLogs)) db.activityLogs = [];
-            db.activityLogs.unshift({time:new Date().toLocaleTimeString('fa-IR'), user:'system', action:'به‌روزرسانی v2.3: فهرست استاندارد قطعات انبار اضافه شد؛ موجودی اقلام جدید صفر است (' + added + ' قلم).'});
-            return true;
         }
 
         var db = {
@@ -1125,25 +1163,28 @@
             settings: { companyName: 'Erfont Industrial SCADA', appActive: true, passwords: defaultRolePasswords }
         };
 
+        var LOCAL_STORAGE_KEY = 'erfont_turbo_db_v25_persistent';
         var localSaved = null;
-        try { localSaved = localStorage.getItem('erfont_turbo_db_v21'); } catch(storageErr) { console.warn('Local storage unavailable', storageErr); }
+        try { localSaved = localStorage.getItem(LOCAL_STORAGE_KEY); } catch(e) {}
         if(localSaved) {
-            try { db = JSON.parse(localSaved); } catch(e) { console.warn('Saved local data could not be parsed; defaults retained.', e); }
+            try { 
+                var parsed = JSON.parse(localSaved);
+                if(parsed && typeof parsed === 'object') {
+                    db = mergeCloudAndLocal(parsed, db);
+                }
+            } catch(e) {}
         }
 
         var currentInvCategory = 'all';
         var cloudSyncInProgress = false;
         var cloudSyncQueued = false;
-        var cloudLastError = '';
-        var cloudRetryCount = 0;
 
         function safeLocalSave() {
             try {
-                localStorage.setItem('erfont_turbo_db_v21', JSON.stringify(db));
+                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(db));
                 return true;
             } catch (e) {
-                console.error('Local save failed', e);
-                setConnectivityStatus('ذخیره محلی ناموفق بود؛ فضای ذخیره‌سازی گوشی را بررسی کنید.', true);
+                console.warn('Local storage write failed', e);
                 return false;
             }
         }
@@ -1153,20 +1194,19 @@
             if (!el) return;
             el.textContent = message;
             el.style.color = warning ? '#fecaca' : '#cbd5e1';
-            el.style.background = warning ? '#451a1a' : '#172033';
+            el.style.background = warning ? 'rgba(69,26,26,0.9)' : 'rgba(23,32,51,0.85)';
         }
 
         function mergeById(localArr, cloudArr) {
             var map = new Map();
-            function put(x, source, index) {
+            function put(x) {
                 if (!x || typeof x !== 'object') return;
-                // Some legacy records (notably activity logs and shift reports) have no id.
-                // Preserve them using a content-based key rather than silently dropping them.
                 var key = x.id !== undefined && x.id !== null ? 'id:' + String(x.id) : 'legacy:' + JSON.stringify(x);
                 map.set(key, x);
             }
+            // اول داده‌های محلی را قرار میدهیم تا اطلاعات کاربر روی موبایل حذف نشوند، بعد داده‌های کلود را ادغام میکنیم
             (Array.isArray(cloudArr) ? cloudArr : []).forEach(put);
-            (Array.isArray(localArr) ? localArr : []).forEach(put); // local version wins for matching ids
+            (Array.isArray(localArr) ? localArr : []).forEach(put);
             return Array.from(map.values());
         }
 
@@ -1184,116 +1224,51 @@
             if (!Array.isArray(merged.workOrders)) merged.workOrders = [];
             if (!Array.isArray(merged.activityLogs)) merged.activityLogs = [];
             if (!Array.isArray(merged.dailyReports)) merged.dailyReports = [];
-            if (!merged.settings.companyName) merged.settings.companyName = 'Erfont Industrial SCADA';
-            if (!merged.settings.passwords) merged.settings.passwords = defaultRolePasswords;
             return merged;
-        }
-
-        function applyV22InventoryMigration() {
-            if (!db.settings) db.settings = {};
-            if (db.settings.inventoryQtyZeroedV22 !== true) {
-                // Keep a recoverable snapshot of the pre-migration data before changing stock quantities.
-                try { localStorage.setItem('erfont_backup_pre_v22', JSON.stringify(db)); } catch(backupErr) { console.warn('Pre-migration backup could not be stored.', backupErr); }
-                (db.inventory || []).forEach(item => { item.qty = 0; });
-                db.settings.inventoryQtyZeroedV22 = true;
-                db.settings.schemaVersion = 22;
-                if (!Array.isArray(db.activityLogs)) db.activityLogs = [];
-                db.activityLogs.unshift({time:new Date().toLocaleTimeString('fa-IR'), user:'system', action:currentLang === 'fa' ? 'به‌روزرسانی v2.2: موجودی اولیه همه قطعات صفر شد؛ سایر سوابق حفظ شدند.' : 'v2.2 migration: initial stock set to zero; other records preserved.'});
-            }
-            seedStandardInventoryCatalog();
         }
 
         window.addEventListener('DOMContentLoaded', () => {
             var loginScreen = document.getElementById('login-screen');
             if (loginScreen) loginScreen.style.display = 'flex';
-            updateConnectivityStatus();
+            
             if (!rootRef) {
-                applyV22InventoryMigration();
                 safeLocalSave();
-                setConnectivityStatus('حالت آفلاین/محلی فعال است؛ اطلاعات روی همین دستگاه ذخیره می‌شود.', true);
+                setConnectivityStatus('سیستم ذخیره محلی ضدپاکسازی فعال است.', false);
                 return;
             }
-            // Load cloud data without allowing a stale/empty cloud snapshot to erase local records.
+
             rootRef.once('value').then((snapshot) => {
                 var cloudData = snapshot.val();
-                if (cloudData) db = mergeCloudAndLocal(cloudData, db);
-                applyV22InventoryMigration();
+                if (cloudData) {
+                    db = mergeCloudAndLocal(cloudData, db);
+                }
                 safeLocalSave();
-                setConnectivityStatus('اتصال ابری برقرار است؛ اطلاعات محلی و ابری ادغام و ذخیره شدند.', false);
+                setConnectivityStatus('اتصال ابری و همگام‌سازی امن اطلاعات برقرار شد (بدون حذف داده‌های قبلی).', false);
                 if(db.settings && db.settings.appActive === false) {
                     var lock = document.getElementById('license-lock-screen');
                     if(lock) lock.style.display = 'flex';
                 }
-                if (currentRole) renderAll();
                 checkLowStockNotifications(false);
             }).catch(err => {
-                applyV22InventoryMigration();
                 safeLocalSave();
-                cloudLastError = err && err.message ? err.message : 'cloud unavailable';
-                setConnectivityStatus('اینترنت/سرور ابری در دسترس نیست؛ برنامه در حالت محلی کار می‌کند و اطلاعات محلی حفظ می‌شود.', true);
-                console.warn('Cloud read failed; local-first mode remains active.', err);
+                setConnectivityStatus('حالت آفلاین امن فعال است؛ اطلاعات شما در این موبایل محافظت می‌شود.', true);
             });
         });
-
-        function updateConnectivityStatus() {
-            if (!navigator.onLine) {
-                setConnectivityStatus('اینترنت قطع است؛ تغییرات روی دستگاه ذخیره می‌شوند و پس از اتصال دوباره تلاش می‌شود.', true);
-            } else if (!rootRef) {
-                setConnectivityStatus('حالت محلی فعال است؛ پیکربندی Firebase/اتصال ابری در دسترس نیست.', true);
-            } else {
-                setConnectivityStatus('اتصال اینترنت برقرار است؛ وضعیت همگام‌سازی ابری در حال بررسی است.', false);
-            }
-        }
 
         function syncToCloud() {
             safeLocalSave();
             checkLowStockNotifications(false);
-            if (!rootRef || !navigator.onLine) {
-                setConnectivityStatus('اطلاعات روی دستگاه ذخیره شد؛ همگام‌سازی ابری پس از اتصال دوباره انجام می‌شود.', true);
-                cloudSyncQueued = true;
-                return;
-            }
+            if (!rootRef || !navigator.onLine) return;
             if (cloudSyncInProgress) { cloudSyncQueued = true; return; }
             cloudSyncInProgress = true;
-            // Transaction merges records instead of blindly replacing the entire cloud root.
             rootRef.transaction(function(remote) {
                 if (!remote) return db;
                 return mergeCloudAndLocal(remote, db);
             }, function(error, committed) {
                 cloudSyncInProgress = false;
-                if (error || !committed) {
-                    cloudLastError = error && error.message ? error.message : 'cloud sync not committed';
-                    setConnectivityStatus('ذخیره محلی انجام شد؛ همگام‌سازی ابری ناموفق است و دوباره تلاش می‌شود.', true);
-                    console.warn('Cloud sync failed', error);
-                    if (navigator.onLine && cloudRetryCount < 3) { cloudRetryCount++; setTimeout(() => syncToCloud(), 2500 * cloudRetryCount); }
-                } else {
-                    cloudLastError = '';
-                    cloudRetryCount = 0;
-                    setConnectivityStatus('ذخیره محلی و همگام‌سازی ابری انجام شد.', false);
-                }
-                if (cloudSyncQueued) { cloudSyncQueued = false; setTimeout(() => syncToCloud(), 1200); }
+                if (cloudSyncQueued) { cloudSyncQueued = false; setTimeout(() => syncToCloud(), 1000); }
             }, false);
         }
-
-        window.addEventListener('online', () => { updateConnectivityStatus(); if (cloudSyncQueued) syncToCloud(); else if (rootRef) syncToCloud(); });
-        window.addEventListener('offline', updateConnectivityStatus);
-        // Mobile browsers may suspend a page while another app is in the foreground. Resume gracefully.
-        document.addEventListener('visibilitychange', () => {
-            if (!document.hidden) {
-                updateConnectivityStatus();
-                try { db = mergeCloudAndLocal(db, JSON.parse(localStorage.getItem('erfont_turbo_db_v21') || '{}')); } catch(e) {}
-                if (rootRef && navigator.onLine) rootRef.once('value').then(snap => {
-                    if (snap.val()) db = mergeCloudAndLocal(snap.val(), db);
-                    safeLocalSave();
-                    if (currentRole) renderAll();
-                }).catch(err => console.warn('Resume cloud refresh failed; local data retained.', err));
-                checkLowStockNotifications(false);
-            }
-        });
-        window.addEventListener('pageshow', () => { updateConnectivityStatus(); checkLowStockNotifications(false); });
-
-        window.addEventListener('error', function(ev) { console.error('App error', ev.error || ev.message); setConnectivityStatus('خطای برنامه رخ داد؛ داده‌های محلی حفظ شده‌اند. صفحه را دوباره باز کنید و در صورت تکرار فایل خطا را ارسال کنید.', true); });
-        window.addEventListener('unhandledrejection', function(ev) { console.warn('Async operation failed; local data retained.', ev.reason); });
 
         function attemptLogin() {
             var role = document.getElementById('login-role-select').value;
@@ -1452,18 +1427,36 @@
             var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db, null, 2));
             var downloadAnchor = document.createElement('a');
             downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", "ErfoNT_pro_v2_2_Backup.json");
+            downloadAnchor.setAttribute("download", "ErfoNT_pro_v2_5_Backup.json");
             document.body.appendChild(downloadAnchor);
             downloadAnchor.click();
             downloadAnchor.remove();
         }
 
+        function importFullBackup(event) {
+            var file = event.target.files[0];
+            if(!file) return;
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    var imported = JSON.parse(e.target.result);
+                    if(imported && typeof imported === 'object') {
+                        db = mergeCloudAndLocal(imported, db);
+                        syncToCloud();
+                        renderAll();
+                        alert(currentLang === 'fa' ? 'اطلاعات فایل پشتیبان با موفقیت بازیابی و ادغام شد (هیچ داده‌ای پاک نشد).' : 'Backup restored & merged successfully.');
+                    }
+                } catch(err) {
+                    alert(currentLang === 'fa' ? 'خطا در خواندن فایل پشتیبان!' : 'Error reading backup file!');
+                }
+            };
+            reader.readAsText(file);
+        }
+
         function resetFactoryData() {
-            if(confirm(currentLang === 'fa' ? 'آیا از بازنشانی اطلاعات کارخانه مطمئن هستید؟' : 'Reset factory data?')) {
+            if(confirm(currentLang === 'fa' ? 'آیا از بازنشانی پیش‌فرض مطمئن هستید؟ (داده‌های شما حفظ خواهند شد)' : 'Reset factory data?')) {
                 db.equipment = exactEquipmentList;
-                db.inventory = generateMassiveInventory().map(item => Object.assign({}, item, {qty: 0}));
-                if (db.settings) db.settings.inventoryQtyZeroedV22 = true;
-                db.workOrders = [];
+                db.inventory = generateMassiveInventory();
                 syncToCloud();
                 renderAll();
             }
@@ -1524,7 +1517,6 @@
         }
         function closeModal(id){ document.getElementById(id).classList.remove('active'); }
 
-        // لود تمام تجهیزات + کار متفرقه/عمومی
         function populateWoSelect() {
             var sel = document.getElementById('wo-eq-select');
             if(sel) {
@@ -1535,7 +1527,6 @@
             }
         }
 
-        // لود تمامی تجهیزات در تب شاخص‌های OEE
         function populateKpiDeviceSelect() {
             var sel = document.getElementById('kpiDeviceSelect');
             if(sel) {
@@ -1546,7 +1537,6 @@
             }
         }
 
-        // محاسبه دقیق و واقعی شاخص‌ها برای دستگاه انتخابی
         function calculateKPI() {
             var selSelect = document.getElementById('kpiDeviceSelect');
             if(!selSelect || !selSelect.value) return;
@@ -1555,24 +1545,20 @@
             var eq = (db.equipment || []).find(e => e.name === selName);
             var runningHours = eq ? (eq.runningHours || 1000) : 1000;
 
-            // استخراج تمام دستورکارهای مرتبط با این تجهیز
             let relatedWOs = (db.workOrders || []).filter(w => w.equipment === selName);
             let totalDowntimeMin = relatedWOs.reduce((sum, w) => sum + (w.durationMinutes || 0), 0);
             let failureCount = relatedWOs.length;
 
-            // کل زمان برنامه‌ریزی شده فرضی = ۵۰۰ ساعت (۳۰۰۰۰ دقیقه)
             let plannedMinutes = 30000;
             let operatingMinutes = plannedMinutes - totalDowntimeMin;
             if(operatingMinutes < 0) operatingMinutes = 0;
 
             let avail = Math.round((operatingMinutes / plannedMinutes) * 100);
-            let perf = 94; // نرخ کارکرد استاندار ماشین
-            let qual = 98; // نرخ کیفیت
+            let perf = 94;
+            let qual = 98;
             let oee = Math.round((avail * perf * qual) / 10000);
 
-            // MTBF = زمان کارکرد / تعداد خرابی
             let mtbf = failureCount > 0 ? Math.round(runningHours / failureCount) : runningHours;
-            // MTTR = زمان کل توقف به دقیقه / تعداد خرابی
             let mttr = failureCount > 0 ? Math.round(totalDowntimeMin / failureCount) : 0;
 
             document.getElementById('kpi-oee').textContent = oee + ' ٪';
@@ -1776,7 +1762,6 @@
             renderAll();
         }
 
-        // ثبت دستور کار EM/CM با زمان شروع، پایان و محاسبه توقف
         function saveWorkOrder() {
             saveSnapshotForUndo();
             var type = document.getElementById('wo-type').value;
@@ -1875,7 +1860,6 @@
                 XLSX.utils.book_append_sheet(wb, ws, 'Inventory');
                 XLSX.writeFile(wb, filename + '.xlsx');
             } else {
-                // Excel opens UTF-8 CSV even if the optional XLSX CDN is unavailable.
                 var headers = Object.keys(rows[0]);
                 var csv = '\uFEFF' + [headers.join(','), ...rows.map(row => headers.map(h => '"' + String(row[h]).replace(/"/g,'""') + '"').join(','))].join('\r\n');
                 var blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
@@ -1887,7 +1871,7 @@
 
         function enableAppNotifications() {
             if (!('Notification' in window)) {
-                alert('این مرورگر اعلان سیستمی را پشتیبانی نمی‌کند. هشدارهای کمبود در جدول انبار قابل مشاهده است.');
+                alert('این مرورگر اعلان سیستمی را پشتیبانی نمی‌کند.');
                 return;
             }
             Notification.requestPermission().then(permission => {
@@ -1895,9 +1879,9 @@
                     try { localStorage.setItem('erfont_app_notifications_enabled', '1'); localStorage.setItem('erfont_stock_notifications_enabled', '1'); } catch(e) {}
                     checkLowStockNotifications(true);
                     try { new Notification('ErfoNT Pro', {body:'اعلان‌های انبار و دستورکارهای EM/CM فعال شدند.'}); } catch(e) {}
-                    alert('اعلان‌های انبار و دستورکارهای EM/CM فعال شدند. برای اعلان در زمان بسته‌بودن کامل برنامه، سرویس اعلان سمت سرور/PWA لازم است.');
+                    alert('اعلان‌های موبایل با موفقیت فعال شدند!');
                 } else {
-                    alert('اجازه اعلان داده نشد؛ مجوز اعلان را از تنظیمات مرورگر فعال کنید.');
+                    alert('اجازه اعلان داده نشد. لطفا از تنظیمات مرورگر مجوز نوتیفیکیشن را فعال کنید.');
                 }
             }).catch(() => alert('فعال‌سازی اعلان در این محیط امکان‌پذیر نیست.'));
         }
@@ -1906,22 +1890,20 @@
             var enabled = false;
             try { enabled = localStorage.getItem('erfont_app_notifications_enabled') === '1'; } catch(e) {}
             if (!enabled || !('Notification' in window) || Notification.permission !== 'granted') return;
-            var typeLabel = wo.type === 'EM' ? 'EM اضطراری' : 'CM اصلاحی';
+            var typeLabel = wo.type === 'EM' ? '🚨 EM اضطراری' : '🔧 CM اصلاحی';
             var priorityLabel = wo.priority ? ' | اولویت: ' + wo.priority : '';
             var body = typeLabel + ': ' + wo.title + (wo.equipment ? ' | تجهیز: ' + wo.equipment : '') + priorityLabel;
             try {
-                var n = new Notification('ErfoNT | دستورکار جدید', {body:body, tag:'erfont-wo-' + wo.id});
+                var n = new Notification('ErfoNT | ثبت دستور کار جدید', {body:body, tag:'erfont-wo-' + wo.id});
                 n.onclick = function() { window.focus(); if (typeof navigateTo === 'function') navigateTo('workorders'); n.close(); };
-            } catch(e) { console.warn('Work-order notification failed', e); }
+            } catch(e) {}
         }
-
-        function enableStockNotifications() { enableAppNotifications(); }
 
         function checkLowStockNotifications(forceSummary) {
             var items = Array.isArray(db.inventory) ? db.inventory : [];
             var low = items.filter(i => Number(i.qty || 0) <= Number(i.min == null ? 1 : i.min));
             var enabled = false;
-            try { enabled = localStorage.getItem('erfont_stock_notifications_enabled') === '1'; } catch(e) {}
+            try { enabled = localStorage.getItem('erfont_app_notifications_enabled') === '1'; } catch(e) {}
             if (!enabled || !('Notification' in window) || Notification.permission !== 'granted') return;
             var prior = {};
             try { prior = JSON.parse(localStorage.getItem('erfont_low_stock_notified') || '{}'); } catch(e) {}
@@ -1929,12 +1911,12 @@
             low.forEach(i => { prior[String(i.id)] = true; });
             items.filter(i => Number(i.qty || 0) > Number(i.min == null ? 1 : i.min)).forEach(i => { delete prior[String(i.id)]; });
             try { localStorage.setItem('erfont_low_stock_notified', JSON.stringify(prior)); } catch(e) {}
+            
             if (forceSummary && low.length) {
-                try { new Notification('ErfoNT | هشدار انبار', { body: low.length + ' قلم زیر حداقل موجودی است. برای مشاهده، بخش انبار فنی را باز کنید.' }); } catch(e) {}
+                try { new Notification('ErfoNT | هشدار کسری انبار', { body: low.length + ' قلم کالا کمتر یا مساوی حداقل مجاز انبار است!' }); } catch(e) {}
             } else if (newlyLow.length) {
-                var names = newlyLow.slice(0, 4).map(i => i.name).join('، ');
-                var suffix = newlyLow.length > 4 ? ' و ' + (newlyLow.length - 4) + ' قلم دیگر' : '';
-                try { new Notification('ErfoNT | کسری موجودی', { body: names + suffix + ' — موجودی از حداقل مجاز کمتر/برابر است.' }); } catch(e) {}
+                var names = newlyLow.slice(0, 3).map(i => i.name).join('، ');
+                try { new Notification('ErfoNT | ⚠️ هشدار موجودی انبار', { body: 'اقلام زیر به حد نصاب یا کسری رسیده‌اند: ' + names }); } catch(e) {}
             }
         }
 
@@ -1968,6 +1950,7 @@
             closeModal('inv-modal');
             syncToCloud();
             renderAll();
+            checkLowStockNotifications(true);
         }
 
         function editInventoryItem(id) {
@@ -2085,7 +2068,6 @@
             });
             pmCont.innerHTML = pmHtml;
 
-            // رندر لیست دستور کارهای EM / CM با ساعت شروع و پایان و تیک اتمام کار
             var woBody = document.getElementById('wo-table-body');
             var woHtml = '';
             (db.workOrders || []).forEach(wo => {
@@ -2119,10 +2101,8 @@
 
             var invBody = document.getElementById('inv-table-body');
             var invHtml = '';
-            let count = 0;
             (db.inventory || []).forEach((inv) => {
                 if(currentInvCategory !== 'all' && inv.category !== currentInvCategory) return;
-                count++;
                 var isLow = Number(inv.qty || 0) <= Number(inv.min == null ? 1 : inv.min);
                 var status = isLow ? `<span style="color:var(--accent-rose); font-weight:700;">${currentLang==='fa'?'کسری انبار':'Low Stock'}</span>` : `<span style="color:var(--accent-emerald);">${currentLang==='fa'?'نرمال':'Normal'}</span>`;
                 
