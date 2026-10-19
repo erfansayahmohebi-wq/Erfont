@@ -7,19 +7,21 @@
     <meta name="theme-color" content="#0b0f19">
     <meta name="application-name" content="ErfoNT pro">
     
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK & Utilities -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
         :root {
             --bg-body: #070a13;
-            --surface-card: rgba(19, 27, 46, 0.75);
-            --surface-card-hover: rgba(27, 38, 66, 0.85);
-            --surface-input: rgba(8, 12, 20, 0.85);
-            --border-color: rgba(34, 48, 74, 0.6);
+            --surface-card: rgba(19, 27, 46, 0.82);
+            --surface-card-hover: rgba(27, 38, 66, 0.92);
+            --surface-input: rgba(8, 12, 20, 0.9);
+            --border-color: rgba(34, 48, 74, 0.65);
             --border-focus: #0284c7;
             
             --text-main: #f1f5f9;
@@ -31,17 +33,17 @@
             --accent-rose: #dc2626;
             --accent-purple: #7c3aed;
             
-            --modal-bg: rgba(15, 23, 42, 0.92);
-            --radius-box: 12px;
-            --radius-btn: 8px;
+            --modal-bg: rgba(15, 23, 42, 0.95);
+            --radius-box: 16px;
+            --radius-btn: 10px;
         }
 
         body.light-theme {
             --bg-body: #f1f5f9;
-            --surface-card: rgba(255, 255, 255, 0.85);
-            --surface-card-hover: rgba(241, 245, 249, 0.95);
-            --surface-input: rgba(248, 250, 252, 0.9);
-            --border-color: rgba(203, 213, 225, 0.8);
+            --surface-card: rgba(255, 255, 255, 0.88);
+            --surface-card-hover: rgba(241, 245, 249, 0.98);
+            --surface-input: rgba(248, 250, 252, 0.95);
+            --border-color: rgba(203, 213, 225, 0.85);
             --border-focus: #0284c7;
             
             --text-main: #0f172a;
@@ -53,7 +55,7 @@
             --accent-rose: #b91c1c;
             --accent-purple: #6d28d9;
             
-            --modal-bg: rgba(255, 255, 255, 0.95);
+            --modal-bg: rgba(255, 255, 255, 0.98);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
@@ -74,8 +76,8 @@
         #login-screen {
             position: fixed;
             inset: 0;
-            background: rgba(3, 5, 9, 0.92);
-            backdrop-filter: blur(12px);
+            background: rgba(3, 5, 9, 0.94);
+            backdrop-filter: blur(20px);
             z-index: 999999;
             display: flex;
             justify-content: center;
@@ -84,12 +86,12 @@
         }
         .login-card {
             background: var(--surface-card);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border-color);
             width: 100%;
-            max-width: 400px;
-            padding: 30px;
+            max-width: 420px;
+            padding: 32px;
             border-radius: var(--radius-box);
             box-shadow: 0 25px 50px rgba(0,0,0,0.8);
             text-align: right;
@@ -112,8 +114,8 @@
 
         header { 
             background: var(--surface-card); 
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border-color); 
             padding: 10px 20px; 
             display: flex; 
@@ -126,7 +128,7 @@
         
         .logo-group { display: flex; align-items: center; gap: 12px; }
         .logo { font-size: 16px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 6px; cursor: pointer; letter-spacing: 0.5px; }
-        .badge { font-size: 10px; background: rgba(5, 150, 105, 0.15); color: var(--accent-emerald); padding: 2px 8px; border: 1px solid var(--accent-emerald); border-radius: 4px; font-family: monospace; font-weight: 700; }
+        .badge { font-size: 10px; background: rgba(5, 150, 105, 0.15); color: var(--accent-emerald); padding: 2px 8px; border: 1px solid var(--accent-emerald); border-radius: 6px; font-family: monospace; font-weight: 700; }
         
         .icon-btn { background: var(--surface-input); border: 1px solid var(--border-color); color: var(--text-main); font-size: 12px; padding: 6px 10px; border-radius: var(--radius-btn); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 600; transition: all 0.2s; }
         .icon-btn:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-1px); }
@@ -141,40 +143,40 @@
         main.workspace { flex-grow: 1; padding: 20px; max-width: 1400px; margin: 0 auto; width: 100%; }
         
         .back-nav-bar { display: none; margin-bottom: 14px; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
-        .back-btn { background: var(--surface-card); backdrop-filter: blur(8px); border: 1px solid var(--border-color); color: var(--text-main); padding: 6px 12px; border-radius: var(--radius-btn); font-weight: 600; font-size: 11px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+        .back-btn { background: var(--surface-card); backdrop-filter: blur(12px); border: 1px solid var(--border-color); color: var(--text-main); padding: 6px 12px; border-radius: var(--radius-btn); font-weight: 600; font-size: 11px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
         .back-btn:hover { border-color: var(--primary); color: var(--primary); }
 
         .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.25s ease-in-out; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
-        .menu-hub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 14px; }
+        .menu-hub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 14px; }
         .hub-card { 
             background: var(--surface-card); 
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--border-color); 
-            padding: 18px; 
+            padding: 20px; 
             border-radius: var(--radius-box); 
             cursor: pointer; 
             display: flex; 
             flex-direction: column; 
-            gap: 8px; 
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
-            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+            gap: 10px; 
+            box-shadow: 0 10px 35px 0 rgba(0, 0, 0, 0.25);
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
         }
-        .hub-card:hover { border-color: var(--primary); background: var(--surface-card-hover); transform: translateY(-3px); box-shadow: 0 12px 40px 0 rgba(2, 132, 199, 0.2); }
-        .hub-icon { font-size: 22px; }
+        .hub-card:hover { border-color: var(--primary); background: var(--surface-card-hover); transform: translateY(-3px); box-shadow: 0 15px 45px 0 rgba(2, 132, 199, 0.25); }
+        .hub-icon { font-size: 24px; }
         .hub-title { font-size: 13px; font-weight: 700; color: var(--text-main); }
-        .hub-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+        .hub-desc { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
 
-        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 16px; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 20px; }
         .metric-card { 
             background: var(--surface-card); 
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--border-color); 
-            padding: 16px; 
+            padding: 18px; 
             border-radius: var(--radius-box); 
             position: relative; 
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
@@ -182,20 +184,20 @@
         .metric-card::before { content:''; position: absolute; top:0; right:0; width: 3px; height: 100%; background: var(--primary); border-radius: 0 var(--radius-box) var(--radius-box) 0; }
         body[dir="ltr"] .metric-card::before { right: auto; left: 0; border-radius: var(--radius-box) 0 0 var(--radius-box); }
         .metric-card h4 { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-        .metric-card .val { font-size: 20px; font-weight: 800; color: var(--text-main); margin-top: 4px; font-family: monospace; }
+        .metric-card .val { font-size: 22px; font-weight: 800; color: var(--text-main); margin-top: 6px; font-family: monospace; }
 
         .card { 
             background: var(--surface-card); 
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--border-color); 
-            padding: 18px; 
+            padding: 20px; 
             border-radius: var(--radius-box); 
-            margin-bottom: 14px; 
+            margin-bottom: 16px; 
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
         }
         
-        .btn { background: var(--primary); color: #fff; border: 1px solid transparent; padding: 7px 14px; border-radius: var(--radius-btn); font-weight: 600; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: filter 0.2s, transform 0.1s; }
+        .btn { background: var(--primary); color: #fff; border: 1px solid transparent; padding: 8px 16px; border-radius: var(--radius-btn); font-weight: 600; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: filter 0.2s, transform 0.1s; }
         .btn:hover { filter: brightness(1.15); transform: translateY(-1px); }
         
         .btn-amber { background: var(--accent-amber); }
@@ -205,8 +207,8 @@
 
         .table-container { 
             background: var(--surface-card); 
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--border-color); 
             border-radius: var(--radius-box); 
             overflow-x: auto; 
@@ -215,48 +217,48 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
         }
         table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: inherit; }
-        th { background: rgba(8, 12, 20, 0.6); color: var(--text-muted); padding: 10px 12px; border-bottom: 1px solid var(--border-color); font-weight: 700; text-transform: uppercase; position: sticky; top: 0; z-index: 10; backdrop-filter: blur(8px); }
-        td { padding: 9px 12px; border-bottom: 1px solid var(--border-color); color: var(--text-main); }
+        th { background: rgba(8, 12, 20, 0.65); color: var(--text-muted); padding: 11px 14px; border-bottom: 1px solid var(--border-color); font-weight: 700; text-transform: uppercase; position: sticky; top: 0; z-index: 10; backdrop-filter: blur(10px); }
+        td { padding: 10px 14px; border-bottom: 1px solid var(--border-color); color: var(--text-main); }
         tr:hover td { background: var(--surface-card-hover); }
 
-        .status-badge { padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; display: inline-block; }
+        .status-badge { padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: bold; display: inline-block; }
         .status-pending { background: rgba(217, 119, 6, 0.2); color: var(--accent-amber); border: 1px solid rgba(217, 119, 6, 0.4); }
         .status-completed { background: rgba(5, 150, 105, 0.2); color: var(--accent-emerald); border: 1px solid rgba(5, 150, 105, 0.4); }
         
         .checkbox-container { display: flex; align-items: center; gap: 6px; cursor: pointer; }
-        .checkbox-container input { width: 15px; height: 15px; accent-color: var(--accent-emerald); }
+        .checkbox-container input { width: 16px; height: 16px; accent-color: var(--accent-emerald); }
 
-        .modal { position: fixed; inset: 0; background: rgba(3, 5, 9, 0.8); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; padding: 16px; z-index: 1000; }
-        .modal.active { display: flex; animation: fadeInModal 0.2s ease; }
+        .modal { position: fixed; inset: 0; background: rgba(3, 5, 9, 0.85); backdrop-filter: blur(12px); display: none; justify-content: center; align-items: center; padding: 16px; z-index: 1000; }
+        .modal.active { display: flex; animation: fadeInModal 0.25s ease; }
         @keyframes fadeInModal { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
         .modal-body { 
             background: var(--modal-bg); 
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border: 1px solid var(--border-color); 
             width: 100%; 
-            max-width: 480px; 
-            padding: 24px; 
+            max-width: 520px; 
+            padding: 26px; 
             border-radius: var(--radius-box); 
             max-height: 90vh; 
             overflow-y: auto; 
-            box-shadow: 0 25px 50px rgba(0,0,0,0.7); 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.75); 
             text-align: inherit; 
         }
         .form-group { margin-bottom: 14px; text-align: inherit; }
         .form-group label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 5px; font-weight: 600; }
-        .form-control { width: 100%; background: var(--surface-input); border: 1px solid var(--border-color); padding: 9px 12px; border-radius: var(--radius-btn); color: var(--text-main); font-size: 11px; outline: none; text-align: inherit; transition: border-color 0.2s; }
-        .form-control:focus { border-color: var(--border-focus); box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.2); }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .form-control { width: 100%; background: var(--surface-input); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: var(--radius-btn); color: var(--text-main); font-size: 11px; outline: none; text-align: inherit; transition: border-color 0.2s; }
+        .form-control:focus { border-color: var(--border-focus); box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.25); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-        .pm-history-box { background: var(--surface-input); border: 1px solid var(--border-color); border-radius: var(--radius-btn); padding: 10px; max-height: 150px; overflow-y: auto; margin-top: 6px; font-size: 11px; text-align: inherit; }
+        .pm-history-box { background: var(--surface-input); border: 1px solid var(--border-color); border-radius: var(--radius-btn); padding: 12px; max-height: 160px; overflow-y: auto; margin-top: 6px; font-size: 11px; text-align: inherit; }
         .pm-history-item { padding: 6px; border-bottom: 1px solid var(--border-color); margin-bottom: 4px; }
 
-        .sub-items-list { background: var(--surface-input); border: 1px solid var(--border-color); border-radius: var(--radius-btn); padding: 8px; margin-top: 6px; max-height: 130px; overflow-y: auto; }
-        .sub-item-chip { display: flex; justify-content: space-between; align-items: center; background: var(--surface-card); border: 1px solid var(--border-color); padding: 5px 8px; border-radius: 4px; margin-bottom: 4px; font-size: 11px; }
+        .sub-items-list { background: var(--surface-input); border: 1px solid var(--border-color); border-radius: var(--radius-btn); padding: 10px; margin-top: 6px; max-height: 140px; overflow-y: auto; }
+        .sub-item-chip { display: flex; justify-content: space-between; align-items: center; background: var(--surface-card); border: 1px solid var(--border-color); padding: 6px 10px; border-radius: 6px; margin-bottom: 4px; font-size: 11px; }
 
-        .user-profile-card { background: var(--surface-input); border: 1px solid var(--border-color); border-radius: var(--radius-box); padding: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-        .profile-avatar-lg { width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 1px solid var(--primary); }
+        .user-profile-card { background: var(--surface-input); border: 1px solid var(--border-color); border-radius: var(--radius-box); padding: 16px; margin-bottom: 14px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+        .profile-avatar-lg { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
     </style>
 </head>
 <body dir="rtl">
@@ -269,20 +271,21 @@
             
             <div class="form-group">
                 <label data-i18n="login_role_label">انتخاب نقش کاربری:</label>
-                <select id="login-role-select" class="form-control">
+                <select id="login-role-select" class="form-control" onchange="onLoginRoleChange()">
                     <option value="creator" data-i18n="role_creator">👑 سازنده (دسترسی کامل سیستم)</option>
                     <option value="manager" data-i18n="role_manager">👔 مدیریت کارخانه</option>
                     <option value="tech1" data-i18n="role_tech1">🔧 تکنسین ارشد خط</option>
                     <option value="tech2" data-i18n="role_tech2">🔧 تکنسین شیفت</option>
+                    <option value="member" data-i18n="role_member">👤 عضو (مشاهده و ثبت گزارش)</option>
                 </select>
             </div>
             
-            <div class="form-group">
+            <div class="form-group" id="login-pass-group">
                 <label data-i18n="login_pass_label">کلمه عبور امنیتی:</label>
                 <input type="password" id="login-pass-input" class="form-control" placeholder="••••" onkeydown="if(event.key==='Enter') attemptLogin()">
             </div>
 
-            <button onclick="attemptLogin()" class="btn btn-emerald" style="width: 100%; justify-content: center; margin-top: 8px; padding: 10px;" data-i18n="login_btn">
+            <button onclick="attemptLogin()" class="btn btn-emerald" style="width: 100%; justify-content: center; margin-top: 10px; padding: 11px;" data-i18n="login_btn">
                 تایید و ورود به سامانه
             </button>
         </div>
@@ -330,7 +333,7 @@
             <h3 id="current-page-title" style="font-size:13px; color:var(--primary); font-weight:700;"></h3>
         </div>
 
-        <!-- تب 0: هاب مرکزی -->
+        <!-- تب 0: هاب مرکزی (مینیمال و خلوت) -->
         <div id="tab-hub" class="tab-content active">
             <div class="card-grid">
                 <div class="metric-card"><h4 data-i18n="mttr_title">میانگین MTTR (دقیقه)</h4><div class="val" id="val-mttr">0</div></div>
@@ -339,7 +342,7 @@
                 <div class="metric-card"><h4 data-i18n="reports_title">گزارش‌های ثبت‌شده</h4><div class="val" id="dash-reports">0</div></div>
             </div>
 
-            <h3 style="font-size:12px; font-weight:700; margin-bottom:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;" data-i18n="modules_title">ماژول‌های عملیاتی سیستم نگهداری و تعمیرات</h3>
+            <h3 style="font-size:12px; font-weight:700; margin-bottom:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;" data-i18n="modules_title">ماژول‌های عملیاتی سیستم نگهداری و تعمیرات</h3>
 
             <div class="menu-hub-grid">
                 <div class="hub-card" onclick="navigateTo('equipment')">
@@ -374,8 +377,14 @@
 
                 <div class="hub-card" onclick="navigateTo('inventory')">
                     <div class="hub-icon">📦</div>
-                    <div class="hub-title" data-i18n="mod_inv">انبار فنی</div>
-                    <div class="hub-desc" data-i18n="mod_inv_desc">شامل ریزاقلام مصرفی (IEC 81346) و قطعات تخصصی.</div>
+                    <div class="hub-title" data-i18n="mod_inv">انبار فنی و کارتکس مصرف</div>
+                    <div class="hub-desc" data-i18n="mod_inv_desc">شامل ریزاقلام مصرفی (IEC 81346) و ردیابی تاریخچه مصرف.</div>
+                </div>
+
+                <div class="hub-card" onclick="navigateTo('scanner')">
+                    <div class="hub-icon">📷</div>
+                    <div class="hub-title" data-i18n="mod_scanner">اسکنر زنده QR / بارکد</div>
+                    <div class="hub-desc" data-i18n="mod_scanner_desc">اسکن دوربین برای شناسایی تجهیزات و کسر قطعه از انبار.</div>
                 </div>
 
                 <div class="hub-card" onclick="navigateTo('logs')">
@@ -402,7 +411,10 @@
         <div id="tab-equipment" class="tab-content">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
                 <h3 style="font-size:12px; font-weight:700; text-transform:uppercase;" data-i18n="eq_list_title">شناسنامه ماشین‌آلات و زیرقطعات فنی</h3>
-                <button onclick="openModal('eq-modal')" class="btn" id="btn-add-eq" data-i18n="add_eq_btn">+ ثبت دستگاه / شناسنامه جدید</button>
+                <div style="display:flex; gap:6px;">
+                    <button onclick="navigateTo('scanner')" class="btn btn-purple">📷 اسکن QR تجهیز</button>
+                    <button onclick="openModal('eq-modal')" class="btn" id="btn-add-eq" data-i18n="add_eq_btn">+ ثبت دستگاه جدید</button>
+                </div>
             </div>
             <div style="margin-bottom:10px;">
                 <input type="text" id="eq-search-input" onkeyup="filterEquipment()" placeholder="🔍 جستجو بر اساس نام تجهیز، برند یا واحد..." class="form-control" data-i18n-ph="eq_search_ph">
@@ -476,6 +488,7 @@
                             <th>کد / نوع</th>
                             <th data-i18n="th_wo_desc">شرح نقص / خرابی</th>
                             <th data-i18n="th_wo_eq">تجهیز مربوطه</th>
+                            <th>قطعه مصرفی</th>
                             <th>ساعت شروع</th>
                             <th>ساعت پایان</th>
                             <th>زمان توقف</th>
@@ -512,19 +525,20 @@
             </div>
         </div>
 
-        <!-- تب 5: انبار فنی -->
+        <!-- تب 5: انبار فنی و کارتکس مصرف -->
         <div id="tab-inventory" class="tab-content">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
-                <h3 style="font-size:12px; font-weight:700; text-transform:uppercase;" data-i18n="inv_page_title">انبار فنی (کدگذاری استاندارد IEC)</h3>
+                <h3 style="font-size:12px; font-weight:700; text-transform:uppercase;" data-i18n="inv_page_title">انبار فنی و کارتکس مصرف (استاندارد IEC)</h3>
                 <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
                     <button onclick="setInvCategory('all')" class="btn" data-i18n="inv_all">همه</button>
                     <button onclick="setInvCategory('مصرفی‌ریز')" class="btn btn-amber" data-i18n="inv_misc">📌 ریزاقلام (-R)</button>
                     <button onclick="setInvCategory('الکتریکال')" class="btn btn-purple" data-i18n="inv_elec">⚡ الکتریکال (-Q/-K)</button>
                     <button onclick="setInvCategory('مکانیکال')" class="btn btn-emerald" data-i18n="inv_mech">⚙️ مکانیکال (-M)</button>
                     <button onclick="setInvCategory('تاسیسات')" class="btn" style="background:#0284c7;" data-i18n="inv_util">🛠️ تاسیسات (-B)</button>
+                    <button onclick="navigateTo('scanner')" class="btn btn-purple">📷 اسکن بارکد قطعه</button>
                     <button onclick="openModal('inv-modal')" class="btn btn-emerald" data-i18n="add_inv_btn">+ قطعه جدید</button>
-                    <button onclick="exportInventoryExcel()" class="btn btn-purple">📊 خروجی اکسل موجودی</button>
-                    <button onclick="enableAppNotifications()" class="btn btn-amber">🔔 اعلان‌های انبار</button>
+                    <button onclick="exportInventoryExcel()" class="btn btn-purple">📊 خروجی اکسل</button>
+                    <button onclick="exportInventoryPDF()" class="btn btn-rose">📄 خروجی PDF شرکتی</button>
                 </div>
             </div>
             <div style="margin-bottom:10px;">
@@ -540,11 +554,32 @@
                             <th data-i18n="th_qty">موجودی</th>
                             <th data-i18n="th_min">حداقل مجاز</th>
                             <th data-i18n="th_status">وضعیت انبار</th>
+                            <th>تاریخچه مصرف (کارتکس)</th>
                             <th data-i18n="th_actions">عملیات</th>
                         </tr>
                     </thead>
                     <tbody id="inv-table-body"></tbody>
                 </table>
+            </div>
+        </div>
+
+        <!-- تب اسکنر زنده بارکد و QR Code (با حفاظت ضد فریز کامل) -->
+        <div id="tab-scanner" class="tab-content">
+            <div class="card" style="max-width: 600px; margin: 0 auto; text-align: center;">
+                <h3 style="font-size:14px; font-weight:700; color:var(--primary); margin-bottom:10px;">📷 اسکنر زنده بارکد و QR Code</h3>
+                <p style="font-size:11px; color:var(--text-muted); margin-bottom:16px;">دوربین موبایل را روی بارکد قطعه انبار یا QR Code دستگاه بگیرید.</p>
+                
+                <div id="reader" style="width: 100%; border-radius: var(--radius-box); overflow: hidden; background: #000; min-height: 250px;"></div>
+                
+                <div id="scan-result-box" style="margin-top: 14px; padding: 12px; background: var(--surface-input); border-radius: var(--radius-btn); border: 1px solid var(--border-color); display: none; text-align: right;">
+                    <div style="font-weight: 700; color: var(--accent-emerald); margin-bottom: 4px;">✅ نتیجه اسکن موفق:</div>
+                    <div id="scan-result-text" style="font-family: monospace; font-size: 12px;"></div>
+                </div>
+
+                <div style="display:flex; justify-content: center; gap: 10px; margin-top: 16px;">
+                    <button onclick="startScanner()" class="btn btn-emerald">▶️ شروع اسکنر</button>
+                    <button onclick="stopScannerSafe()" class="btn btn-rose">⏹️ توقف و خروج امن</button>
+                </div>
             </div>
         </div>
 
@@ -585,11 +620,12 @@
             
             <div class="card" id="creator-master-panel" style="display:none; margin-bottom:14px; border: 1px solid var(--accent-purple);">
                 <h4 style="font-size:11px; color:var(--accent-purple); font-weight:700; margin-bottom:8px; text-transform:uppercase;" data-i18n="master_panel_title">👑 پنل امنیت ارشد سازنده (رمزنگاری و لایسنس)</h4>
-                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:10px; margin-bottom:10px;">
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:10px; margin-bottom:10px;">
                     <div class="form-group"><label data-i18n="pass_creator">رمز سازنده:</label><input type="text" id="master-pass-creator" class="form-control"></div>
                     <div class="form-group"><label data-i18n="pass_manager">رمز مدیریت:</label><input type="text" id="master-pass-manager" class="form-control"></div>
                     <div class="form-group"><label data-i18n="pass_tech1">رمز تکنسین ۱:</label><input type="text" id="master-pass-tech1" class="form-control"></div>
                     <div class="form-group"><label data-i18n="pass_tech2">رمز تکنسین ۲:</label><input type="text" id="master-pass-tech2" class="form-control"></div>
+                    <div class="form-group"><label data-i18n="pass_member">رمز عضو:</label><input type="text" id="master-pass-member" class="form-control"></div>
                 </div>
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
                     <button onclick="saveMasterPasswords()" class="btn btn-purple" data-i18n="update_pass_btn">بروزرسانی رمزها</button>
@@ -664,6 +700,17 @@
         </div>
     </div>
 
+    <!-- مودال تاریخچه مصرف قطعه (کارتکس مصرف) -->
+    <div id="inv-history-modal" class="modal">
+        <div class="modal-body">
+            <h3 id="inv-history-title" style="font-size:12px; font-weight:700; color:var(--primary); margin-bottom:10px; text-transform:uppercase;">کارتکس مصرف قطعه</h3>
+            <div id="inv-history-content" class="pm-history-box" style="max-height: 250px;"></div>
+            <div style="display:flex; justify-content:flex-end; margin-top:12px;">
+                <button onclick="closeModal('inv-history-modal')" class="btn btn-emerald">بستن</button>
+            </div>
+        </div>
+    </div>
+
     <div id="pm-exec-modal" class="modal">
         <div class="modal-body">
             <h3 id="pm-exec-title" style="font-size:12px; font-weight:700; color:var(--primary); margin-bottom:10px; text-transform:uppercase;" data-i18n="modal_pm">مدیریت و ثبت سوابق PM</h3>
@@ -705,7 +752,7 @@
         </div>
     </div>
 
-    <!-- مودال دستور کار EM / CM کامل -->
+    <!-- مودال دستور کار EM / CM کامل و انتخاب قطعه مصرفی انبار -->
     <div id="wo-modal" class="modal">
         <div class="modal-body">
             <h3 style="font-size:12px; font-weight:700; color:var(--primary); margin-bottom:10px; text-transform:uppercase;" data-i18n="modal_wo">ثبت دستور کار جدید (EM / CM)</h3>
@@ -729,7 +776,13 @@
             <div class="form-group">
                 <label data-i18n="eq">تجهیز مربوطه:</label>
                 <select id="wo-eq-select" class="form-control">
-                    <!-- تمام تجهیزات بارگذاری می‌شوند -->
+                    <!-- تجهیزات بارگذاری می‌شوند -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label>قطعه مصرفی از انبار (اختیاری):</label>
+                <select id="wo-part-select" class="form-control">
+                    <option value="">-- بدون مصرف قطعه --</option>
                 </select>
             </div>
             <div class="form-group">
@@ -780,6 +833,7 @@
                 role_manager: "👔 مدیریت کارخانه",
                 role_tech1: "🔧 تکنسین ارشد خط",
                 role_tech2: "🔧 تکنسین شیفت",
+                role_member: "👤 عضو (مشاهده و ثبت گزارش)",
                 login_pass_label: "کلمه عبور امنیتی:",
                 login_btn: "تایید و ورود به سامانه",
                 locked_title: "اعتبار لایسنس به پایان رسیده است",
@@ -802,8 +856,10 @@
                 mod_wo_desc: "ثبت ساعت شروع/پایان، زمان توقف و تیک اتمام کار.",
                 mod_daily: "گزارش‌نویسی شیفت و خروجی CSV",
                 mod_daily_desc: "ثبت وضعیت خطوط تولید و گزارش تحویل شیفت.",
-                mod_inv: "انبار فنی",
-                mod_inv_desc: "شامل ریزاقلام مصرفی (IEC 81346) و قطعات تخصصی.",
+                mod_inv: "انبار فنی و کارتکس مصرف",
+                mod_inv_desc: "شامل ریزاقلام مصرفی (IEC 81346) و ردیابی تاریخچه مصرف.",
+                mod_scanner: "اسکنر زنده QR / بارکد",
+                mod_scanner_desc: "اسکن دوربین برای شناسایی تجهیزات و کسر قطعه از انبار.",
                 mod_logs: "لاگ رویدادهای زنده (Audit Trail)",
                 mod_logs_desc: "ثبت تمامی تغییرات و فعالیت‌های کاربران در سیستم.",
                 mod_ai: "عیب‌یاب هوشمند صنعتی AI",
@@ -834,7 +890,7 @@
                 th_shift: "شیفت",
                 th_author: "ثبت‌کننده",
                 th_desc: "شرح گزارش",
-                inv_page_title: "انبار فنی (کدگذاری استاندارد IEC)",
+                inv_page_title: "انبار فنی و کارتکس مصرف (کدگذاری استاندارد IEC)",
                 inv_all: "همه",
                 inv_misc: "📌 ریزاقلام (-R)",
                 inv_elec: "⚡ الکتریکال (-Q/-K)",
@@ -860,6 +916,7 @@
                 pass_manager: "رمز مدیریت:",
                 pass_tech1: "رمز تکنسین ۱:",
                 pass_tech2: "رمز تکنسین ۲:",
+                pass_member: "رمز عضو:",
                 update_pass_btn: "بروزرسانی رمزها",
                 lock_sys_btn: "قفل اضطراری سامانه",
                 unlock_sys_btn: "فعال‌سازی سیستم",
@@ -922,6 +979,7 @@
                 role_manager: "👔 Plant Manager",
                 role_tech1: "🔧 Senior Line Technician",
                 role_tech2: "🔧 Shift Technician",
+                role_member: "👤 Member (View & Report)",
                 login_pass_label: "Security Password:",
                 login_btn: "Login to System",
                 locked_title: "License Expired",
@@ -944,8 +1002,10 @@
                 mod_wo_desc: "Start/End time tracking, downtime and completion check.",
                 mod_daily: "Shift Reports & CSV Export",
                 mod_daily_desc: "Production line status logs and shift handover notes.",
-                mod_inv: "Technical Inventory",
-                mod_inv_desc: "IEC 81346 compliant spare parts and consumables.",
+                mod_inv: "Technical Inventory & Audit",
+                mod_inv_desc: "IEC 81346 spare parts and consumption history.",
+                mod_scanner: "Live QR / Barcode Scanner",
+                mod_scanner_desc: "Camera scan for equipment & inventory consumption.",
                 mod_logs: "Live Event Logs (Audit Trail)",
                 mod_logs_desc: "Real-time logging of all user activities and changes.",
                 mod_ai: "Erfont Industrial AI Diagnostic",
@@ -976,7 +1036,7 @@
                 th_shift: "Shift",
                 th_author: "Author",
                 th_desc: "Description",
-                inv_page_title: "Technical Inventory (IEC Standard Coding)",
+                inv_page_title: "Technical Inventory & Audit Card",
                 inv_all: "All",
                 inv_misc: "📌 Consumables (-R)",
                 inv_elec: "⚡ Electrical (-Q/-K)",
@@ -1002,6 +1062,7 @@
                 pass_manager: "Manager Password:",
                 pass_tech1: "Tech 1 Password:",
                 pass_tech2: "Tech 2 Password:",
+                pass_member: "Member Password:",
                 update_pass_btn: "Update Passwords",
                 lock_sys_btn: "Emergency Lock",
                 unlock_sys_btn: "Activate System",
@@ -1106,7 +1167,7 @@
             console.warn('Firebase initialization unavailable; local-first mode enabled.', firebaseInitError);
         }
 
-        var defaultRolePasswords = { 'creator': '7890', 'manager': '2020', 'tech1': '1111', 'tech2': '2222' };
+        var defaultRolePasswords = { 'creator': '7890', 'manager': '2020', 'tech1': '1111', 'tech2': '2222', 'member': '0000' };
         var currentRole = '';
 
         const exactEquipmentList = [
@@ -1150,7 +1211,7 @@
                 ["تاسیسات","شیر فلکه برنجی ۱/۲ اینچ","U-001-GATE12",1],["تاسیسات","شیر فلکه ۱ اینچ","U-002-GATE1",1],["تاسیسات","شیر فلکه ۲ اینچ","U-003-GATE2",1],["تاسیسات","اتصال و مهره ماسوره متنوع","U-004-UNION",5],["تاسیسات","زانویی و سه‌راهی PVC/PP","U-005-ELBOW",10],["تاسیسات","لوله و اتصالات PP-R","U-006-PPR",5],["تاسیسات","لوله و اتصالات UPVC","U-007-UPVC",5],["تاسیسات","شیلنگ آب تقویت‌شده","U-008-WATERHOSE",2],["تاسیسات","فلوتر مخزن","U-009-FLOAT",1],["تاسیسات","مانومتر فشار","U-010-PRESSUREGAUGE",1],["تاسیسات","ترموستات صنعتی","U-011-THERMOSTAT",1],["تاسیسات","المنت حرارتی متنوع","U-012-HEATER",1],["تاسیسات","ترموکوپل و سنسور دما","U-013-THERMOCOUPLE",1],["تاسیسات","فیلتر تصفیه آب","U-014-WATERFILTER",2],["تاسیسات","ممبران تصفیه آب مطابق مدل","U-015-MEMBRANE",1],["تاسیسات","لامپ LED صنعتی","U-016-LED",5],["تاسیسات","پروژکتور LED","U-017-FLOODLIGHT",1],["تاسیسات","کلید و پریز صنعتی","U-018-SOCKET",2],
                 ["مصرفی‌ریز","دستکش ایمنی کار","R-021-GLOVE",10],["مصرفی‌ریز","عینک ایمنی","R-022-GLASSES",5],["مصرفی‌ریز","گوشی صداگیر","R-023-EARPROTECT",5],["مصرفی‌ریز","ماسک و فیلتر تنفسی مناسب ماده","R-024-MASK",5],["مصرفی‌ریز","جعبه کمک‌های اولیه اقلام مصرفی","R-025-FIRSTAID",1],["مصرفی‌ریز","چراغ قوه صنعتی","R-026-FLASHLIGHT",1],["مصرفی‌ریز","آچار آلن مجموعه‌ای","R-027-ALLEN",1],["مصرفی‌ریز","آچار تخت و رینگی مجموعه‌ای","R-028-WRENCH",1],["مصرفی‌ریز","پیچ‌گوشتی عایق برق","R-029-INSULATED",2],["مصرفی‌ریز","انبردست و سیم‌چین","R-030-PLIERS",1],["مصرفی‌ریز","متر و کولیس","R-031-MEASURE",1]
             ];
-            return base.map((r, i) => ({ id: 5000 + i, category: r[0], name: r[1], code: r[2], qty: 0, min: r[3] }));
+            return base.map((r, i) => ({ id: 5000 + i, category: r[0], name: r[1], code: r[2], qty: 5, min: r[3], history: [] }));
         }
 
         var db = {
@@ -1178,6 +1239,7 @@
         var currentInvCategory = 'all';
         var cloudSyncInProgress = false;
         var cloudSyncQueued = false;
+        var html5QrCodeScanner = null;
 
         function safeLocalSave() {
             try {
@@ -1204,7 +1266,6 @@
                 var key = x.id !== undefined && x.id !== null ? 'id:' + String(x.id) : 'legacy:' + JSON.stringify(x);
                 map.set(key, x);
             }
-            // اول داده‌های محلی را قرار میدهیم تا اطلاعات کاربر روی موبایل حذف نشوند، بعد داده‌های کلود را ادغام میکنیم
             (Array.isArray(cloudArr) ? cloudArr : []).forEach(put);
             (Array.isArray(localArr) ? localArr : []).forEach(put);
             return Array.from(map.values());
@@ -1230,6 +1291,7 @@
         window.addEventListener('DOMContentLoaded', () => {
             var loginScreen = document.getElementById('login-screen');
             if (loginScreen) loginScreen.style.display = 'flex';
+            onLoginRoleChange();
             
             if (!rootRef) {
                 safeLocalSave();
@@ -1243,7 +1305,7 @@
                     db = mergeCloudAndLocal(cloudData, db);
                 }
                 safeLocalSave();
-                setConnectivityStatus('اتصال ابری و همگام‌سازی امن اطلاعات برقرار شد (بدون حذف داده‌های قبلی).', false);
+                setConnectivityStatus('اتصال ابری و همگام‌سازی امن اطلاعات برقرار شد.', false);
                 if(db.settings && db.settings.appActive === false) {
                     var lock = document.getElementById('license-lock-screen');
                     if(lock) lock.style.display = 'flex';
@@ -1270,13 +1332,23 @@
             }, false);
         }
 
+        function onLoginRoleChange() {
+            var role = document.getElementById('login-role-select').value;
+            var passGroup = document.getElementById('login-pass-group');
+            if (role === 'member') {
+                passGroup.style.display = 'none';
+            } else {
+                passGroup.style.display = 'block';
+            }
+        }
+
         function attemptLogin() {
             var role = document.getElementById('login-role-select').value;
             var pass = document.getElementById('login-pass-input').value.trim();
             var currentPasswords = (db.settings && db.settings.passwords) ? db.settings.passwords : defaultRolePasswords;
             var correctPass = currentPasswords[role] || defaultRolePasswords[role];
 
-            if(pass === correctPass) {
+            if(role === 'member' || pass === correctPass) {
                 currentRole = role;
                 document.getElementById('login-screen').style.display = 'none';
                 updateRoleDisplay();
@@ -1287,9 +1359,11 @@
         }
 
         function logoutApp() {
+            stopScannerSafe();
             currentRole = '';
             document.getElementById('login-pass-input').value = '';
             document.getElementById('login-screen').style.display = 'flex';
+            onLoginRoleChange();
         }
 
         function loadMasterSettings() {
@@ -1300,6 +1374,7 @@
                 document.getElementById('master-pass-manager').value = passMap.manager || '';
                 document.getElementById('master-pass-tech1').value = passMap.tech1 || '';
                 document.getElementById('master-pass-tech2').value = passMap.tech2 || '';
+                document.getElementById('master-pass-member').value = passMap.member || '0000';
             } else {
                 document.getElementById('creator-master-panel').style.display = 'none';
             }
@@ -1312,6 +1387,7 @@
             db.settings.passwords.manager = sanitizeInput(document.getElementById('master-pass-manager').value.trim());
             db.settings.passwords.tech1 = sanitizeInput(document.getElementById('master-pass-tech1').value.trim());
             db.settings.passwords.tech2 = sanitizeInput(document.getElementById('master-pass-tech2').value.trim());
+            db.settings.passwords.member = sanitizeInput(document.getElementById('master-pass-member').value.trim()) || '0000';
             syncToCloud();
             alert(currentLang === 'fa' ? 'رمزها به‌روزرسانی شدند.' : 'Passwords updated.');
         }
@@ -1324,6 +1400,7 @@
         }
 
         function navigateTo(targetTabId) {
+            stopScannerSafe();
             var contents = document.querySelectorAll('.tab-content');
             for(var i=0; i<contents.length; i++) { contents[i].classList.remove('active'); }
             
@@ -1344,6 +1421,7 @@
                     workorders: currentLang==='fa'?'دستورات کار (EM / CM)':'Work Orders', 
                     daily: currentLang==='fa'?'گزارش‌های روزانه':'Shift Reports', 
                     inventory: currentLang==='fa'?'انبار فنی':'Technical Inventory', 
+                    scanner: currentLang==='fa'?'اسکنر زنده بارکد و QR':'Barcode & QR Scanner',
                     logs: currentLang==='fa'?'لاگ رویدادها':'Live Logs', 
                     ai: currentLang==='fa'?'عیب‌یاب هوشمند':'AI Diagnostic', 
                     settings: currentLang==='fa'?'تنظیمات سیستم':'Settings' 
@@ -1352,8 +1430,78 @@
             }
             if(targetTabId === 'settings') { loadSettingsToUI(); loadMasterSettings(); }
             if(targetTabId === 'kpi') { populateKpiDeviceSelect(); calculateKPI(); }
+            if(targetTabId === 'scanner') { startScanner(); }
             renderAll();
             window.scrollTo({ top: 0, behavior: 'instant' });
+        }
+
+        // اسکنر زنده با مدیریت خطای Try-Catch و جلوگیری کامل از فریز شدن صفحه
+        function startScanner() {
+            try {
+                if (!document.getElementById('reader')) return;
+                if (html5QrCodeScanner) {
+                    stopScannerSafe();
+                }
+                html5QrCodeScanner = new Html5Qrcode("reader");
+                const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+                html5QrCodeScanner.start(
+                    { facingMode: "environment" }, 
+                    config, 
+                    onScanSuccess, 
+                    onScanFailure
+                ).catch(err => {
+                    console.warn("Camera start warning/error:", err);
+                    setScannerErrorState("دسترسی به دوربین برقرار نشد یا محیط امن (HTTPS) فعال نیست. می‌توانید از دکمه خروج امن استفاده کنید.");
+                });
+            } catch (e) {
+                console.error("Scanner init exception:", e);
+                setScannerErrorState("خطا در راه‌اندازی اسکنر دوربین.");
+            }
+        }
+
+        function onScanSuccess(decodedText, decodedResult) {
+            try {
+                stopScannerSafe();
+                var box = document.getElementById('scan-result-box');
+                var txt = document.getElementById('scan-result-text');
+                if(box && txt) {
+                    box.style.display = 'block';
+                    txt.textContent = decodedText;
+                }
+                logAct('اسکن موفق بارکد/QR: ' + decodedText);
+                alert('کد اسکن‌شده: ' + decodedText);
+            } catch(e) {
+                console.error("Scan success handling error:", e);
+            }
+        }
+
+        function onScanFailure(error) {
+            // خطاهای رایج اسکن فریم خالی نادیده گرفته شوند تا صفحه قفل نشود
+        }
+
+        function setScannerErrorState(msg) {
+            var box = document.getElementById('scan-result-box');
+            var txt = document.getElementById('scan-result-text');
+            if(box && txt) {
+                box.style.display = 'block';
+                txt.style.color = 'var(--accent-rose)';
+                txt.textContent = msg;
+            }
+        }
+
+        function stopScannerSafe() {
+            try {
+                if (html5QrCodeScanner) {
+                    html5QrCodeScanner.stop().then(() => {
+                        html5QrCodeScanner.clear();
+                        html5QrCodeScanner = null;
+                    }).catch(err => {
+                        html5QrCodeScanner = null;
+                    });
+                }
+            } catch (e) {
+                html5QrCodeScanner = null;
+            }
         }
 
         function toggleTheme() {
@@ -1367,7 +1515,7 @@
         function updateRoleDisplay() {
             if(!db.profiles) db.profiles = {};
             var userProf = db.profiles[currentRole] || { fullname: '', avatar: '' };
-            var roleNames = currentLang === 'fa' ? { 'creator': 'سازنده', 'manager': 'مدیر', 'tech1': 'تکنسین ارشد', 'tech2': 'تکنسین شیفت' } : { 'creator': 'Creator', 'manager': 'Manager', 'tech1': 'Senior Tech', 'tech2': 'Shift Tech' };
+            var roleNames = currentLang === 'fa' ? { 'creator': 'سازنده', 'manager': 'مدیر', 'tech1': 'تکنسین ارشد', 'tech2': 'تکنسین شیفت', 'member': 'عضو' } : { 'creator': 'Creator', 'manager': 'Manager', 'tech1': 'Senior Tech', 'tech2': 'Shift Tech', 'member': 'Member' };
             
             var roleSpan = document.getElementById('role-text-span');
             if(roleSpan) roleSpan.textContent = userProf.fullname ? userProf.fullname : roleNames[currentRole];
@@ -1379,7 +1527,7 @@
             }
 
             var addEqBtn = document.getElementById('btn-add-eq');
-            if(currentRole === 'tech1' || currentRole === 'tech2') { if(addEqBtn) addEqBtn.style.display = 'none'; }
+            if(currentRole === 'tech1' || currentRole === 'tech2' || currentRole === 'member') { if(addEqBtn) addEqBtn.style.display = 'none'; }
             else { if(addEqBtn) addEqBtn.style.display = 'inline-block'; }
         }
 
@@ -1444,7 +1592,7 @@
                         db = mergeCloudAndLocal(imported, db);
                         syncToCloud();
                         renderAll();
-                        alert(currentLang === 'fa' ? 'اطلاعات فایل پشتیبان با موفقیت بازیابی و ادغام شد (هیچ داده‌ای پاک نشد).' : 'Backup restored & merged successfully.');
+                        alert(currentLang === 'fa' ? 'اطلاعات فایل پشتیبان با موفقیت بازیابی و ادغام شد.' : 'Backup restored & merged successfully.');
                     }
                 } catch(err) {
                     alert(currentLang === 'fa' ? 'خطا در خواندن فایل پشتیبان!' : 'Error reading backup file!');
@@ -1454,7 +1602,7 @@
         }
 
         function resetFactoryData() {
-            if(confirm(currentLang === 'fa' ? 'آیا از بازنشانی پیش‌فرض مطمئن هستید؟ (داده‌های شما حفظ خواهند شد)' : 'Reset factory data?')) {
+            if(confirm(currentLang === 'fa' ? 'آیا از بازنشانی پیش‌فرض مطمئن هستید؟' : 'Reset factory data?')) {
                 db.equipment = exactEquipmentList;
                 db.inventory = generateMassiveInventory();
                 syncToCloud();
@@ -1495,7 +1643,7 @@
                 document.getElementById('edit-inv-id').value = '';
                 document.getElementById('inv-name').value = '';
                 document.getElementById('inv-code').value = '';
-                document.getElementById('inv-qty').value = '0';
+                document.getElementById('inv-qty').value = '5';
                 document.getElementById('inv-min').value = '5';
             }
             if(id === 'eq-modal') {
@@ -1523,6 +1671,13 @@
                 sel.innerHTML = '<option value="کارهای متفرقه / عمومی کارخانه">🛠️ کارهای متفرقه / عمومی کارخانه</option>';
                 (db.equipment || []).forEach(eq => {
                     sel.innerHTML += `<option value="${eq.name}">${eq.name} (${eq.unit})</option>`;
+                });
+            }
+            var partSel = document.getElementById('wo-part-select');
+            if(partSel) {
+                partSel.innerHTML = '<option value="">-- بدون مصرف قطعه --</option>';
+                (db.inventory || []).forEach(item => {
+                    partSel.innerHTML += `<option value="${item.id}">${item.name} (${item.code || '-'}) - موجودی: ${item.qty}</option>`;
                 });
             }
         }
@@ -1568,7 +1723,7 @@
         }
 
         function saveEquipmentData() {
-            if(currentRole === 'tech1' || currentRole === 'tech2') { alert('دسترسی غیرمجاز'); return; }
+            if(currentRole === 'tech1' || currentRole === 'tech2' || currentRole === 'member') { alert('دسترسی غیرمجاز'); return; }
             saveSnapshotForUndo();
             var editId = document.getElementById('edit-eq-id').value;
             var name = sanitizeInput(document.getElementById('new-eq-name').value.trim());
@@ -1615,7 +1770,7 @@
         }
 
         function editEquipment(id) {
-            if(currentRole === 'tech1' || currentRole === 'tech2') { alert('دسترسی غیرمجاز'); return; }
+            if(currentRole === 'tech1' || currentRole === 'tech2' || currentRole === 'member') { alert('دسترسی غیرمجاز'); return; }
             var eq = db.equipment.find(e => e.id == id);
             if(!eq) return;
             document.getElementById('edit-eq-id').value = eq.id;
@@ -1767,6 +1922,7 @@
             var type = document.getElementById('wo-type').value;
             var priority = document.getElementById('wo-priority').value;
             var equipment = document.getElementById('wo-eq-select').value;
+            var partId = document.getElementById('wo-part-select').value;
             var title = sanitizeInput(document.getElementById('wo-title').value);
             var startTime = document.getElementById('wo-start-time').value;
             var endTime = document.getElementById('wo-end-time').value;
@@ -1785,12 +1941,33 @@
                 if (durationMinutes < 0) durationMinutes += 1440;
             }
 
+            let partNameUsed = '';
+            if (partId) {
+                var item = (db.inventory || []).find(i => i.id == partId);
+                if (item) {
+                    partNameUsed = item.name;
+                    if (isCompleted) {
+                        item.qty = Math.max(0, Number(item.qty || 0) - 1);
+                        if (!item.history) item.history = [];
+                        item.history.unshift({
+                            date: new Date().toLocaleDateString('fa-IR'),
+                            time: new Date().toLocaleTimeString('fa-IR'),
+                            user: currentRole,
+                            equipment: equipment,
+                            workOrder: title
+                        });
+                    }
+                }
+            }
+
             if(!db.workOrders) db.workOrders = [];
             db.workOrders.unshift({ 
                 id: Date.now(), 
                 type: type,
                 title: title, 
                 equipment: equipment, 
+                partUsed: partNameUsed,
+                partId: partId,
                 priority: priority, 
                 startTime: startTime,
                 endTime: endTime || '--:--',
@@ -1826,6 +2003,21 @@
                     if (diff < 0) diff += 1440;
                     wo.durationMinutes = diff;
                 }
+                // کسر هوشمند خودکار از انبار هنگام بسته شدن دستورکار در صورت داشتن قطعه
+                if (wo.partId) {
+                    var item = (db.inventory || []).find(i => i.id == wo.partId);
+                    if (item) {
+                        item.qty = Math.max(0, Number(item.qty || 0) - 1);
+                        if (!item.history) item.history = [];
+                        item.history.unshift({
+                            date: new Date().toLocaleDateString('fa-IR'),
+                            time: new Date().toLocaleTimeString('fa-IR'),
+                            user: currentRole,
+                            equipment: wo.equipment,
+                            workOrder: wo.title
+                        });
+                    }
+                }
             } else {
                 wo.status = currentLang === 'fa' ? 'در حال انجام' : 'In Progress';
                 wo.durationMinutes = 0;
@@ -1843,6 +2035,22 @@
             syncToCloud();
             renderAll();
             calculateKPI();
+        }
+
+        function showInventoryHistory(id) {
+            var item = (db.inventory || []).find(i => i.id == id);
+            if(!item) return;
+            document.getElementById('inv-history-title').textContent = 'کارتکس مصرف قطعه: ' + item.name + ' (' + (item.code || '-') + ')';
+            var cont = document.getElementById('inv-history-content');
+            cont.innerHTML = '';
+            if(!item.history || item.history.length === 0) {
+                cont.innerHTML = `<p style="color:var(--text-muted); text-align:center;">تاکنون سابقه مصرفی ثبت نشده است.</p>`;
+            } else {
+                item.history.forEach(h => {
+                    cont.innerHTML += `<div class="pm-history-item"><div style="color:var(--primary); font-weight:600;">${h.date} - ${h.time} (${h.user})</div><div>تجهیز: ${h.equipment}</div><div>دستورکار: ${h.workOrder}</div></div>`;
+                });
+            }
+            openModal('inv-history-modal');
         }
 
         function exportInventoryExcel() {
@@ -1866,6 +2074,46 @@
                 var url = URL.createObjectURL(blob);
                 var a = document.createElement('a'); a.href = url; a.download = filename + '.csv';
                 document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+            }
+        }
+
+        function exportInventoryPDF() {
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(16);
+                doc.text("ErfoNT Pro - Official Inventory Report", 14, 20);
+                doc.setFontSize(10);
+                doc.setFont("helvetica", "normal");
+                doc.text("Generated: " + new Date().toLocaleDateString('fa-IR'), 14, 28);
+                
+                let y = 38;
+                doc.setFillColor(2, 132, 199);
+                doc.rect(14, y, 180, 8, "F");
+                doc.setTextColor(255, 255, 255);
+                doc.setFont("helvetica", "bold");
+                doc.text("Category", 18, y + 6);
+                doc.text("Part Name", 60, y + 6);
+                doc.text("IEC Code", 130, y + 6);
+                doc.text("Qty", 170, y + 6);
+                
+                y += 12;
+                doc.setTextColor(0, 0, 0);
+                doc.setFont("helvetica", "normal");
+                
+                (db.inventory || []).slice(0, 35).forEach(item => {
+                    if (y > 270) { doc.addPage(); y = 20; }
+                    doc.text(String(item.category || ''), 18, y);
+                    doc.text(String(item.name || '').slice(0, 32), 60, y);
+                    doc.text(String(item.code || ''), 130, y);
+                    doc.text(String(item.qty || 0), 170, y);
+                    y += 8;
+                });
+                
+                doc.save("ErfoNT_Inventory_Report.pdf");
+            } catch(e) {
+                alert("خطا در تولید فایل PDF: " + e.message);
             }
         }
 
@@ -1944,7 +2192,7 @@
                 }
                 logAct(currentLang === 'fa' ? 'ویرایش قطعه انبار: ' + name : 'Edit Inventory Part: ' + name);
             } else {
-                db.inventory.unshift({ id: Date.now(), category: cat, name, code: code || '-R-000', qty, min });
+                db.inventory.unshift({ id: Date.now(), category: cat, name, code: code || '-R-000', qty, min, history: [] });
                 logAct(currentLang === 'fa' ? 'افزودن قطعه به انبار: ' + name : 'Add Inventory Part: ' + name);
             }
             closeModal('inv-modal');
@@ -2073,11 +2321,13 @@
             (db.workOrders || []).forEach(wo => {
                 let badgeType = wo.type === 'EM' ? `<span class="status-badge status-pending">EM</span>` : `<span class="status-badge" style="background:rgba(2,132,199,0.2); color:var(--primary);">CM</span>`;
                 let durText = wo.durationMinutes > 0 ? (wo.durationMinutes + ' دقیقه') : '--';
+                let partText = wo.partUsed ? `<span style="color:var(--accent-purple); font-weight:600;">📦 ${wo.partUsed}</span>` : '<span style="color:var(--text-muted);">--</span>';
 
                 woHtml += `<tr>
                     <td>${badgeType} <b>#${String(wo.id).slice(-4)}</b></td>
                     <td style="font-weight:600;">${wo.title}</td>
                     <td>${wo.equipment}</td>
+                    <td>${partText}</td>
                     <td style="font-family:monospace;">${wo.startTime || '--:--'}</td>
                     <td style="font-family:monospace;">${wo.endTime || '--:--'}</td>
                     <td style="font-weight:700; color:var(--accent-amber);">${durText}</td>
@@ -2106,6 +2356,8 @@
                 var isLow = Number(inv.qty || 0) <= Number(inv.min == null ? 1 : inv.min);
                 var status = isLow ? `<span style="color:var(--accent-rose); font-weight:700;">${currentLang==='fa'?'کسری انبار':'Low Stock'}</span>` : `<span style="color:var(--accent-emerald);">${currentLang==='fa'?'نرمال':'Normal'}</span>`;
                 
+                var historyCount = (inv.history || []).length;
+                var cardexBtn = `<button onclick="showInventoryHistory(${inv.id})" class="btn" style="padding:3px 8px; font-size:10px; background:var(--accent-purple);">📋 کارتکس (${historyCount})</button>`;
                 var editInvBtn = `<button onclick="editInventoryItem(${inv.id})" class="btn-amber" style="padding:3px 8px; border-radius:4px; border:none; cursor:pointer; font-size:11px; margin-left:4px;">${currentLang==='fa'?'ویرایش':'Edit'}</button>`;
                 var delInvBtn = (currentRole === 'creator' || currentRole === 'manager') ? `<button onclick="deleteInventoryItem(${inv.id})" class="btn-rose" style="padding:3px 8px; border-radius:4px; border:none; cursor:pointer; font-size:11px;">${currentLang==='fa'?'حذف':'Del'}</button>` : '';
 
@@ -2116,6 +2368,7 @@
                     <td style="font-weight:700; font-family:monospace; color:${isLow?'var(--accent-rose)':'inherit'}">${inv.qty}</td>
                     <td style="font-family:monospace;">${inv.min}</td>
                     <td>${status}</td>
+                    <td>${cardexBtn}</td>
                     <td>${editInvBtn} ${delInvBtn}</td>
                 </tr>`;
             });
