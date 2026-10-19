@@ -1221,6 +1221,7 @@
             activityLogs: [],
             dailyReports: [],
             profiles: {},
+            deleted: { equipment: {}, workOrders: {}, inventory: {} },
             settings: { companyName: 'Erfont Industrial SCADA', appActive: true, passwords: defaultRolePasswords }
         };
 
@@ -1278,6 +1279,11 @@
                     merged[key] = mergeById(localData && localData[key], cloudData && cloudData[key]);
                 }
             });
+            merged.deleted = { equipment: {}, workOrders: {}, inventory: {} };
+            Object.keys(merged.deleted).forEach(k => {
+                merged.deleted[k] = Object.assign({}, (cloudData && cloudData.deleted && cloudData.deleted[k]) || {}, (localData && localData.deleted && localData.deleted[k]) || {});
+                if (Array.isArray(merged[k])) merged[k] = merged[k].filter(x => !(x && x.id !== undefined && merged.deleted[k][String(x.id)]));
+            });
             merged.settings = Object.assign({}, (cloudData && cloudData.settings) || {}, (localData && localData.settings) || {});
             merged.profiles = Object.assign({}, (cloudData && cloudData.profiles) || {}, (localData && localData.profiles) || {});
             if (!Array.isArray(merged.equipment) || !merged.equipment.length) merged.equipment = exactEquipmentList;
@@ -1302,23 +1308,72 @@
             rootRef.once('value').then((snapshot) => {
                 var cloudData = snapshot.val();
                 if (cloudData) {
-                    db = mergeCloudAndLocal(cloudData, db);
+                    // اگر تغییر ارسال‌نشده‌ای روی این گوشی نیست، نسخه سرور مرجع است
+                    db = isDirty() ? mergeCloudAndLocal(cloudData, db) : mergeCloudAndLocal(db, cloudData);
                 }
                 safeLocalSave();
-                setConnectivityStatus('اتصال ابری و همگام‌سازی امن اطلاعات برقرار شد.', false);
+                setConnectivityStatus('اتصال ابری و همگام‌سازی لحظه‌ای برقرار شد.', false);
                 if(db.settings && db.settings.appActive === false) {
                     var lock = document.getElementById('license-lock-screen');
                     if(lock) lock.style.display = 'flex';
                 }
                 checkLowStockNotifications(false);
+                if (isDirty() || !cloudData) syncToCloud();
+                startRealtimeListener();
+                if (currentRole) renderAll();
             }).catch(err => {
                 safeLocalSave();
                 setConnectivityStatus('حالت آفلاین امن فعال است؛ اطلاعات شما در این موبایل محافظت می‌شود.', true);
+                startRealtimeListener();
             });
         });
 
+        var DIRTY_KEY = 'erfont_pending_sync';
+        function isDirty() { try { return localStorage.getItem(DIRTY_KEY) === '1'; } catch(e) { return false; } }
+        function setDirty(v) { try { if (v) localStorage.setItem(DIRTY_KEY, '1'); else localStorage.removeItem(DIRTY_KEY); } catch(e) {} }
+
+        function markDeleted(collection, id) {
+            if (!db.deleted) db.deleted = { equipment: {}, workOrders: {}, inventory: {} };
+            if (!db.deleted[collection]) db.deleted[collection] = {};
+            db.deleted[collection][String(id)] = true;
+        }
+
+        var realtimeStarted = false;
+        var pendingRenderTimer = null;
+        function safeRerender() {
+            clearTimeout(pendingRenderTimer);
+            var a = document.activeElement;
+            var typing = a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName);
+            var modalOpen = !!document.querySelector('.modal[style*="flex"], .modal.active, .modal-overlay[style*="flex"]');
+            if (typing || modalOpen) { pendingRenderTimer = setTimeout(safeRerender, 2500); return; }
+            if (currentRole) { try { renderAll(); } catch(e) { console.warn(e); } }
+        }
+        function startRealtimeListener() {
+            if (realtimeStarted || !rootRef) return;
+            realtimeStarted = true;
+            rootRef.on('value', function(snapshot) {
+                var remote = snapshot.val();
+                if (!remote) return;
+                var before = JSON.stringify(db);
+                var merged = mergeCloudAndLocal(db, remote); // نسخه سرور برنده است
+                if (JSON.stringify(merged) === before) return;
+                db = merged;
+                safeLocalSave();
+                if (db.settings && db.settings.appActive === false) {
+                    var lock = document.getElementById('license-lock-screen');
+                    if (lock) lock.style.display = 'flex';
+                }
+                safeRerender();
+            }, function(err) {
+                realtimeStarted = false;
+                setConnectivityStatus('قطع ارتباط با سرور؛ حالت آفلاین فعال شد.', true);
+            });
+        }
+        window.addEventListener('online', function() { if (isDirty()) syncToCloud(); });
+
         function syncToCloud() {
             safeLocalSave();
+            setDirty(true);
             checkLowStockNotifications(false);
             if (!rootRef || !navigator.onLine) return;
             if (cloudSyncInProgress) { cloudSyncQueued = true; return; }
@@ -1328,6 +1383,7 @@
                 return mergeCloudAndLocal(remote, db);
             }, function(error, committed) {
                 cloudSyncInProgress = false;
+                if (!error && committed && !cloudSyncQueued) setDirty(false);
                 if (cloudSyncQueued) { cloudSyncQueued = false; setTimeout(() => syncToCloud(), 1000); }
             }, false);
         }
@@ -1785,6 +1841,7 @@
         function deleteEquipment(id) {
             if(currentRole !== 'creator' && currentRole !== 'manager') { alert('دسترسی غیرمجاز'); return; }
             saveSnapshotForUndo();
+            markDeleted('equipment', id);
             db.equipment = db.equipment.filter(e => e.id != id);
             logAct(currentLang === 'fa' ? 'حذف تجهیز' : 'Delete Equipment');
             syncToCloud();
@@ -2031,6 +2088,7 @@
 
         function delWo(id) {
             saveSnapshotForUndo();
+            markDeleted('workOrders', id);
             db.workOrders = db.workOrders.filter(w => w.id !== id);
             syncToCloud();
             renderAll();
@@ -2218,6 +2276,7 @@
         function deleteInventoryItem(id) {
             if(currentRole !== 'creator' && currentRole !== 'manager') { alert('دسترسی غیرمجاز'); return; }
             saveSnapshotForUndo();
+            markDeleted('inventory', id);
             db.inventory = db.inventory.filter(item => item.id !== id);
             logAct(currentLang === 'fa' ? 'حذف قطعه از انبار' : 'Delete Inventory Part');
             syncToCloud();
