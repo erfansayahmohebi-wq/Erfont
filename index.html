@@ -1720,7 +1720,7 @@ function initFirebase() {
             // Database
             try {
                 cloudDb = firebase.database();
-                rootRef = cloudDb.ref('rootRef = cloudDb.ref('erfont_enterprise_scada_v2500_iec');
+                rootRef = cloudDb.ref(rootRef = cloudDb.ref('erfont_pro_official_v3'););
             } catch(e) { console.warn('DB init error:', e); }
 
             firebaseReady = true;
@@ -1849,15 +1849,25 @@ window.addEventListener('DOMContentLoaded', async () => {
             setConnectivityStatus('اتصال ابری و همگام‌سازی امن برقرار شد.', false);
             setSyncStatus('ok');
             if (db.settings && db.settings.appActive === false) {
-                const lock = document.getElementById('license-lock-screen');
-                if (lock) lock.style.display = 'flex';
-            }
-        } catch(err) {
-            console.warn('Cloud read failed:', err);
-            setConnectivityStatus('حالت آفلاین امن فعال است؛ اطلاعات در موبایل شما محفوظ است.', true);
-            setSyncStatus('offline');
+         const ok = await initFirebase();
+if (ok && rootRef) {
+    attachRealtimeListener();
+    try {
+        // خطوط مربوط به دانلود سنگین حذف شدند
+        safeLocalSave();
+        setConnectivityStatus('اتصال ابری و همگام‌سازی امن برقرار شد.', false);
+        setSyncStatus('ok');
+        if (db.settings && db.settings.appActive === false) {
+            const lock = document.getElementById('license-lock-screen');
+            if (lock) lock.style.display = 'flex';
         }
-    } else {
+    } catch(err) {
+        console.warn('Cloud read failed:', err);
+        setConnectivityStatus('حالت آفلاین امن فعال است؛ اطلاعات در موبایل شما محفوظ است.', true);
+        setSyncStatus('offline');
+    }
+}
+ else {
         setConnectivityStatus('حالت محلی فعال است (Firebase در دسترس نیست).', false);
         setSyncStatus('offline');
     }
@@ -3856,4 +3866,4 @@ function attachRealtimeListener() {
 
     </script>
 </body>
-                    </html>
+                </html>
