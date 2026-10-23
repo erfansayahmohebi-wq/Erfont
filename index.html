@@ -279,7 +279,7 @@
     <header>
         <div class="logo-group">
             <div class="logo" onclick="navigateTo('hub')" title="خانه">
-                <span>⚡</span> ErfoNT pro <span style="font-size:10px; color:var(--accent-emerald); font-family:monospace;">v3.1</span>
+                <span>⚡</span> ErfoNT pro <span style="font-size:10px; color:var(--accent-emerald); font-family:monospace;">v3.1.2</span>
             </div>
             <span class="badge" id="company-badge-text">NODE: erfont1995</span>
             <button onclick="navigateTo('settings')" class="icon-btn" title="تنظیمات">⚙️</button>
@@ -320,7 +320,7 @@
     </header>
 
     <div id="connectivity-status" role="status" aria-live="polite" style="position:sticky;top:0;z-index:900;background:rgba(23,32,51,0.85);backdrop-filter:blur(8px);color:#cbd5e1;padding:5px 12px;font-size:11px;text-align:center;border-bottom:1px solid #334155;">
-        <svg class="ic" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 2v20"/></svg> ذخیره محلی فعال است؛ همگام‌سازی ابری وابسته به تنظیم صحیح Firebase است.
+        <svg class="ic" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 2v20"/></svg> داده‌ها روی همین گوشی ذخیره می‌شوند و در صورت اتصال به سرور، با بقیه همگام می‌شوند.
     </div>
 
     <main class="workspace">
@@ -693,7 +693,7 @@
     // ============================================
     // 🎯 CONSTANTS & CONFIG
     // ============================================
-    const APP_VERSION = '3.1.0';
+    const APP_VERSION = '3.1.2';
     const LOCAL_STORAGE_KEY = 'erfont_turbo_db_v30_persistent';
     const LOCAL_THEME_KEY = 'erfont_theme_v30';
     const LOCAL_LANG_KEY = 'erfont_lang_v30';
@@ -966,6 +966,18 @@
     // ============================================
     // 🔥 FIREBASE + AUTH + SYNC
     // ============================================
+    async function trySignIn(n) {
+        if (!auth) return;
+        try {
+            await Promise.race([auth.signInAnonymously(), new Promise((_, rej) => setTimeout(() => rej({code: 'timeout: سرور احراز هویت گوگل پاسخ نمی‌دهد (فیلتر/VPN)'}), 12000))]);
+            lastAuthError = '';
+        } catch(err) {
+            lastAuthError = (err && (err.code || err.message)) || String(err);
+            console.warn('Anonymous auth failed:', lastAuthError);
+            if (n < 8) setTimeout(() => trySignIn(n + 1), 8000);
+        }
+    }
+
     function initFirebase() {
         return new Promise(async (resolve) => {
             try {
@@ -979,15 +991,13 @@
                             console.log('✅ Firebase auth active:', user.uid.slice(0, 6) + '...');
                             const s = document.getElementById('auth-status');
                             if (s) s.textContent = '🔒 احراز هویت امن فعال است';
+                            lastAuthError = '';
+                            setTimeout(() => { attachRealtimeListener(); attachLiveWO(); setSyncStatus('ok'); syncToCloud(true); }, 0);
                         } else {
                             console.warn('⚠️ Firebase not authenticated (anonymous auth may be disabled).');
                         }
                     });
-                    try {
-                        await auth.signInAnonymously();
-                    } catch(err) {
-                        lastAuthError = err.code || String(err); console.warn('Anonymous auth failed (fallback to local):', err.code);
-                    }
+                    trySignIn(0);
                 } catch(e) { console.warn('Auth init error:', e); }
 
                 try {
@@ -1009,7 +1019,7 @@
     function liveRef() { return rootRef ? rootRef.child('_live_wo') : null; }
     function liveErr(e) { console.warn('Live sync error', e); showToast('ارسال به سرور ناموفق: ' + (e && (e.code || e.message)) + ' — ابزار ۲۹', 'error', 6000); }
     function pushLiveWO(wo) {
-        const r = liveRef(); if (!r || !navigator.onLine) return;
+        const r = liveRef(); if (!r || !navigator.onLine || !auth || !auth.currentUser) return;
         try { r.child(String(wo.id)).set(JSON.parse(JSON.stringify(wo))).catch(liveErr); } catch(e) { liveErr(e); }
     }
     function removeLiveWO(id) {
@@ -1029,7 +1039,7 @@
         safeLocalSave(); renderAll();
     }
     function attachLiveWO() {
-        const r = liveRef(); if (!r) return;
+        const r = liveRef(); if (!r || !auth || !auth.currentUser) return;
         r.off();
         r.on('child_added', applyLiveWO, liveErr);
         r.on('child_changed', applyLiveWO, liveErr);
@@ -1041,7 +1051,7 @@
     }
 
     function attachRealtimeListener() {
-        if (!rootRef) return;
+        if (!rootRef || !auth || !auth.currentUser) return;
         rootRef.off('value');
         rootRef.on('value', (snapshot) => {
             const cloudData = snapshot.val();
@@ -1107,6 +1117,7 @@
         checkLowStockNotifications(false);
         
         if (!firebaseReady || !rootRef) { setSyncStatus('local'); return; }
+        if (!auth || !auth.currentUser) { setSyncStatus('offline'); return; }
         if (!navigator.onLine) { setSyncStatus('offline'); return; }
 
         setSyncStatus('syncing');
@@ -2048,6 +2059,11 @@
         const rows = [];
         rows.push(['کلید API', firebaseConfig.apiKey.indexOf('REPLACE') === 0 ? '❌ تنظیم نشده' : '✅ ثبت شده']);
         rows.push(['اینترنت', navigator.onLine ? '✅ آنلاین' : '❌ آفلاین']);
+        rows.push(['نسخه فایل (باید 3.1.2 باشد)', APP_VERSION]);
+        const sdk = window.firebase;
+        rows.push(['کتابخانه app', sdk ? '✅ بارگذاری شد' : '❌ بارگذاری نشد (gstatic.com باز نمی‌شود)']);
+        rows.push(['کتابخانه auth', (sdk && sdk.auth) ? '✅' : '❌ بارگذاری نشد']);
+        rows.push(['کتابخانه database', (sdk && sdk.database) ? '✅' : '❌ بارگذاری نشد']);
         rows.push(['اتصال Firebase', (firebaseReady && rootRef) ? '✅ برقرار' : '❌ برقرار نیست']);
         rows.push(['ورود ناشناس (Auth)', (auth && auth.currentUser) ? '✅ فعال' : '❌ ' + (lastAuthError || 'غیرفعال')]);
         if (rootRef) {
@@ -2923,4 +2939,4 @@
 
     </script>
 </body>
-                                                                                                   </html>
+                </html>
