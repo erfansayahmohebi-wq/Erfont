@@ -196,7 +196,8 @@
                     <option value="manager" data-i18n="role_manager">👔 مدیریت کارخانه</option>
                     <option value="tech1" data-i18n="role_tech1">🔧 تکنسین ارشد خط</option>
                     <option value="tech2" data-i18n="role_tech2">🔧 تکنسین شیفت</option>
-                    <option value="member" data-i18n="role_member">👤 عضو (مشاهده و ثبت گزارش)</option>
+                    <option value="production" data-i18n="role_production">🏭 تولید (مشاهده و درخواست)</option>
+                    <option value="plastic" data-i18n="role_plastic">🧴 پلاستیک‌سازی (مشاهده و درخواست)</option>
                 </select>
             </div>
             
@@ -270,7 +271,7 @@
     </header>
 
     <div id="connectivity-status" role="status" aria-live="polite" style="position:sticky;top:0;z-index:900;background:rgba(23,32,51,0.85);backdrop-filter:blur(8px);color:#cbd5e1;padding:5px 12px;font-size:11px;text-align:center;border-bottom:1px solid #334155;">
-        <i class="fa-solid fa-shield-halved"></i> سیستم حفاظت از داده‌ها فعال است؛ اطلاعات در موبایل شما + ابر ذخیره می‌شود.
+        <i class="fa-solid fa-shield-halved"></i> ذخیره محلی فعال است؛ همگام‌سازی ابری وابسته به تنظیم صحیح Firebase است.
     </div>
 
     <main class="workspace">
@@ -304,6 +305,7 @@
                 <div class="hub-card" onclick="navigateTo('logs')"><div class="hub-icon">📜</div><div class="hub-title" data-i18n="mod_logs">لاگ رویدادهای زنده (Audit Trail)</div><div class="hub-desc" data-i18n="mod_logs_desc">ثبت تمامی تغییرات و فعالیت‌های کاربران در سیستم.</div></div>
                 <div class="hub-card" onclick="navigateTo('ai')"><div class="hub-icon">🤖</div><div class="hub-title" data-i18n="mod_ai">عیب‌یاب هوشمند صنعتی AI</div><div class="hub-desc" data-i18n="mod_ai_desc">تحلیل خطاهای درایو، پمپ و تجهیزات برقی.</div></div>
                 <div class="hub-card" onclick="navigateTo('settings')"><div class="hub-icon">⚙️</div><div class="hub-title" data-i18n="mod_settings">پروفایل، امنیت و تنظیمات</div><div class="hub-desc" data-i18n="mod_settings_desc">مدیریت رمزها، گالری تصاویر و پشتیبان‌گیری ابری.</div></div>
+                <div class="hub-card" onclick="navigateTo('toolbox')"><div class="hub-icon">🧰</div><div class="hub-title">جعبه‌ابزار هوشمند نت</div><div class="hub-desc">۱۵ ابزار کاربردی برای تحلیل خرابی، کنترل انبار، گزارش و پشتیبان‌گیری.</div></div>
             </div>
         </div>
 
@@ -438,6 +440,35 @@
             </div>
         </div>
 
+        <div id="tab-toolbox" class="tab-content">
+            <div class="card" style="margin-bottom:14px;">
+                <h3 style="font-size:14px;color:var(--primary);margin-bottom:6px;">🧰 جعبه‌ابزار هوشمند نگهداری و تعمیرات</h3>
+                <p style="font-size:11px;color:var(--text-muted);line-height:1.8;">ابزارهای زیر بر اساس اطلاعات ثبت‌شده در همین برنامه گزارش تولید می‌کنند. پیش از واردکردن فایل پشتیبان، از اطلاعات فعلی نسخه پشتیبان بگیرید.</p>
+            </div>
+            <div class="menu-hub-grid" id="toolbox-grid">
+                <div class="hub-card" onclick="runTool('summary')"><div class="hub-icon">📊</div><div class="hub-title">۱. خلاصه مدیریتی</div><div class="hub-desc">نمای کلی تجهیزات، خرابی‌ها، توقف و موجودی بحرانی</div></div>
+                <div class="hub-card" onclick="runTool('open')"><div class="hub-icon">⏱️</div><div class="hub-title">۲. دستورکارهای باز</div><div class="hub-desc">فهرست کارهای تکمیل‌نشده و زمان سپری‌شده</div></div>
+                <div class="hub-card" onclick="runTool('critical')"><div class="hub-icon">🚨</div><div class="hub-title">۳. خرابی‌های فوری/بحرانی</div><div class="hub-desc">جداسازی دستورکارهای اولویت بالا</div></div>
+                <div class="hub-card" onclick="runTool('lowstock')"><div class="hub-icon">📦</div><div class="hub-title">۴. کمبود موجودی انبار</div><div class="hub-desc">قطعات رسیده به حداقل یا پایین‌تر از آن</div></div>
+                <div class="hub-card" onclick="runTool('csvinv')"><div class="hub-icon">📥</div><div class="hub-title">۵. خروجی اکسل‌خوان انبار</div><div class="hub-desc">دریافت CSV قابل بازشدن در Excel</div></div>
+                <div class="hub-card" onclick="runTool('csvwo')"><div class="hub-icon">📄</div><div class="hub-title">۶. خروجی دستورکارها</div><div class="hub-desc">گزارش CSV همه دستورکارها</div></div>
+                <div class="hub-card" onclick="runTool('backup')"><div class="hub-icon">💾</div><div class="hub-title">۷. پشتیبان کامل JSON</div><div class="hub-desc">ذخیره همه داده‌ها در یک فایل</div></div>
+                <div class="hub-card" onclick="runTool('restore')"><div class="hub-icon">♻️</div><div class="hub-title">۸. بازیابی پشتیبان</div><div class="hub-desc">ورود فایل JSON با تأیید جایگزینی</div></div>
+                <div class="hub-card" onclick="runTool('print')"><div class="hub-icon">🖨️</div><div class="hub-title">۹. گزارش چاپی مدیریتی</div><div class="hub-desc">ساخت گزارش خلاصه برای چاپ یا PDF</div></div>
+                <div class="hub-card" onclick="runTool('duplicates')"><div class="hub-icon">🔎</div><div class="hub-title">۱۰. کشف قطعات تکراری</div><div class="hub-desc">یافتن نام یا کدهای تکراری انبار</div></div>
+                <div class="hub-card" onclick="runTool('consumption')"><div class="hub-icon">📉</div><div class="hub-title">۱۱. گزارش مصرف قطعات</div><div class="hub-desc">مرور سوابق مصرف ثبت‌شده در کارتکس</div></div>
+                <div class="hub-card" onclick="runTool('archive')"><div class="hub-icon">🗄️</div><div class="hub-title">۱۲. آرشیو حذف‌شده‌ها</div><div class="hub-desc">مشاهده دستورکارهای حذف‌شده و ثبت‌کننده حذف</div></div>
+                <div class="hub-card" onclick="runTool('eqhistory')"><div class="hub-icon">🏭</div><div class="hub-title">۱۳. سوابق یک تجهیز</div><div class="hub-desc">انتخاب تجهیز و مشاهده خرابی‌های مرتبط</div></div>
+                <div class="hub-card" onclick="runTool('audit')"><div class="hub-icon">🛡️</div><div class="hub-title">۱۴. کنترل سلامت داده‌ها</div><div class="hub-desc">بررسی شناسه تکراری، فیلد خالی و موجودی نامعتبر</div></div>
+                <div class="hub-card" onclick="runTool('pm')"><div class="hub-icon">🗓️</div><div class="hub-title">۱۵. مرور برنامه PM</div><div class="hub-desc">نمایش تجهیزات و چک‌لیست‌های سرویس دوره‌ای</div></div>
+            </div>
+            <div class="card" style="margin-top:14px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;"><h4 style="color:var(--primary);font-size:12px;">نتیجه ابزار</h4><button class="btn btn-purple" onclick="clearToolResults()">پاک‌کردن نتیجه</button></div>
+                <div id="toolbox-results" style="font-size:12px;line-height:1.9;overflow-wrap:anywhere;">برای شروع یکی از ۱۵ ابزار بالا را انتخاب کنید.</div>
+            </div>
+            <input type="file" id="toolbox-restore-file" accept="application/json,.json" style="display:none" onchange="restoreToolBackup(event)">
+        </div>
+
         <div id="tab-settings" class="tab-content">
             <h3 style="font-size:12px; font-weight:700; color:var(--primary); text-transform:uppercase; margin-bottom:14px;" data-i18n="settings_page_title">⚙️ تنظیمات سیستم</h3>
             
@@ -448,7 +479,8 @@
                     <div class="form-group"><label data-i18n="pass_manager">رمز مدیریت:</label><input type="password" id="master-pass-manager" class="form-control"></div>
                     <div class="form-group"><label data-i18n="pass_tech1">رمز تکنسین ۱:</label><input type="password" id="master-pass-tech1" class="form-control"></div>
                     <div class="form-group"><label data-i18n="pass_tech2">رمز تکنسین ۲:</label><input type="password" id="master-pass-tech2" class="form-control"></div>
-                    <div class="form-group"><label data-i18n="pass_member">رمز عضو:</label><input type="password" id="master-pass-member" class="form-control"></div>
+                    <div class="form-group"><label>رمز تولید:</label><input type="password" id="master-pass-production" class="form-control"></div>
+                    <div class="form-group"><label>رمز پلاستیک‌سازی:</label><input type="password" id="master-pass-plastic" class="form-control"></div>
                 </div>
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
                     <button onclick="saveMasterPasswords()" class="btn btn-purple" data-i18n="update_pass_btn">بروزرسانی رمزها</button>
@@ -606,7 +638,7 @@
     const LOCAL_LOWSTOCK_KEY = 'erfont_low_stock_notified';
 
     const firebaseConfig = {
-        apiKey: "AIzaSyD-ErfontCloudApiKey1995Example",
+        apiKey: "REPLACE_WITH_REAL_FIREBASE_API_KEY",
         authDomain: "erfont1995.firebaseapp.com",
         databaseURL: "https://erfont1995-default-rtdb.firebaseio.com",
         projectId: "erfont1995"
@@ -617,12 +649,13 @@
         manager: '2020',
         tech1: '1111',
         tech2: '2222',
-        member: '0000'
+        production: '3333',
+        plastic: '4444'
     };
 
     const ROLE_NAMES = {
-        fa: { creator: 'سازنده', manager: 'مدیر', tech1: 'تکنسین ارشد', tech2: 'تکنسین شیفت', member: 'عضو' },
-        en: { creator: 'Creator', manager: 'Manager', tech1: 'Senior Tech', tech2: 'Shift Tech', member: 'Member' }
+        fa: { creator: 'سازنده', manager: 'مدیر', tech1: 'تکنسین ارشد', tech2: 'تکنسین شیفت', production: 'تولید', plastic: 'پلاستیک‌سازی' },
+        en: { creator: 'Creator', manager: 'Manager', tech1: 'Senior Tech', tech2: 'Shift Tech', production: 'Production', plastic: 'Plastic Manufacturing' }
     };
 
     // ============================================
@@ -782,6 +815,7 @@
     let db = {
         equipment: JSON.parse(JSON.stringify(exactEquipmentList)),
         workOrders: [],
+        reportHistory: [],
         inventory: generateMassiveInventory(),
         activityLogs: [],
         dailyReports: [],
@@ -825,27 +859,30 @@
 
     function mergeById(localArr, cloudArr) {
         const map = new Map();
-        (Array.isArray(cloudArr) ? cloudArr : []).forEach(x => {
+        (Array.isArray(localArr) ? localArr : []).forEach(x => {
             if (x && typeof x === 'object') map.set(stableKey(x), x);
         });
-        (Array.isArray(localArr) ? localArr : []).forEach(x => {
+        (Array.isArray(cloudArr) ? cloudArr : []).forEach(x => {
             if (x && typeof x === 'object') map.set(stableKey(x), x);
         });
         return Array.from(map.values());
     }
 
     function mergeCloudAndLocal(cloudData, localData) {
-        const merged = Object.assign({}, cloudData || {}, localData || {});
-        ['equipment','workOrders','inventory','activityLogs','dailyReports'].forEach(k => {
+        const merged = Object.assign({}, localData || {}, cloudData || {});
+        ['equipment','workOrders','inventory','activityLogs','dailyReports','reportHistory'].forEach(k => {
             if (Array.isArray(cloudData && cloudData[k]) || Array.isArray(localData && localData[k])) {
                 merged[k] = mergeById(localData && localData[k], cloudData && cloudData[k]);
             }
         });
-        merged.settings = Object.assign({}, (cloudData && cloudData.settings) || {}, (localData && localData.settings) || {});
-        merged.profiles = Object.assign({}, (cloudData && cloudData.profiles) || {}, (localData && localData.profiles) || {});
+        merged.settings = Object.assign({}, (localData && localData.settings) || {}, (cloudData && cloudData.settings) || {});
+        merged.profiles = Object.assign({}, (localData && localData.profiles) || {}, (cloudData && cloudData.profiles) || {});
         if (!Array.isArray(merged.equipment) || !merged.equipment.length) merged.equipment = JSON.parse(JSON.stringify(exactEquipmentList));
         if (!Array.isArray(merged.inventory) || !merged.inventory.length) merged.inventory = generateMassiveInventory();
         if (!Array.isArray(merged.workOrders)) merged.workOrders = [];
+        if (!Array.isArray(merged.reportHistory)) merged.reportHistory = [];
+        const permanentlyDeletedWO = new Set(merged.reportHistory.filter(x => x && x.recordType === 'workOrder').map(x => String(x.recordId)));
+        merged.workOrders = merged.workOrders.filter(w => !permanentlyDeletedWO.has(String(w.id)));
         if (!Array.isArray(merged.activityLogs)) merged.activityLogs = [];
         if (!Array.isArray(merged.dailyReports)) merged.dailyReports = [];
         if (!merged.settings || typeof merged.settings !== 'object') merged.settings = {};
@@ -1150,7 +1187,7 @@
         }
 
         const addEqBtn = document.getElementById('btn-add-eq');
-        if (addEqBtn) addEqBtn.style.display = (currentRole === 'tech1' || currentRole === 'tech2' || currentRole === 'member') ? 'none' : 'inline-block';
+        if (addEqBtn) addEqBtn.style.display = (['tech1','tech2','production','plastic'].includes(currentRole)) ? 'none' : 'inline-block';
     }
 
     async function handleGalleryUpload(event) {
@@ -1199,6 +1236,7 @@
     }
 
     function saveUserProfile() {
+        if (!currentRole) return;
         if (!db.profiles) db.profiles = {};
         if (!db.profiles[currentRole]) db.profiles[currentRole] = {};
         db.profiles[currentRole].fullname = sanitizeText(document.getElementById('setUserFullname').value, 80);
@@ -1218,7 +1256,7 @@
         if (currentRole === 'creator') {
             panel.style.display = 'block';
             const passMap = db.settings.passwords || {};
-            ['creator','manager','tech1','tech2','member'].forEach(r => {
+            ['creator','manager','tech1','tech2','production','plastic'].forEach(r => {
                 const el = document.getElementById('master-pass-' + r);
                 if (el) el.placeholder = passMap[r] ? '(تنظیم‌شده)' : 'خالی';
             });
@@ -1234,7 +1272,7 @@
     async function saveMasterPasswords() {
         if (currentRole !== 'creator') { showToast('دسترسی غیرمجاز', 'error'); return; }
         if (!db.settings.passwords) db.settings.passwords = {};
-        const roles = ['creator','manager','tech1','tech2','member'];
+        const roles = ['creator','manager','tech1','tech2','production','plastic'];
         let changed = 0;
         for (const r of roles) {
             const input = document.getElementById('master-pass-' + r);
@@ -1295,8 +1333,8 @@
         } else {
             if (backBar) backBar.style.display = 'flex';
             const titles = {
-                fa: { equipment: 'شناسنامه', kpi: 'شاخص‌ها', pm: 'PM', workorders: 'دستور کار', daily: 'گزارش شیفت', inventory: 'انبار', scanner: 'اسکنر', logs: 'لاگ', ai: 'AI', settings: 'تنظیمات' },
-                en: { equipment: 'Equipment', kpi: 'KPIs', pm: 'PM', workorders: 'Work Orders', daily: 'Daily', inventory: 'Inventory', scanner: 'Scanner', logs: 'Logs', ai: 'AI', settings: 'Settings' }
+                fa: { equipment: 'شناسنامه', kpi: 'شاخص‌ها', pm: 'PM', workorders: 'دستور کار', daily: 'گزارش شیفت', inventory: 'انبار', scanner: 'اسکنر', logs: 'لاگ', ai: 'AI', settings: 'تنظیمات', toolbox: 'جعبه‌ابزار هوشمند' },
+                en: { equipment: 'Equipment', kpi: 'KPIs', pm: 'PM', workorders: 'Work Orders', daily: 'Daily', inventory: 'Inventory', scanner: 'Scanner', logs: 'Logs', ai: 'AI', settings: 'Settings', toolbox: 'Smart Toolbox' }
             };
             if (pageTitle) pageTitle.textContent = titles[currentLang]?.[tabId] || '';
         }
@@ -1310,7 +1348,7 @@
         haptic('tap');
     }
 
-    function guard(minRoles = ['creator','manager','tech1','tech2','member']) {
+    function guard(minRoles = ['creator','manager','tech1','tech2','production','plastic']) {
         if (!currentRole || !minRoles.includes(currentRole)) {
             showToast('دسترسی غیرمجاز.', 'error');
             haptic('error');
@@ -1681,7 +1719,11 @@
             endTime: endTime || '--:--',
             durationMinutes,
             status: isCompleted ? 'تکمیل‌شده' : 'در حال انجام',
-            completed: isCompleted
+            completed: isCompleted,
+            locked: true,
+            startTimestamp: Date.now(),
+            createdAt: new Date().toISOString(),
+            createdBy: (db.profiles && db.profiles[currentRole] && db.profiles[currentRole].fullname) || ROLE_NAMES.fa[currentRole] || currentRole
         };
         db.workOrders.unshift(wo);
 
@@ -1695,12 +1737,15 @@
     }
 
     function toggleWorkOrderComplete(id, isChecked) {
+        if (!['creator','manager','tech1','tech2'].includes(currentRole)) { showToast('این نقش فقط مجاز به مشاهده و درخواست است.', 'error'); renderWorkOrdersTable(); return; }
         pushUndo();
         const wo = (db.workOrders || []).find(w => String(w.id) === String(id));
         if (!wo) return;
 
+        if (wo.locked && !['creator','manager','tech1','tech2'].includes(currentRole)) { showToast('دستور کار پس از ثبت قفل شده است.', 'error'); renderWorkOrdersTable(); return; }
         wo.completed = isChecked;
         if (isChecked) {
+            wo.completedAt = new Date().toISOString();
             wo.status = 'تکمیل‌شده';
             if (wo.endTime === '--:--' || !wo.endTime) {
                 const now = new Date();
@@ -1742,15 +1787,22 @@
 
     function delWo(id) {
         if (!confirm('حذف این دستور کار؟')) return;
+        if (!['creator','manager'].includes(currentRole)) { showToast('فقط سازنده یا مدیر می‌تواند دستور کار را حذف کند.', 'error'); return; }
         pushUndo();
+        const removed = (db.workOrders || []).find(w => String(w.id) === String(id));
+        if (!removed) return;
+        if (!Array.isArray(db.reportHistory)) db.reportHistory = [];
+        const now = new Date();
+        db.reportHistory.unshift({ id: 'del-' + Date.now(), recordType: 'workOrder', recordId: removed.id, title: removed.title || '', equipment: removed.equipment || '', deletedAt: now.toISOString(), date: now.toLocaleDateString('fa-IR'), time: now.toLocaleTimeString('fa-IR'), deletedBy: (db.profiles && db.profiles[currentRole] && db.profiles[currentRole].fullname) || ROLE_NAMES.fa[currentRole] || currentRole, snapshot: JSON.parse(JSON.stringify(removed)) });
         db.workOrders = (db.workOrders || []).filter(w => String(w.id) !== String(id));
-        logAct('حذف دستور کار');
+        logAct('حذف دستور کار (نسخه بایگانی‌شده در reportHistory)');
         syncToCloud();
         renderAll();
         calculateKPI();
     }
 
     function saveInventory() {
+        if (!['creator','manager','tech1','tech2'].includes(currentRole)) { showToast('این نقش فقط مجاز به مشاهده و درخواست است.', 'error'); return; }
         pushUndo();
         const editId = document.getElementById('edit-inv-id').value;
         const category = document.getElementById('inv-cat').value;
@@ -1845,6 +1897,92 @@
     // ============================================
     // 🎨 RENDER FUNCTIONS
     // ============================================
+    function clearToolResults() {
+        const el = document.getElementById('toolbox-results');
+        if (el) el.innerHTML = 'برای شروع یکی از ۱۵ ابزار بالا را انتخاب کنید.';
+    }
+    function toolTable(headers, rows) {
+        if (!rows.length) return '<p>موردی برای نمایش پیدا نشد.</p>';
+        return '<div class="table-container"><table><thead><tr>' + headers.map(h => '<th>'+escapeHtml(String(h))+'</th>').join('') + '</tr></thead><tbody>' + rows.map(r => '<tr>'+r.map(v => '<td>'+escapeHtml(String(v == null ? '-' : v))+'</td>').join('')+'</tr>').join('') + '</tbody></table></div>';
+    }
+    function downloadToolFile(name, content, type) {
+        const blob = new Blob([content], {type:type || 'text/plain;charset=utf-8'});
+        const url = URL.createObjectURL(blob); const a = document.createElement('a');
+        a.href=url; a.download=name; document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(()=>URL.revokeObjectURL(url),1000);
+    }
+    function csvCell(v) { return '"'+String(v == null ? '' : v).replace(/"/g,'""')+'"'; }
+    function exportToolCSV(filename, headers, rows) {
+        const csv='\uFEFF'+[headers,...rows].map(r=>r.map(csvCell).join(',')).join('\r\n');
+        downloadToolFile(filename,csv,'text/csv;charset=utf-8;');
+        showToast('فایل گزارش آماده شد.','success');
+    }
+    function runTool(tool) {
+        const out=document.getElementById('toolbox-results'); if(!out) return;
+        const eqs=db.equipment||[], wos=db.workOrders||[], inv=db.inventory||[], reports=db.dailyReports||[];
+        const open=wos.filter(w=>!w.completed), critical=wos.filter(w=>!w.completed && /بحرانی|فوری|critical|urgent/i.test(String(w.priority||'')));
+        const low=inv.filter(i=>Number(i.qty||0)<=Number(i.min||0));
+        const now=Date.now();
+        switch(tool) {
+            case 'summary': {
+                const downtime=wos.reduce((a,w)=>a+Number(w.durationMinutes||0),0);
+                out.innerHTML='<div class="card-grid"><div class="metric-card"><h4>تجهیزات</h4><div class="val">'+eqs.length+'</div></div><div class="metric-card"><h4>دستورکار باز</h4><div class="val">'+open.length+'</div></div><div class="metric-card"><h4>قطعات کم‌موجود</h4><div class="val">'+low.length+'</div></div><div class="metric-card"><h4>توقف ثبت‌شده</h4><div class="val">'+Math.round(downtime/60*10)/10+' ساعت</div></div></div><p>دستورکارها: '+wos.length+' | گزارش‌های شیفت: '+reports.length+' | سوابق حذف: '+(db.reportHistory||[]).length+'</p>';
+                break;
+            }
+            case 'open': out.innerHTML=toolTable(['کد','شرح','تجهیز','اولویت','ثبت‌کننده','زمان سپری‌شده'],open.map(w=>[w.id,w.title,w.equipment,w.priority,w.createdBy,w.startTimestamp?Math.floor((now-Number(w.startTimestamp))/3600000)+' ساعت و '+Math.floor(((now-Number(w.startTimestamp))/60000)%60)+' دقیقه':'نامشخص'])); break;
+            case 'critical': out.innerHTML=toolTable(['کد','شرح','تجهیز','اولویت','وضعیت'],critical.map(w=>[w.id,w.title,w.equipment,w.priority,w.status||'در حال انجام'])); break;
+            case 'lowstock': out.innerHTML=toolTable(['کد قطعه','نام','دسته','موجودی','حداقل','کسری تا حداقل'],low.map(i=>[i.code,i.name,i.category,i.qty,i.min,Math.max(0,Number(i.min||0)-Number(i.qty||0))])); break;
+            case 'csvinv': exportToolCSV('ErfoNT_inventory_'+new Date().toISOString().slice(0,10)+'.csv',['کد','نام','دسته','موجودی','حداقل'],inv.map(i=>[i.code,i.name,i.category,i.qty,i.min])); break;
+            case 'csvwo': exportToolCSV('ErfoNT_workorders_'+new Date().toISOString().slice(0,10)+'.csv',['کد','نوع','شرح','تجهیز','اولویت','وضعیت','شروع','پایان','توقف دقیقه','ثبت‌کننده','زمان ثبت'],wos.map(w=>[w.id,w.type,w.title,w.equipment,w.priority,w.status,w.startTime,w.endTime,w.durationMinutes,w.createdBy,w.createdAt])); break;
+            case 'backup': downloadToolFile('ErfoNT_backup_'+new Date().toISOString().replace(/[:.]/g,'-')+'.json',JSON.stringify(db,null,2),'application/json;charset=utf-8'); showToast('نسخه پشتیبان دانلود شد.','success'); break;
+            case 'restore': { const f=document.getElementById('toolbox-restore-file'); if(f) f.click(); break; }
+            case 'print': {
+                const html='<html lang="fa" dir="rtl"><meta charset="utf-8"><title>گزارش مدیریتی ErfoNT</title><style>body{font-family:Tahoma,Arial;padding:24px;color:#222}h1{font-size:20px}table{width:100%;border-collapse:collapse;margin:16px 0}td,th{border:1px solid #aaa;padding:7px;text-align:right;font-size:12px}.stats{line-height:2}</style><h1>گزارش خلاصه نگهداری و تعمیرات</h1><p>تاریخ: '+new Date().toLocaleString('fa-IR')+'</p><div class="stats">تعداد تجهیزات: '+eqs.length+'<br>کل دستورکارها: '+wos.length+'<br>دستورکارهای باز: '+open.length+'<br>دستورکارهای فوری/بحرانی باز: '+critical.length+'<br>قطعات کم‌موجود: '+low.length+'<br>گزارش‌های شیفت: '+reports.length+'</div><h2>دستورکارهای باز</h2><table><tr><th>شرح</th><th>تجهیز</th><th>اولویت</th><th>ثبت‌کننده</th></tr>'+open.map(w=>'<tr><td>'+escapeHtml(w.title||'')+'</td><td>'+escapeHtml(w.equipment||'')+'</td><td>'+escapeHtml(w.priority||'')+'</td><td>'+escapeHtml(w.createdBy||'')+'</td></tr>').join('')+'</table></html>';
+                const win=window.open('','_blank'); if(!win){out.textContent='مرورگر پنجره جدید را مسدود کرده است؛ اجازه بازشدن پنجره را بدهید.';break;} win.document.open();win.document.write(html);win.document.close();win.focus();setTimeout(()=>win.print(),400); break;
+            }
+            case 'duplicates': {
+                const groups={}; inv.forEach(i=>{const k=String(i.name||'').trim().toLowerCase();if(k){(groups[k]||(groups[k]=[])).push(i);}});
+                const dup=Object.values(groups).filter(g=>g.length>1).flatMap(g=>g.map(i=>[i.name,i.code,i.qty,i.category]));
+                const codes={};inv.forEach(i=>{const k=String(i.code||'').trim().toLowerCase();if(k&&k!=='-r-000')(codes[k]||(codes[k]=[])).push(i);});
+                const dc=Object.values(codes).filter(g=>g.length>1).flatMap(g=>g.map(i=>[i.name,i.code,i.qty,'کد تکراری']));
+                out.innerHTML='<h4>نام‌های تکراری</h4>'+toolTable(['نام','کد','موجودی','دسته'],dup)+'<h4 style="margin-top:12px">کدهای تکراری</h4>'+toolTable(['نام','کد','موجودی','بررسی'],dc); break;
+            }
+            case 'consumption': {
+                const rows=[]; inv.forEach(i=>(i.history||[]).forEach(h=>rows.push([i.name,i.code,h.date||'',h.time||'',h.user||'',h.equipment||'',h.workOrder||''])));
+                out.innerHTML=toolTable(['قطعه','کد','تاریخ','ساعت','کاربر','تجهیز','دستورکار'],rows.slice(0,500)); if(rows.length>500) out.innerHTML+='<p>فقط ۵۰۰ رکورد نخست نمایش داده شد.</p>'; break;
+            }
+            case 'archive': out.innerHTML=toolTable(['تاریخ','ساعت','عنوان','تجهیز','حذف‌کننده','شناسه'],(db.reportHistory||[]).filter(h=>h.recordType==='workOrder').map(h=>[h.date,h.time,h.title,h.equipment,h.deletedBy,h.recordId])); break;
+            case 'eqhistory': {
+                const name=prompt('نام تجهیز را دقیق وارد کنید:\n'+eqs.map(e=>e.name).join('\n')); if(!name){out.textContent='جستجو لغو شد.';break;}
+                const match=eqs.find(e=>String(e.name).toLowerCase()===name.trim().toLowerCase());
+                if(!match){out.textContent='تجهیزی با این نام پیدا نشد.';break;}
+                const rel=wos.filter(w=>w.equipment===match.name); out.innerHTML='<h4>'+escapeHtml(match.name)+' — '+escapeHtml(match.unit||'')+'</h4><p>ساعت کارکرد ثبت‌شده: '+Number(match.runningHours||0)+'</p>'+toolTable(['شرح','نوع','اولویت','وضعیت','توقف دقیقه','ثبت‌کننده'],rel.map(w=>[w.title,w.type,w.priority,w.status,w.durationMinutes,w.createdBy])); break;
+            }
+            case 'audit': {
+                const issues=[]; const ids={};
+                [['تجهیزات',eqs],['دستورکارها',wos],['انبار',inv]].forEach(([label,list])=>{const seen={};list.forEach((x,idx)=>{const id=String(x.id??'');if(!id)issues.push([label,idx+1,'شناسه خالی']);else if(seen[id])issues.push([label,id,'شناسه تکراری']);else seen[id]=true;});});
+                inv.forEach(i=>{if(!String(i.name||'').trim())issues.push(['انبار',i.id,'نام قطعه خالی']);if(!Number.isFinite(Number(i.qty))||Number(i.qty)<0)issues.push(['انبار',i.name,'موجودی نامعتبر']);if(!Number.isFinite(Number(i.min))||Number(i.min)<0)issues.push(['انبار',i.name,'حداقل موجودی نامعتبر']);});
+                wos.forEach(w=>{if(!String(w.title||'').trim())issues.push(['دستورکار',w.id,'شرح خالی']);if(!w.equipment)issues.push(['دستورکار',w.id,'تجهیز مشخص نشده']);});
+                out.innerHTML='<p>تعداد موارد قابل بررسی: '+issues.length+'</p>'+toolTable(['بخش','شناسه','ایراد'],issues); break;
+            }
+            case 'pm': {
+                const rows=[]; eqs.forEach(e=>{const hist=e.pmHistory||[];rows.push([e.name,e.unit,e.endDate||'ثبت نشده',(e.pmItems||[]).join('، '),hist.length]);});
+                out.innerHTML=toolTable(['تجهیز','واحد','تاریخ پایان/سررسید ثبت‌شده','چک‌لیست PM','تعداد سوابق PM'],rows); break;
+            }
+        }
+        logAct('استفاده از جعبه‌ابزار: '+tool);
+    }
+    function restoreToolBackup(event) {
+        const file=event.target.files && event.target.files[0]; if(!file)return;
+        if(!confirm('بازیابی نسخه پشتیبان، داده‌های فعلی را با اطلاعات فایل جایگزین/ادغام می‌کند. قبلاً پشتیبان گرفته‌اید؟ ادامه می‌دهید؟')){event.target.value='';return;}
+        const reader=new FileReader(); reader.onload=()=>{try{
+            const parsed=JSON.parse(reader.result); if(!parsed||typeof parsed!=='object'||!Array.isArray(parsed.equipment)||!Array.isArray(parsed.workOrders)||!Array.isArray(parsed.inventory)) throw new Error('invalid');
+            if(!Array.isArray(parsed.reportHistory))parsed.reportHistory=[]; if(!Array.isArray(parsed.activityLogs))parsed.activityLogs=[]; if(!Array.isArray(parsed.dailyReports))parsed.dailyReports=[];
+            db=parsed; safeLocalSave(); syncToCloud(true); renderAll(); logAct('بازیابی نسخه پشتیبان JSON');
+            const out=document.getElementById('toolbox-results'); if(out)out.textContent='بازیابی با موفقیت انجام شد. کنترل کنید که داده‌ها و نقش‌ها درست باشند.'; showToast('بازیابی انجام شد.','success');
+        }catch(e){showToast('فایل پشتیبان معتبر نیست یا ساختار آن پشتیبانی نمی‌شود.','error');} event.target.value='';}; reader.readAsText(file);
+    }
+
     function renderAll() {
         updateRoleDisplay();
         renderHubMetrics();
@@ -1938,35 +2076,49 @@
         cont.innerHTML = html || '<p style="color:var(--text-muted); text-align:center; padding:20px;">تجهیزاتی ثبت نشده</p>';
     }
 
+    function formatElapsed(wo) {
+        if (wo.completed) return wo.durationMinutes ? `${Math.floor(wo.durationMinutes/60)}س ${wo.durationMinutes%60}د` : 'تکمیل‌شده';
+        const start = Number(wo.startTimestamp || (wo.createdAt ? Date.parse(wo.createdAt) : 0));
+        if (!start) return 'در انتظار شروع';
+        let sec = Math.max(0, Math.floor((Date.now() - start) / 1000));
+        const h = String(Math.floor(sec / 3600)).padStart(2,'0'); sec %= 3600;
+        const m = String(Math.floor(sec / 60)).padStart(2,'0');
+        const s = String(sec % 60).padStart(2,'0');
+        return `${h}:${m}:${s}`;
+    }
+
     function renderWorkOrdersTable() {
         const body = document.getElementById('wo-table-body');
         if (!body) return;
+        const canManage = ['creator','manager'].includes(currentRole);
+        const canComplete = ['creator','manager','tech1','tech2'].includes(currentRole);
         const rows = (db.workOrders || []).map(wo => {
             const typeBadge = wo.type === 'EM' ? '<span class="status-badge status-pending">EM</span>' : '<span class="status-badge" style="background:rgba(2,132,199,0.2); color:var(--primary);">CM</span>';
-            const durText = wo.durationMinutes > 0 ? wo.durationMinutes + ' دقیقه' : '--';
-            const partText = wo.partUsed ? `<span style="color:var(--accent-purple); font-weight:600;">📦 ${escapeHtml(wo.partUsed)}</span>` : '<span style="color:var(--text-muted);">--</span>';
+            const durText = wo.completed ? (wo.durationMinutes > 0 ? wo.durationMinutes + ' دقیقه' : '--') : `<span class="wo-live-timer" data-wo-id="${escapeHtml(String(wo.id))}" style="font-family:monospace;color:var(--accent-cyan);font-weight:800">${formatElapsed(wo)}</span>`;
+            const partText = wo.partUsed ? `<span style="color:var(--accent-purple);font-weight:600;">📦 ${escapeHtml(wo.partUsed)}</span>` : '<span style="color:var(--text-muted);">--</span>';
             const prioColor = wo.priority === 'بحرانی' ? 'var(--accent-rose)' : (wo.priority === 'فوری' ? 'var(--accent-amber)' : 'var(--text-muted)');
-
+            const statusCell = canComplete ? `<label class="checkbox-container"><input type="checkbox" ${wo.completed ? 'checked' : ''} onchange="toggleWorkOrderComplete('${String(wo.id)}',this.checked)"><span class="${wo.completed ? 'status-completed' : 'status-pending'}" style="padding:2px 6px;">${wo.completed ? 'تکمیل' : 'در حال انجام'}</span></label>` : `<span class="${wo.completed ? 'status-completed' : 'status-pending'} status-badge">${wo.completed ? 'تکمیل‌شده' : 'در حال انجام'}</span>`;
+            const delBtn = canManage ? `<button onclick="delWo('${String(wo.id)}')" title="حذف با بایگانی دائمی" style="background:none;border:none;color:var(--accent-rose);cursor:pointer;font-size:14px;">🗑</button>` : '<span style="color:var(--text-muted)">🔒</span>';
             return `<tr>
                 <td>${typeBadge} <b style="font-size:10px;">#${String(wo.id).slice(-4)}</b></td>
-                <td style="font-weight:600;">${escapeHtml(wo.title)}</td>
-                <td>${escapeHtml(wo.equipment)}</td>
-                <td>${partText}</td>
+                <td style="font-weight:600;">${escapeHtml(wo.title)}<div style="font-size:9px;color:var(--text-muted);margin-top:3px">ثبت‌کننده: ${escapeHtml(wo.createdBy || '-')} ${wo.locked ? ' · 🔒 قفل‌شده' : ''}</div></td>
+                <td>${escapeHtml(wo.equipment || '-')}</td><td>${partText}</td>
                 <td style="font-family:monospace;">${escapeHtml(wo.startTime || '--:--')}</td>
                 <td style="font-family:monospace;">${escapeHtml(wo.endTime || '--:--')}</td>
-                <td style="font-weight:700; color:var(--accent-amber);">${durText}</td>
-                <td>
-                    <label class="checkbox-container">
-                        <input type="checkbox" ${wo.completed ? 'checked' : ''} onchange="toggleWorkOrderComplete('${wo.id}', this.checked)">
-                        <span class="${wo.completed ? 'status-completed' : 'status-pending'}" style="padding:2px 6px;">${wo.completed ? 'تکمیل' : 'در حال انجام'}</span>
-                    </label>
-                    <span style="font-size:9px; color:${prioColor}; display:block; margin-top:2px;">⚡ ${escapeHtml(wo.priority || 'عادی')}</span>
-                </td>
-                <td><button onclick="delWo('${wo.id}')" style="background:none; border:none; color:var(--accent-rose); cursor:pointer; font-size:14px;">🗑</button></td>
-            </tr>`;
+                <td style="font-weight:700;color:var(--accent-amber);">${durText}</td>
+                <td>${statusCell}<span style="font-size:9px;color:${prioColor};display:block;margin-top:3px;">⚡ ${escapeHtml(wo.priority || 'عادی')}</span></td>
+                <td>${delBtn}</td></tr>`;
         }).join('');
-        body.innerHTML = rows || '<tr><td colspan="9" style="text-align:center; padding:20px; color:var(--text-muted);">دستور کاری نیست</td></tr>';
+        body.innerHTML = rows || '<tr><td colspan="9" style="text-align:center;padding:20px;color:var(--text-muted);">دستور کاری نیست</td></tr>';
     }
+
+    function refreshOpenWorkOrderTimers() {
+        document.querySelectorAll('.wo-live-timer[data-wo-id]').forEach(el => {
+            const wo = (db.workOrders || []).find(w => String(w.id) === el.dataset.woId);
+            if (wo && !wo.completed) el.textContent = formatElapsed(wo);
+        });
+    }
+    setInterval(refreshOpenWorkOrderTimers, 1000);
 
     function renderDailyTable() {
         const body = document.getElementById('daily-table-body');
@@ -2376,6 +2528,7 @@
     }
 
     function resetFactoryData() {
+        if (currentRole !== 'creator') { showToast('فقط سازنده مجاز است.', 'error'); return; }
         if (!confirm('بازنشانی کامل؟ همه داده‌ها پاک می‌شود!')) return;
         pushUndo();
         db.equipment = JSON.parse(JSON.stringify(exactEquipmentList));
@@ -2494,7 +2647,7 @@
             login_title: "ErfoNT pro ⚙️",
             login_subtitle: "سامانه کنترل مرکزی و نگهداری تجهیزات صنعتی شوینده<br>جهت دسترسی، سمت خود را انتخاب و رمز عبور را وارد نمایید.",
             login_role_label: "انتخاب نقش:",
-            role_creator: "👑 سازنده", role_manager: "👔 مدیر", role_tech1: "🔧 تکنسین ارشد", role_tech2: "🔧 تکنسین شیفت", role_member: "👤 عضو",
+            role_creator: "👑 سازنده", role_manager: "👔 مدیر", role_tech1: "🔧 تکنسین ارشد", role_tech2: "🔧 تکنسین شیفت", role_production: "🏭 تولید", role_plastic: "🧴 پلاستیک‌سازی",
             login_pass_label: "کلمه عبور:", login_btn: "ورود",
             locked_title: "اعتبار لایسنس پایان یافته", locked_desc: "دسترسی توسط سرور مرکزی محدود شده.",
             undo: "بازگشت", theme: "تم", back_to_hub: "بازگشت به هاب",
@@ -2520,7 +2673,7 @@
             logs_page_title: "لاگ", th_user: "کاربر", th_action_desc: "اقدام",
             ai_page_title: "AI", ai_ph: "خطای درایو...", ai_btn: "تحلیل",
             settings_page_title: "تنظیمات", master_panel_title: "پنل امنیت",
-            pass_creator: "رمز سازنده:", pass_manager: "رمز مدیر:", pass_tech1: "رمز تک۱:", pass_tech2: "رمز تک۲:", pass_member: "رمز عضو:",
+            pass_creator: "رمز سازنده:", pass_manager: "رمز مدیر:", pass_tech1: "رمز تک۱:", pass_tech2: "رمز تک۲:",
             update_pass_btn: "بروزرسانی", lock_sys_btn: "قفل", unlock_sys_btn: "فعال",
             profile_title: "پروفایل", fullname_label: "نام:", specialty_label: "سمت:", avatar_label: "عکس:", save_profile_btn: "ذخیره",
             backup_title: "پشتیبان", backup_btn: "دانلود", reset_btn: "بازنشانی",
@@ -2535,7 +2688,7 @@
             login_title: "ErfoNT pro ⚙️",
             login_subtitle: "Industrial CMMS & SCADA System<br>Select your role and enter password.",
             login_role_label: "Select Role:",
-            role_creator: "👑 Creator", role_manager: "👔 Manager", role_tech1: "🔧 Senior Tech", role_tech2: "🔧 Shift Tech", role_member: "👤 Member",
+            role_creator: "👑 Creator", role_manager: "👔 Manager", role_tech1: "🔧 Senior Tech", role_tech2: "🔧 Shift Tech", role_production: "🏭 Production", role_plastic: "🧴 Plastic Manufacturing",
             login_pass_label: "Password:", login_btn: "Login",
             locked_title: "License Expired", locked_desc: "Access restricted by server.",
             undo: "Undo", theme: "Theme", back_to_hub: "Back to Hub",
@@ -2561,7 +2714,7 @@
             logs_page_title: "Logs", th_user: "User", th_action_desc: "Action",
             ai_page_title: "AI", ai_ph: "Drive error...", ai_btn: "Analyze",
             settings_page_title: "Settings", master_panel_title: "Security Panel",
-            pass_creator: "Creator pass:", pass_manager: "Manager pass:", pass_tech1: "Tech1 pass:", pass_tech2: "Tech2 pass:", pass_member: "Member pass:",
+            pass_creator: "Creator pass:", pass_manager: "Manager pass:", pass_tech1: "Tech1 pass:", pass_tech2: "Tech2 pass:",
             update_pass_btn: "Update", lock_sys_btn: "Lock", unlock_sys_btn: "Activate",
             profile_title: "Profile", fullname_label: "Name:", specialty_label: "Title:", avatar_label: "Photo:", save_profile_btn: "Save",
             backup_title: "Backup", backup_btn: "Download", reset_btn: "Reset",
@@ -2576,4 +2729,4 @@
 
     </script>
 </body>
-                </html>
+    </html>
