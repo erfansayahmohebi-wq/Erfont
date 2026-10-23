@@ -11,19 +11,10 @@
     <title>ErfoNT pro - Industrial CMMS & SCADA v3.1</title>
 
     <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
     
     <!-- Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <style>
+<style>
         :root { --bg-body:#070a13; --surface-card:rgba(19,27,46,0.82); --surface-card-hover:rgba(27,38,66,0.92); --surface-input:rgba(8,12,20,0.9); --border-color:rgba(34,48,74,0.65); --border-focus:#0284c7; --text-main:#f1f5f9; --text-muted:#8c9cb0; --primary:#0284c7; --primary-glow:rgba(2,132,199,0.3); --accent-amber:#d97706; --accent-emerald:#059669; --accent-rose:#dc2626; --accent-purple:#7c3aed; --accent-cyan:#06b6d4; --modal-bg:rgba(15,23,42,0.95); --radius-box:16px; --radius-btn:10px; --shadow-card:0 8px 32px 0 rgba(0,0,0,0.2); --transition-fast:0.15s ease; --transition-smooth:0.3s cubic-bezier(0.4,0,0.2,1); }
         body.light-theme { --bg-body:#f1f5f9; --surface-card:rgba(255,255,255,0.88); --surface-card-hover:rgba(241,245,249,0.98); --surface-input:rgba(248,250,252,0.95); --border-color:rgba(203,213,225,0.85); --text-main:#0f172a; --text-muted:#64748b; --accent-amber:#b45309; --accent-emerald:#047857; --accent-rose:#b91c1c; --accent-purple:#6d28d9; --modal-bg:rgba(255,255,255,0.98); }
         body.industrial-theme { --bg-body:#1a1410; --surface-card:rgba(45,35,25,0.85); --surface-card-hover:rgba(60,48,35,0.95); --surface-input:rgba(20,15,10,0.9); --border-color:rgba(120,90,50,0.5); --text-main:#f5e6d3; --text-muted:#b8a890; --primary:#f59e0b; --primary-glow:rgba(245,158,11,0.3); --accent-amber:#f97316; --accent-emerald:#84cc16; --accent-rose:#ef4444; --accent-purple:#a855f7; --modal-bg:rgba(35,25,18,0.97); }
@@ -279,7 +270,7 @@
     <header>
         <div class="logo-group">
             <div class="logo" onclick="navigateTo('hub')" title="خانه">
-                <span>⚡</span> ErfoNT pro <span style="font-size:10px; color:var(--accent-emerald); font-family:monospace;">v3.1.3</span>
+                <span>⚡</span> ErfoNT pro <span style="font-size:10px; color:var(--accent-emerald); font-family:monospace;">v3.1.4</span>
             </div>
             <span class="badge" id="company-badge-text">NODE: erfont1995</span>
             <button onclick="navigateTo('settings')" class="icon-btn" title="تنظیمات">⚙️</button>
@@ -693,7 +684,7 @@
     // ============================================
     // 🎯 CONSTANTS & CONFIG
     // ============================================
-    const APP_VERSION = '3.1.3';
+    const APP_VERSION = '3.1.4';
     const LOCAL_STORAGE_KEY = 'erfont_turbo_db_v30_persistent';
     const LOCAL_THEME_KEY = 'erfont_theme_v30';
     const LOCAL_LANG_KEY = 'erfont_lang_v30';
@@ -978,10 +969,36 @@
         }
     }
 
+
+    // ===== بارگذاری غیرمسدودکننده کتابخانه‌ها (برنامه اول بالا می‌آید) =====
+    function loadScript(src, ms) {
+        return new Promise(res => {
+            let done = false; const f = ok => { if (!done) { done = true; res(ok); } };
+            const el = document.createElement('script'); el.src = src;
+            el.onload = () => f(true); el.onerror = () => { el.remove(); f(false); };
+            setTimeout(() => f(false), ms || 15000);
+            document.head.appendChild(el);
+        });
+    }
+    async function loadFirebaseSdk() {
+        if (window.firebase && firebase.database && firebase.auth) return true;
+        for (const n of ['app', 'auth', 'database']) {
+            if (!(await loadScript('https://www.gstatic.com/firebasejs/10.8.0/firebase-' + n + '-compat.js'))) return false;
+        }
+        return !!window.firebase;
+    }
+    function loadExtraLibs() {
+        ['https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js', 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js'].forEach(u =>
+            loadScript(u, 30000).then(ok => { if (ok && u.indexOf('chart.js') > 0) { try { refreshOEEChart(); if (document.getElementById('tab-kpi').classList.contains('active')) calculateKPI(); } catch(e) {} } }));
+    }
+    window.addEventListener('load', () => setTimeout(() => {
+        const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = 'https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;800&display=swap'; document.head.appendChild(l);
+    }, 2500));
+
     function initFirebase() {
         return new Promise(async (resolve) => {
             try {
-                if (!window.firebase) { resolve(false); return; }
+                if (!(await loadFirebaseSdk())) { resolve(false); return; }
                 if (!firebase.apps || !firebase.apps.length) firebase.initializeApp(firebaseConfig);
                 
                 try {
@@ -1178,6 +1195,7 @@
         if (localData) db = mergeCloudAndLocal(localData, db);
         safeLocalSave();
 
+        loadExtraLibs();
         const ok = await initFirebase();
         
         const statusText = document.getElementById('auth-status');
@@ -1213,6 +1231,13 @@
         }
 
         if (firebaseConfig.apiKey.indexOf('REPLACE') === 0) setConnectivityStatus('کلید API فایربیس تنظیم نشده؛ همگام‌سازی بین گوشی‌ها کار نمی‌کند. جعبه‌ابزار ← ابزار ۲۹.', true);
+        if (!(ok && rootRef)) {
+            const retry = setInterval(async () => {
+                if (rootRef) { clearInterval(retry); return; }
+                const r = await initFirebase();
+                if (r && rootRef) { clearInterval(retry); setConnectivityStatus('اتصال ابری برقرار شد.', false); setSyncStatus('ok'); }
+            }, 20000);
+        }
         initPWA();
         renderAll();
         checkLowStockNotifications(false);
@@ -2059,7 +2084,7 @@
         const rows = [];
         rows.push(['کلید API', firebaseConfig.apiKey.indexOf('REPLACE') === 0 ? '❌ تنظیم نشده' : '✅ ثبت شده']);
         rows.push(['اینترنت', navigator.onLine ? '✅ آنلاین' : '❌ آفلاین']);
-        rows.push(['نسخه فایل (باید 3.1.3 باشد)', APP_VERSION]);
+        rows.push(['نسخه فایل (باید 3.1.4 باشد)', APP_VERSION]);
         const sdk = window.firebase;
         rows.push(['کتابخانه app', sdk ? '✅ بارگذاری شد' : '❌ بارگذاری نشد (gstatic.com باز نمی‌شود)']);
         rows.push(['کتابخانه auth', (sdk && sdk.auth) ? '✅' : '❌ بارگذاری نشد']);
@@ -2975,4 +3000,4 @@
 
     </script>
 </body>
-                    </html>
+                                                                                                                                                     </html>
