@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#0b0f19">
+    <meta name="theme-color" content="#08070a">
     <meta name="application-name" content="ErfoNT pro">
     <meta name="description" content="Industrial CMMS & SCADA System">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon-192.png">
-    <title>ErfoNT pro - Industrial CMMS & SCADA v3.0</title>
+    <title>ErfoNT pro - Industrial CMMS & SCADA v3.1</title>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -22,6 +22,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root { --bg-body:#070a13; --surface-card:rgba(19,27,46,0.82); --surface-card-hover:rgba(27,38,66,0.92); --surface-input:rgba(8,12,20,0.9); --border-color:rgba(34,48,74,0.65); --border-focus:#0284c7; --text-main:#f1f5f9; --text-muted:#8c9cb0; --primary:#0284c7; --primary-glow:rgba(2,132,199,0.3); --accent-amber:#d97706; --accent-emerald:#059669; --accent-rose:#dc2626; --accent-purple:#7c3aed; --accent-cyan:#06b6d4; --modal-bg:rgba(15,23,42,0.95); --radius-box:16px; --radius-btn:10px; --shadow-card:0 8px 32px 0 rgba(0,0,0,0.2); --transition-fast:0.15s ease; --transition-smooth:0.3s cubic-bezier(0.4,0,0.2,1); }
         body.light-theme { --bg-body:#f1f5f9; --surface-card:rgba(255,255,255,0.88); --surface-card-hover:rgba(241,245,249,0.98); --surface-input:rgba(248,250,252,0.95); --border-color:rgba(203,213,225,0.85); --text-main:#0f172a; --text-muted:#64748b; --accent-amber:#b45309; --accent-emerald:#047857; --accent-rose:#b91c1c; --accent-purple:#6d28d9; --modal-bg:rgba(255,255,255,0.98); }
@@ -159,6 +160,54 @@
         .fab{position:fixed;bottom:20px;left:20px;width:56px;height:56px;border-radius:50%;background:var(--primary);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 8px 30px var(--primary-glow),0 0 0 0 var(--primary-glow);transition:all var(--transition-smooth);z-index:999;animation:fabPulse 2s infinite;}
         .fab:hover{transform:scale(1.1) rotate(90deg);}
         @keyframes fabPulse{0%,100%{box-shadow:0 8px 30px var(--primary-glow),0 0 0 0 var(--primary-glow);}50%{box-shadow:0 8px 30px var(--primary-glow),0 0 0 12px transparent;}}
+
+        /* ===== ErfoNT Prestige — لوکس مشکی و طلایی ===== */
+        :root{--bg-body:#08070a;--surface-card:rgba(20,18,22,.72);--surface-card-hover:rgba(34,30,26,.9);--surface-input:rgba(10,9,11,.85);--border-color:rgba(212,175,95,.16);--border-focus:#d4af5f;--text-main:#f4efe6;--text-muted:#9d9484;--primary:#d4af5f;--primary-glow:rgba(212,175,95,.16);--modal-bg:rgba(16,14,17,.96);--accent-emerald:#7fd1a8;--accent-rose:#e0707a;--accent-amber:#e8b866;--accent-purple:#b79adf;--accent-cyan:#8fc9d6;--radius-box:18px;--radius-btn:12px;--shadow-card:0 10px 40px rgba(0,0,0,.45)}
+        body.light-theme{--bg-body:#f6f1e7;--surface-card:rgba(255,252,246,.9);--surface-card-hover:#fff;--surface-input:#fffdf8;--border-color:rgba(160,120,40,.22);--text-main:#2a2118;--text-muted:#7a6c58;--primary:#a67c2e;--primary-glow:rgba(166,124,46,.14);--modal-bg:#fffaf0}
+        body.industrial-theme{--bg-body:#0d0f0e;--primary:#c9a45c;--border-color:rgba(201,164,92,.2)}
+        *{font-family:'Vazirmatn',system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif!important}
+        i,.fa,.fas,.far,.fa-solid,.fa-regular,.fa-light,.fa-thin,.fa-duotone,[class*=" fa-"],[class^="fa-"]{font-family:"Font Awesome 6 Free"!important}
+        .fab,.fa-brands{font-family:"Font Awesome 6 Brands"!important}
+        .fa-solid,.fas,.fa{font-weight:900!important}.fa-regular,.far{font-weight:400!important}
+        body{font-weight:300;background-image:radial-gradient(900px 500px at 85% -10%,rgba(212,175,95,.12),transparent 60%),radial-gradient(700px 420px at 0% 100%,rgba(140,100,40,.10),transparent 60%)!important;background-attachment:fixed}
+        header{background:linear-gradient(180deg,rgba(18,16,19,.92),rgba(18,16,19,.7));border-bottom:1px solid transparent;border-image:linear-gradient(90deg,transparent,rgba(212,175,95,.55),transparent) 1}
+        .logo{font-weight:800;letter-spacing:.5px;background:linear-gradient(90deg,#f3dfa6,#d4af5f 50%,#a9812f);-webkit-background-clip:text;background-clip:text;color:transparent}
+        .logo:hover{text-shadow:none;filter:brightness(1.2)}
+        .badge{background:transparent;color:var(--primary);border-color:rgba(212,175,95,.4);letter-spacing:1.5px;border-radius:20px}
+        .hub-card,.card,.metric-card,.table-container,.login-card,.modal-body{border:1px solid var(--border-color);box-shadow:var(--shadow-card),inset 0 1px 0 rgba(255,255,255,.04);backdrop-filter:blur(22px)}
+        .hub-card{padding:22px;position:relative;overflow:hidden}
+        .hub-card::after{content:'';position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,95,.7),transparent);opacity:.5;transition:opacity .4s}
+        .hub-card:hover{transform:translateY(-5px);border-color:rgba(212,175,95,.55);box-shadow:0 22px 60px rgba(0,0,0,.6),0 0 40px rgba(212,175,95,.12)}
+        .hub-card:hover::after{opacity:1}
+        .hub-icon{width:46px;height:46px;display:flex;align-items:center;justify-content:center;font-size:22px;border-radius:14px;background:linear-gradient(145deg,rgba(212,175,95,.18),rgba(212,175,95,.03));border:1px solid rgba(212,175,95,.28)}
+        .hub-title{font-weight:600;font-size:13.5px}
+        .hub-desc{font-weight:300}
+        .metric-card::before{width:2px;background:linear-gradient(180deg,#f3dfa6,transparent)}
+        .metric-card h4{text-transform:none;letter-spacing:0;font-weight:400}
+        .metric-card .val{font-family:'Vazirmatn'!important;font-weight:300;font-size:30px;background:linear-gradient(180deg,#fff,#d9c18a);-webkit-background-clip:text;background-clip:text;color:transparent}
+        .btn{background:linear-gradient(135deg,#f0d994,#c79a3e 55%,#a67c2e);color:#1a1408;font-weight:600;border:none;border-radius:var(--radius-btn);box-shadow:0 6px 20px rgba(199,154,62,.25)}
+        .btn:hover{filter:brightness(1.1);box-shadow:0 8px 28px rgba(199,154,62,.4)}
+        .btn-rose{background:linear-gradient(135deg,#e88a92,#b94a56);color:#fff}.btn-emerald{background:linear-gradient(135deg,#8fdcb4,#3f9f78);color:#06150e}.btn-amber{background:linear-gradient(135deg,#f0cf8c,#c9953a);color:#1a1408}.btn-purple{background:linear-gradient(135deg,#c9b2ea,#7b5cb0);color:#fff}.btn-cyan{background:linear-gradient(135deg,#a9dbe5,#4f97a8);color:#06151a}
+        .icon-btn,.role-display,.back-btn,.sync-badge{border-radius:20px;background:rgba(255,255,255,.03);font-weight:400}
+        .icon-btn:hover,.role-display:hover{border-color:var(--primary);color:var(--primary);box-shadow:0 4px 18px rgba(212,175,95,.18)}
+        .form-control{border-radius:12px;font-weight:300;font-size:12px;padding:11px 14px}
+        .form-control:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(212,175,95,.15)}
+        th{background:rgba(212,175,95,.07);color:var(--primary);text-transform:none;font-weight:600;letter-spacing:0}
+        td{border-bottom:1px solid rgba(212,175,95,.08);font-weight:300}
+        tr:hover td{background:rgba(212,175,95,.05)}
+        .status-badge{border-radius:20px;padding:3px 11px;font-weight:600}
+        .login-card{padding:38px 32px;border-radius:24px;border:1px solid rgba(212,175,95,.3);box-shadow:0 40px 100px rgba(0,0,0,.85),0 0 80px rgba(212,175,95,.08)}
+        .login-logo{border-bottom:1px solid rgba(212,175,95,.35);background:linear-gradient(90deg,#f3dfa6,#d4af5f,#a9812f);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:24px;text-align:center}
+        #login-screen{background:radial-gradient(800px 500px at 50% 30%,rgba(212,175,95,.12),transparent 70%),#050406}
+        .toast{border-radius:16px;border:1px solid rgba(212,175,95,.3);font-weight:400}
+        .fab{background:linear-gradient(135deg,#f0d994,#a67c2e);color:#1a1408;box-shadow:0 10px 35px rgba(199,154,62,.45)}
+        .health-bar{height:4px}
+        ::-webkit-scrollbar-thumb{background:rgba(212,175,95,.35)}
+        .tab-content.active{animation:luxIn .6s cubic-bezier(.2,.8,.2,1)}
+        @keyframes luxIn{from{opacity:0;transform:translateY(14px);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
+        @media (max-width:480px){.hub-card{flex-direction:row;align-items:center;gap:14px}.hub-card>div:not(.hub-icon){flex:1}}
+        @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+        .ic{width:1.15em;height:1.15em;vertical-align:-.18em;flex-shrink:0}.fab .ic{width:24px;height:24px}.alert-empty .ic{width:48px;height:48px;margin-bottom:12px;opacity:.5}
     </style>
 </head>
 <body dir="rtl">
@@ -168,7 +217,7 @@
     <div id="cmd-palette" onclick="if(event.target.id==='cmd-palette') closeCmdPalette()">
         <div class="cmd-palette-box">
             <div class="cmd-input-wrap">
-                <i class="fa-solid fa-magnifying-glass"></i>
+                <svg class="ic" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
                 <input type="text" id="cmd-input" placeholder="جستجو در همه ماژول‌ها، تجهیزات و قطعات..." autocomplete="off">
                 <span class="cmd-kbd">ESC</span>
             </div>
@@ -230,7 +279,7 @@
     <header>
         <div class="logo-group">
             <div class="logo" onclick="navigateTo('hub')" title="خانه">
-                <span>⚡</span> ErfoNT pro <span style="font-size:10px; color:var(--accent-emerald); font-family:monospace;">v3.0</span>
+                <span>⚡</span> ErfoNT pro <span style="font-size:10px; color:var(--accent-emerald); font-family:monospace;">v3.1</span>
             </div>
             <span class="badge" id="company-badge-text">NODE: erfont1995</span>
             <button onclick="navigateTo('settings')" class="icon-btn" title="تنظیمات">⚙️</button>
@@ -238,21 +287,21 @@
         
         <div class="header-controls">
             <button onclick="manualRefresh()" class="icon-btn" id="refresh-btn" title="به‌روزرسانی">
-                <i class="fa-solid fa-rotate"></i><span>به‌روزرسانی</span>
+                <svg class="ic" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg><span>به‌روزرسانی</span>
             </button>
             <button onclick="openCmdPalette()" class="icon-btn" title="جستجوی سریع (Ctrl+K)">
-                <i class="fa-solid fa-magnifying-glass"></i><span>جستجو</span>
+                <svg class="ic" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span>جستجو</span>
                 <span class="cmd-kbd" style="margin-right:2px;">Ctrl K</span>
             </button>
             <button onclick="toggleAlertCenter()" class="icon-btn" title="هشدارها" style="position:relative;">
-                <i class="fa-solid fa-bell"></i><span>هشدار</span>
+                <svg class="ic" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span>هشدار</span>
                 <span class="alert-badge-count" id="alert-count" style="display:none;">0</span>
             </button>
             <button onclick="toggleLanguage()" class="icon-btn" id="lang-btn" title="تغییر زبان">
                 🌐 <span id="lang-label">English</span>
             </button>
             <button onclick="undoLastAction()" class="icon-btn undo-btn-head" id="btn-undo-head">
-                <i class="fa-solid fa-rotate-left"></i><span data-i18n="undo">بازگشت</span>
+                <svg class="ic" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v6h6"/></svg><span data-i18n="undo">بازگشت</span>
             </button>
             <div class="theme-dots" title="تم">
                 <div class="theme-dot dark active" onclick="setTheme('dark')" data-theme="dark"></div>
@@ -271,7 +320,7 @@
     </header>
 
     <div id="connectivity-status" role="status" aria-live="polite" style="position:sticky;top:0;z-index:900;background:rgba(23,32,51,0.85);backdrop-filter:blur(8px);color:#cbd5e1;padding:5px 12px;font-size:11px;text-align:center;border-bottom:1px solid #334155;">
-        <i class="fa-solid fa-shield-halved"></i> ذخیره محلی فعال است؛ همگام‌سازی ابری وابسته به تنظیم صحیح Firebase است.
+        <svg class="ic" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 2v20"/></svg> ذخیره محلی فعال است؛ همگام‌سازی ابری وابسته به تنظیم صحیح Firebase است.
     </div>
 
     <main class="workspace">
@@ -305,7 +354,7 @@
                 <div class="hub-card" onclick="navigateTo('logs')"><div class="hub-icon">📜</div><div class="hub-title" data-i18n="mod_logs">لاگ رویدادهای زنده (Audit Trail)</div><div class="hub-desc" data-i18n="mod_logs_desc">ثبت تمامی تغییرات و فعالیت‌های کاربران در سیستم.</div></div>
                 <div class="hub-card" onclick="navigateTo('ai')"><div class="hub-icon">🤖</div><div class="hub-title" data-i18n="mod_ai">عیب‌یاب هوشمند صنعتی AI</div><div class="hub-desc" data-i18n="mod_ai_desc">تحلیل خطاهای درایو، پمپ و تجهیزات برقی.</div></div>
                 <div class="hub-card" onclick="navigateTo('settings')"><div class="hub-icon">⚙️</div><div class="hub-title" data-i18n="mod_settings">پروفایل، امنیت و تنظیمات</div><div class="hub-desc" data-i18n="mod_settings_desc">مدیریت رمزها، گالری تصاویر و پشتیبان‌گیری ابری.</div></div>
-                <div class="hub-card" onclick="navigateTo('toolbox')"><div class="hub-icon">🧰</div><div class="hub-title">جعبه‌ابزار هوشمند نت</div><div class="hub-desc">۱۵ ابزار کاربردی برای تحلیل خرابی، کنترل انبار، گزارش و پشتیبان‌گیری.</div></div>
+                <div class="hub-card" onclick="navigateTo('toolbox')"><div class="hub-icon">🧰</div><div class="hub-title">جعبه‌ابزار هوشمند نت</div><div class="hub-desc">۳۰ ابزار کاربردی برای تحلیل خرابی، کنترل انبار، گزارش و پشتیبان‌گیری.</div></div>
             </div>
         </div>
 
@@ -461,10 +510,25 @@
                 <div class="hub-card" onclick="runTool('eqhistory')"><div class="hub-icon">🏭</div><div class="hub-title">۱۳. سوابق یک تجهیز</div><div class="hub-desc">انتخاب تجهیز و مشاهده خرابی‌های مرتبط</div></div>
                 <div class="hub-card" onclick="runTool('audit')"><div class="hub-icon">🛡️</div><div class="hub-title">۱۴. کنترل سلامت داده‌ها</div><div class="hub-desc">بررسی شناسه تکراری، فیلد خالی و موجودی نامعتبر</div></div>
                 <div class="hub-card" onclick="runTool('pm')"><div class="hub-icon">🗓️</div><div class="hub-title">۱۵. مرور برنامه PM</div><div class="hub-desc">نمایش تجهیزات و چک‌لیست‌های سرویس دوره‌ای</div></div>
+                <div class="hub-card" onclick="runTool('mttr')"><div class="hub-icon">⏳</div><div class="hub-title">۱۶. MTTR و MTBF</div><div class="hub-desc">میانگین زمان تعمیر و فاصله بین خرابی هر تجهیز</div></div>
+                <div class="hub-card" onclick="runTool('pareto')"><div class="hub-icon">📈</div><div class="hub-title">۱۷. پارتو خرابی‌ها</div><div class="hub-desc">پرخرابی‌ترین تجهیزات با درصد تجمعی</div></div>
+                <div class="hub-card" onclick="runTool('overdue')"><div class="hub-icon">⛔</div><div class="hub-title">۱۸. PM عقب‌افتاده</div><div class="hub-desc">تجهیزاتی که تاریخ سرویس‌شان گذشته یا نزدیک است</div></div>
+                <div class="hub-card" onclick="runTool('workload')"><div class="hub-icon">👷</div><div class="hub-title">۱۹. بار کاری افراد</div><div class="hub-desc">تعداد و میانگین زمان دستورکار هر ثبت‌کننده</div></div>
+                <div class="hub-card" onclick="runTool('longest')"><div class="hub-icon">🐢</div><div class="hub-title">۲۰. طولانی‌ترین توقف‌ها</div><div class="hub-desc">۱۰ دستورکار با بیشترین زمان توقف</div></div>
+                <div class="hub-card" onclick="runTool('reorder')"><div class="hub-icon">🛒</div><div class="hub-title">۲۱. لیست پیشنهادی خرید</div><div class="hub-desc">تعداد پیشنهادی سفارش برای قطعات کم‌موجود</div></div>
+                <div class="hub-card" onclick="runTool('stale')"><div class="hub-icon">🕸️</div><div class="hub-title">۲۲. قطعات راکد</div><div class="hub-desc">قطعاتی که هیچ مصرفی نداشته‌اند</div></div>
+                <div class="hub-card" onclick="runTool('wotype')"><div class="hub-icon">🧮</div><div class="hub-title">۲۳. تفکیک نوع و اولویت</div><div class="hub-desc">نمودار تعداد دستورکار بر اساس نوع و اولویت</div></div>
+                <div class="hub-card" onclick="runTool('trend')"><div class="hub-icon">📅</div><div class="hub-title">۲۴. روند ۱۴ روز اخیر</div><div class="hub-desc">تعداد دستورکار ثبت‌شده در هر روز</div></div>
+                <div class="hub-card" onclick="runTool('sla')"><div class="hub-icon">🔔</div><div class="hub-title">۲۵. هشدار SLA (بیش از ۲۴ ساعت)</div><div class="hub-desc">دستورکارهای باز که بیش از یک شبانه‌روز مانده‌اند</div></div>
+                <div class="hub-card" onclick="runTool('topparts')"><div class="hub-icon">🔩</div><div class="hub-title">۲۶. پرمصرف‌ترین قطعات</div><div class="hub-desc">رتبه‌بندی قطعات بر اساس دفعات مصرف</div></div>
+                <div class="hub-card" onclick="runTool('unitdown')"><div class="hub-icon">🏢</div><div class="hub-title">۲۷. توقف به تفکیک واحد</div><div class="hub-desc">ساعت توقف هر واحد تولیدی</div></div>
+                <div class="hub-card" onclick="runTool('share')"><div class="hub-icon">📲</div><div class="hub-title">۲۸. خلاصه برای واتساپ/تلگرام</div><div class="hub-desc">متن آماده شیر وضعیت کارخانه و خرید</div></div>
+                <div class="hub-card" onclick="runTool('cloudtest')"><div class="hub-icon">🩺</div><div class="hub-title">۲۹. عیب‌یابی همگام‌سازی</div><div class="hub-desc">تست اتصال سرور و ثبت کلید API فایربیس</div></div>
+                <div class="hub-card" onclick="runTool('forcesync')"><div class="hub-icon">🔄</div><div class="hub-title">۳۰. همگام‌سازی اجباری</div><div class="hub-desc">ارسال همه دستورکارها به سرور و دریافت آخرین نسخه</div></div>
             </div>
             <div class="card" style="margin-top:14px;">
                 <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;"><h4 style="color:var(--primary);font-size:12px;">نتیجه ابزار</h4><button class="btn btn-purple" onclick="clearToolResults()">پاک‌کردن نتیجه</button></div>
-                <div id="toolbox-results" style="font-size:12px;line-height:1.9;overflow-wrap:anywhere;">برای شروع یکی از ۱۵ ابزار بالا را انتخاب کنید.</div>
+                <div id="toolbox-results" style="font-size:12px;line-height:1.9;overflow-wrap:anywhere;">برای شروع یکی از ۳۰ ابزار بالا را انتخاب کنید.</div>
             </div>
             <input type="file" id="toolbox-restore-file" accept="application/json,.json" style="display:none" onchange="restoreToolBackup(event)">
         </div>
@@ -621,7 +685,7 @@
         </div>
     </div>
 
-    <button class="fab" onclick="openCmdPalette()" title="جستجوی سریع (Ctrl+K)"><i class="fa-solid fa-bolt"></i></button>
+    <button class="fab" onclick="openCmdPalette()" title="جستجوی سریع (Ctrl+K)"><svg class="ic" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L3 14h8l-1 8 10-12h-8z"/></svg></button>
 
     <script>
     'use strict';
@@ -629,7 +693,7 @@
     // ============================================
     // 🎯 CONSTANTS & CONFIG
     // ============================================
-    const APP_VERSION = '3.0.0';
+    const APP_VERSION = '3.1.0';
     const LOCAL_STORAGE_KEY = 'erfont_turbo_db_v30_persistent';
     const LOCAL_THEME_KEY = 'erfont_theme_v30';
     const LOCAL_LANG_KEY = 'erfont_lang_v30';
@@ -643,6 +707,9 @@
         databaseURL: "https://erfont1995-default-rtdb.firebaseio.com",
         projectId: "erfont1995"
     };
+
+    try { const o = JSON.parse(localStorage.getItem('erfont_fb_cfg') || '{}'); if (o.apiKey) firebaseConfig.apiKey = o.apiKey; } catch(e) {}
+    let lastAuthError = '', liveReady = false;
 
     const defaultRolePasswords = {
         creator: '7890',
@@ -863,7 +930,10 @@
             if (x && typeof x === 'object') map.set(stableKey(x), x);
         });
         (Array.isArray(cloudArr) ? cloudArr : []).forEach(x => {
-            if (x && typeof x === 'object') map.set(stableKey(x), x);
+            if (x && typeof x === 'object') {
+                const k = stableKey(x), o = map.get(k);
+                map.set(k, (o && Number(o.updatedAt || 0) > Number(x.updatedAt || 0)) ? o : x);
+            }
         });
         return Array.from(map.values());
     }
@@ -887,6 +957,7 @@
         if (!Array.isArray(merged.dailyReports)) merged.dailyReports = [];
         if (!merged.settings || typeof merged.settings !== 'object') merged.settings = {};
         if (!merged.settings.passwords) merged.settings.passwords = { ...defaultRolePasswords };
+        delete merged._live_wo;
         return merged;
     }
 
@@ -913,7 +984,7 @@
                     try {
                         await auth.signInAnonymously();
                     } catch(err) {
-                        console.warn('Anonymous auth failed (fallback to local):', err.code);
+                        lastAuthError = err.code || String(err); console.warn('Anonymous auth failed (fallback to local):', err.code);
                     }
                 } catch(e) { console.warn('Auth init error:', e); }
 
@@ -930,6 +1001,41 @@
                 resolve(false);
             }
         });
+    }
+
+    // ===== کانال زنده دستورکار: هر دستورکار جداگانه و فوری برای همه گوشی‌ها =====
+    function liveRef() { return rootRef ? rootRef.child('_live_wo') : null; }
+    function liveErr(e) { console.warn('Live sync error', e); showToast('ارسال به سرور ناموفق: ' + (e && (e.code || e.message)) + ' — ابزار ۲۹', 'error', 6000); }
+    function pushLiveWO(wo) {
+        const r = liveRef(); if (!r || !navigator.onLine) return;
+        try { r.child(String(wo.id)).set(JSON.parse(JSON.stringify(wo))).catch(liveErr); } catch(e) { liveErr(e); }
+    }
+    function removeLiveWO(id) {
+        const r = liveRef(); if (!r) return;
+        try { r.child(String(id)).remove().catch(liveErr); } catch(e) { liveErr(e); }
+    }
+    function applyLiveWO(snap) {
+        const w = snap.val(); if (!w || typeof w !== 'object' || w.id == null) return;
+        if (!Array.isArray(db.workOrders)) db.workOrders = [];
+        const i = db.workOrders.findIndex(x => String(x.id) === String(w.id));
+        if (i < 0) {
+            db.workOrders.unshift(w);
+            if (liveReady) { showToast('📥 دستورکار جدید: ' + (w.title || ''), 'info', 5000); try { notifyWorkOrderCreated(w); } catch(e) {} haptic('success'); }
+        } else if (JSON.stringify(db.workOrders[i]) !== JSON.stringify(w)) {
+            db.workOrders[i] = w;
+        } else return;
+        safeLocalSave(); renderAll();
+    }
+    function attachLiveWO() {
+        const r = liveRef(); if (!r) return;
+        r.off();
+        r.on('child_added', applyLiveWO, liveErr);
+        r.on('child_changed', applyLiveWO, liveErr);
+        r.on('child_removed', s => {
+            db.workOrders = (db.workOrders || []).filter(w => String(w.id) !== String(s.key));
+            safeLocalSave(); renderAll();
+        }, liveErr);
+        r.once('value').then(() => { liveReady = true; }).catch(liveErr);
     }
 
     function attachRealtimeListener() {
@@ -1008,10 +1114,12 @@
             cloudSyncInProgress = true;
             rootRef.transaction(function(remote) {
                 if (!remote) return db;
-                return mergeCloudAndLocal(remote, db);
+                const r = mergeCloudAndLocal(remote, db);
+                if (remote._live_wo) r._live_wo = remote._live_wo;
+                return r;
             }, function(error, committed) {
                 cloudSyncInProgress = false;
-                if (error) { setSyncStatus('offline'); }
+                if (error) { setSyncStatus('offline'); showToast('خطای همگام‌سازی: ' + (error.code || error.message) + ' — ابزار ۲۹ را اجرا کنید', 'error', 6000); }
                 else { setSyncStatus('ok'); }
                 if (cloudSyncQueued) {
                     cloudSyncQueued = false;
@@ -1072,6 +1180,7 @@
 
         if (ok && rootRef) {
             attachRealtimeListener();
+            attachLiveWO();
             try {
                 safeLocalSave();
                 setConnectivityStatus('اتصال ابری و همگام‌سازی امن برقرار شد.', false);
@@ -1090,6 +1199,7 @@
             setSyncStatus('offline');
         }
 
+        if (firebaseConfig.apiKey.indexOf('REPLACE') === 0) setConnectivityStatus('کلید API فایربیس تنظیم نشده؛ همگام‌سازی بین گوشی‌ها کار نمی‌کند. جعبه‌ابزار ← ابزار ۲۹.', true);
         initPWA();
         renderAll();
         checkLowStockNotifications(false);
@@ -1725,7 +1835,9 @@
             createdAt: new Date().toISOString(),
             createdBy: (db.profiles && db.profiles[currentRole] && db.profiles[currentRole].fullname) || ROLE_NAMES.fa[currentRole] || currentRole
         };
+        wo.updatedAt = Date.now();
         db.workOrders.unshift(wo);
+        pushLiveWO(wo);
 
         logAct(`ثبت دستور کار ${type}: ${title}`);
         notifyWorkOrderCreated(wo);
@@ -1778,6 +1890,8 @@
             wo.durationMinutes = 0;
         }
 
+        wo.updatedAt = Date.now();
+        pushLiveWO(wo);
         logAct('تغییر وضعیت WO: ' + wo.title);
         syncToCloud();
         renderAll();
@@ -1795,6 +1909,7 @@
         const now = new Date();
         db.reportHistory.unshift({ id: 'del-' + Date.now(), recordType: 'workOrder', recordId: removed.id, title: removed.title || '', equipment: removed.equipment || '', deletedAt: now.toISOString(), date: now.toLocaleDateString('fa-IR'), time: now.toLocaleTimeString('fa-IR'), deletedBy: (db.profiles && db.profiles[currentRole] && db.profiles[currentRole].fullname) || ROLE_NAMES.fa[currentRole] || currentRole, snapshot: JSON.parse(JSON.stringify(removed)) });
         db.workOrders = (db.workOrders || []).filter(w => String(w.id) !== String(id));
+        removeLiveWO(removed.id);
         logAct('حذف دستور کار (نسخه بایگانی‌شده در reportHistory)');
         syncToCloud();
         renderAll();
@@ -1899,7 +2014,7 @@
     // ============================================
     function clearToolResults() {
         const el = document.getElementById('toolbox-results');
-        if (el) el.innerHTML = 'برای شروع یکی از ۱۵ ابزار بالا را انتخاب کنید.';
+        if (el) el.innerHTML = 'برای شروع یکی از ۳۰ ابزار بالا را انتخاب کنید.';
     }
     function toolTable(headers, rows) {
         if (!rows.length) return '<p>موردی برای نمایش پیدا نشد.</p>';
@@ -1917,12 +2032,89 @@
         downloadToolFile(filename,csv,'text/csv;charset=utf-8;');
         showToast('فایل گزارش آماده شد.','success');
     }
+
+    // ===== ابزارهای ۱۶ تا ۳۰ =====
+    function jToday() { const p = new Intl.DateTimeFormat('en-u-ca-persian-nu-latn', {year:'numeric',month:'numeric',day:'numeric'}).formatToParts(new Date()); const g = t => +p.find(x => x.type === t).value; return [g('year'), g('month'), g('day')]; }
+    function jParse(s) { const m = String(s || '').replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).match(/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/); return m ? [+m[1], +m[2], +m[3]] : null; }
+    function jNum(a) { return a[0] * 372 + a[1] * 31 + a[2]; }
+    function barList(entries) {
+        if (!entries.length) return '<p>موردی برای نمایش پیدا نشد.</p>';
+        const mx = Math.max(...entries.map(e => e[1]), 1);
+        return entries.map(e => '<div style="display:flex;gap:8px;align-items:center;margin:4px 0"><span style="min-width:34%;font-weight:700">' + escapeHtml(String(e[0])) + '</span><span style="flex:1;background:rgba(148,163,184,.15);border-radius:6px;overflow:hidden"><span style="display:block;height:12px;width:' + Math.max(3, Math.round(e[1] / mx * 100)) + '%;background:var(--accent-emerald,#10b981)"></span></span><span style="min-width:60px">' + escapeHtml(String(e[1])) + (e[2] ? ' <small>' + escapeHtml(String(e[2])) + '</small>' : '') + '</span></div>').join('');
+    }
+    async function cloudDiagnostics(out) {
+        const rows = [];
+        rows.push(['کلید API', firebaseConfig.apiKey.indexOf('REPLACE') === 0 ? '❌ تنظیم نشده' : '✅ ثبت شده']);
+        rows.push(['اینترنت', navigator.onLine ? '✅ آنلاین' : '❌ آفلاین']);
+        rows.push(['اتصال Firebase', (firebaseReady && rootRef) ? '✅ برقرار' : '❌ برقرار نیست']);
+        rows.push(['ورود ناشناس (Auth)', (auth && auth.currentUser) ? '✅ فعال' : '❌ ' + (lastAuthError || 'غیرفعال')]);
+        if (rootRef) {
+            try {
+                const k = '_diag/' + Date.now();
+                await rootRef.child(k).set({t: Date.now()});
+                const s = await rootRef.child(k).once('value');
+                await rootRef.child(k).remove();
+                rows.push(['تست نوشتن/خواندن', s.exists() ? '✅ موفق' : '❌ ناموفق']);
+            } catch(e) { rows.push(['تست نوشتن/خواندن', '❌ ' + (e.code || e.message) + ' (قوانین Realtime Database را بررسی کنید)']); }
+        }
+        out.innerHTML = toolTable(['بررسی', 'نتیجه'], rows) + '<p><button class="btn btn-primary" onclick="setFirebaseKey()">ثبت/تغییر کلید API فایربیس</button></p><p style="opacity:.8">اگر «نوشتن» خطای PERMISSION_DENIED داد: در Firebase Console ← Authentication ← Sign-in method، گزینه Anonymous را فعال کنید و در Realtime Database ← Rules اجازه read/write بدهید. روی همه گوشی‌ها باید یک کلید یکسان باشد.</p>';
+    }
+    function setFirebaseKey() {
+        const k = prompt('کلید API فایربیس (Web API Key) را وارد کنید:'); if (!k || k.trim().length < 20) { showToast('کلید معتبر نیست.', 'error'); return; }
+        try { localStorage.setItem('erfont_fb_cfg', JSON.stringify({apiKey: k.trim()})); } catch(e) {}
+        showToast('ذخیره شد؛ برنامه بارگذاری مجدد می‌شود.', 'success'); setTimeout(() => location.reload(), 900);
+    }
+    function runTool2(tool, out, c) {
+        const {eqs, wos, inv, open, low, now} = c;
+        const by = (arr, f) => { const m = {}; arr.forEach(x => { const k = f(x) || 'نامشخص'; (m[k] = m[k] || []).push(x); }); return m; };
+        const dur = a => a.reduce((s, w) => s + Number(w.durationMinutes || 0), 0);
+        const cnt = o => Object.entries(o).map(([k, a]) => [k, a.length]).sort((a, b) => b[1] - a[1]);
+        switch (tool) {
+            case 'mttr': {
+                const g = by(wos.filter(w => w.completed && Number(w.durationMinutes) > 0), w => w.equipment);
+                out.innerHTML = toolTable(['تجهیز', 'تعداد خرابی', 'MTTR (دقیقه)', 'MTBF (ساعت)'], Object.entries(g).map(([n, a]) => { const e = eqs.find(x => x.name === n) || {}; return [n, a.length, Math.round(dur(a) / a.length), e.runningHours ? Math.round(e.runningHours / a.length) : '-']; }).sort((a, b) => b[1] - a[1])); return true;
+            }
+            case 'pareto': {
+                const arr = cnt(by(wos, w => w.equipment)), tot = arr.reduce((s, r) => s + r[1], 0); let cum = 0;
+                out.innerHTML = barList(arr.slice(0, 15).map(r => { cum += r[1]; return [r[0], r[1], Math.round(cum / tot * 100) + '٪ تجمعی']; })); return true;
+            }
+            case 'overdue': {
+                const t = jNum(jToday());
+                const rows = eqs.map(e => { const d = jParse(e.endDate); return d ? [e.name, e.unit, e.endDate, jNum(d) - t] : null; }).filter(Boolean).filter(r => r[3] <= 30).sort((a, b) => a[3] - b[3]).map(r => [r[0], r[1], r[2], r[3] < 0 ? '⛔ ' + (-r[3]) + ' روز عقب‌افتاده' : '⚠️ ' + r[3] + ' روز مانده']);
+                out.innerHTML = toolTable(['تجهیز', 'واحد', 'سررسید', 'وضعیت'], rows); return true;
+            }
+            case 'workload': out.innerHTML = toolTable(['نفر', 'کل', 'تکمیل', 'میانگین توقف (دقیقه)'], Object.entries(by(wos, w => w.createdBy)).map(([n, a]) => [n, a.length, a.filter(w => w.completed).length, Math.round(dur(a) / a.length)]).sort((a, b) => b[1] - a[1])); return true;
+            case 'longest': out.innerHTML = toolTable(['شرح', 'تجهیز', 'توقف (دقیقه)', 'اولویت'], [...wos].sort((a, b) => Number(b.durationMinutes || 0) - Number(a.durationMinutes || 0)).slice(0, 10).map(w => [w.title, w.equipment, w.durationMinutes || 0, w.priority])); return true;
+            case 'reorder': out.innerHTML = toolTable(['کد', 'قطعه', 'موجودی', 'حداقل', 'پیشنهاد خرید'], low.map(i => [i.code, i.name, i.qty, i.min, Math.max(1, Number(i.min || 0) * 2 - Number(i.qty || 0))])); return true;
+            case 'stale': out.innerHTML = toolTable(['کد', 'قطعه', 'دسته', 'موجودی'], inv.filter(i => !(i.history || []).length && Number(i.qty) > 0).slice(0, 300).map(i => [i.code, i.name, i.category, i.qty])); return true;
+            case 'wotype': out.innerHTML = '<h4>نوع</h4>' + barList(cnt(by(wos, w => w.type))) + '<h4 style="margin-top:10px">اولویت</h4>' + barList(cnt(by(wos, w => w.priority))); return true;
+            case 'trend': {
+                const days = []; for (let i = 13; i >= 0; i--) days.push(new Date(now - i * 864e5));
+                out.innerHTML = barList(days.map(d => [d.toLocaleDateString('fa-IR'), wos.filter(w => w.createdAt && new Date(w.createdAt).toDateString() === d.toDateString()).length])); return true;
+            }
+            case 'sla': out.innerHTML = toolTable(['شرح', 'تجهیز', 'اولویت', 'ساعت سپری‌شده'], open.filter(w => w.startTimestamp && now - Number(w.startTimestamp) > 864e5).map(w => [w.title, w.equipment, w.priority, Math.floor((now - Number(w.startTimestamp)) / 36e5)])); return true;
+            case 'topparts': out.innerHTML = barList(inv.map(i => [i.name, (i.history || []).length]).filter(r => r[1] > 0).sort((a, b) => b[1] - a[1]).slice(0, 15)); return true;
+            case 'unitdown': {
+                const u = {}; eqs.forEach(e => u[e.name] = e.unit); const g = by(wos, w => u[w.equipment]);
+                out.innerHTML = barList(Object.entries(g).map(([k, a]) => [k, Math.round(dur(a) / 6) / 10, 'ساعت']).sort((a, b) => b[1] - a[1])); return true;
+            }
+            case 'share': {
+                const t = '📋 گزارش ErfoNT — ' + new Date().toLocaleDateString('fa-IR') + '\nدستورکار باز: ' + open.length + '\nقطعات کم‌موجود: ' + low.length + '\n\n🔧 باز:\n' + open.slice(0, 10).map(w => '• ' + w.equipment + ': ' + w.title).join('\n') + '\n\n🛒 خرید:\n' + low.slice(0, 15).map(i => '• ' + i.name + ' (' + i.qty + '/' + i.min + ')').join('\n');
+                out.innerHTML = '<textarea id="share-txt" style="width:100%;height:220px" readonly>' + escapeHtml(t) + '</textarea>';
+                if (navigator.share) navigator.share({text: t}).catch(() => {}); else if (navigator.clipboard) navigator.clipboard.writeText(t).then(() => showToast('کپی شد.', 'success')); return true;
+            }
+            case 'cloudtest': cloudDiagnostics(out); return true;
+            case 'forcesync': { wos.forEach(pushLiveWO); syncToCloud(true); manualRefresh(); out.textContent = 'همه دستورکارها به سرور ارسال شد و آخرین نسخه دریافت می‌شود.'; return true; }
+        }
+        return false;
+    }
     function runTool(tool) {
         const out=document.getElementById('toolbox-results'); if(!out) return;
         const eqs=db.equipment||[], wos=db.workOrders||[], inv=db.inventory||[], reports=db.dailyReports||[];
         const open=wos.filter(w=>!w.completed), critical=wos.filter(w=>!w.completed && /بحرانی|فوری|critical|urgent/i.test(String(w.priority||'')));
         const low=inv.filter(i=>Number(i.qty||0)<=Number(i.min||0));
         const now=Date.now();
+        if (runTool2(tool, out, {eqs, wos, inv, reports, open, low, now})) { logAct('استفاده از جعبه‌ابزار: ' + tool); return; }
         switch(tool) {
             case 'summary': {
                 const downtime=wos.reduce((a,w)=>a+Number(w.durationMinutes||0),0);
@@ -2213,7 +2405,7 @@
         const body = document.getElementById('alert-body');
         if (!body) return;
         if (alerts.length === 0) {
-            body.innerHTML = `<div class="alert-empty"><i class="fa-solid fa-check-circle" style="color:var(--accent-emerald);"></i><div>هیچ هشداری نیست</div></div>`;
+            body.innerHTML = `<div class="alert-empty"><svg style="color:var(--accent-emerald);" class="ic" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg><div>هیچ هشداری نیست</div></div>`;
         } else {
             body.innerHTML = alerts.map(a => `<div class="alert-item ${a.type}"><div class="alert-icon">${a.icon}</div><div class="alert-content"><div class="alert-title">${escapeHtml(a.title)}</div><div class="alert-desc">${escapeHtml(a.desc)}</div></div></div>`).join('');
         }
