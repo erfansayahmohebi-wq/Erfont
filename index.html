@@ -279,7 +279,7 @@
     <header>
         <div class="logo-group">
             <div class="logo" onclick="navigateTo('hub')" title="خانه">
-                <span>⚡</span> ErfoNT pro <span style="font-size:10px; color:var(--accent-emerald); font-family:monospace;">v3.1.2</span>
+                <span>⚡</span> ErfoNT pro <span style="font-size:10px; color:var(--accent-emerald); font-family:monospace;">v3.1.3</span>
             </div>
             <span class="badge" id="company-badge-text">NODE: erfont1995</span>
             <button onclick="navigateTo('settings')" class="icon-btn" title="تنظیمات">⚙️</button>
@@ -693,7 +693,7 @@
     // ============================================
     // 🎯 CONSTANTS & CONFIG
     // ============================================
-    const APP_VERSION = '3.1.2';
+    const APP_VERSION = '3.1.3';
     const LOCAL_STORAGE_KEY = 'erfont_turbo_db_v30_persistent';
     const LOCAL_THEME_KEY = 'erfont_theme_v30';
     const LOCAL_LANG_KEY = 'erfont_lang_v30';
@@ -2059,7 +2059,7 @@
         const rows = [];
         rows.push(['کلید API', firebaseConfig.apiKey.indexOf('REPLACE') === 0 ? '❌ تنظیم نشده' : '✅ ثبت شده']);
         rows.push(['اینترنت', navigator.onLine ? '✅ آنلاین' : '❌ آفلاین']);
-        rows.push(['نسخه فایل (باید 3.1.2 باشد)', APP_VERSION]);
+        rows.push(['نسخه فایل (باید 3.1.3 باشد)', APP_VERSION]);
         const sdk = window.firebase;
         rows.push(['کتابخانه app', sdk ? '✅ بارگذاری شد' : '❌ بارگذاری نشد (gstatic.com باز نمی‌شود)']);
         rows.push(['کتابخانه auth', (sdk && sdk.auth) ? '✅' : '❌ بارگذاری نشد']);
@@ -2195,6 +2195,7 @@
 
     function renderAll() {
         updateRoleDisplay();
+        try { populateWoSelect(); populateKpiDeviceSelect(); } catch(e) {}
         renderHubMetrics();
         renderEquipmentTable();
         renderPmCards();
@@ -2532,6 +2533,41 @@
         const cmdInput = document.getElementById('cmd-input');
         if (cmdInput) cmdInput.addEventListener('input', e => renderCmdResults(e.target.value));
     });
+
+
+    // ===== پر کردن لیست‌های انتخاب و محاسبه شاخص‌ها =====
+    function fillSelect(el, items, keepValue) {
+        if (!el) return;
+        const prev = keepValue === false ? '' : el.value;
+        el.innerHTML = items.map(i => '<option value="' + escapeHtml(String(i.v)) + '">' + escapeHtml(String(i.t)) + '</option>').join('');
+        if (prev && items.some(i => String(i.v) === prev)) el.value = prev;
+    }
+    function populateWoSelect() {
+        const eqs = db.equipment || [];
+        fillSelect(document.getElementById('wo-eq-select'), eqs.length ? eqs.map(e => ({v: e.name, t: e.name + (e.unit ? ' — ' + e.unit : '')})) : [{v: '', t: 'ابتدا تجهیز ثبت کنید'}]);
+        fillSelect(document.getElementById('wo-part-select'), [{v: '', t: '-- بدون مصرف --'}].concat((db.inventory || []).filter(i => Number(i.qty) > 0).map(i => ({v: i.id, t: i.name + ' (' + i.qty + ')'}))));
+    }
+    function populateKpiDeviceSelect() {
+        fillSelect(document.getElementById('kpiDeviceSelect'), [{v: '__all__', t: 'همه تجهیزات'}].concat((db.equipment || []).map(e => ({v: e.name, t: e.name}))));
+    }
+    function calculateKPI() {
+        const sel = document.getElementById('kpiDeviceSelect');
+        if (sel && !sel.options.length) populateKpiDeviceSelect();
+        const name = sel ? sel.value : '__all__';
+        const eqs = (db.equipment || []).filter(e => name === '__all__' || e.name === name);
+        const names = new Set(eqs.map(e => e.name));
+        const wos = (db.workOrders || []).filter(w => names.has(w.equipment));
+        const done = wos.filter(w => w.completed && Number(w.durationMinutes) > 0);
+        const downMin = wos.reduce((a, w) => a + Number(w.durationMinutes || 0), 0);
+        const hours = eqs.reduce((a, e) => a + Number(e.runningHours || 0), 0);
+        const avail = hours + downMin / 60 > 0 ? Math.round(hours / (hours + downMin / 60) * 1000) / 10 : 100;
+        const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+        set('kpi-avail', avail + ' ٪');
+        set('kpi-oee', avail + ' ٪');
+        set('kpi-mtbf', done.length ? Math.round(hours / done.length) + ' ساعت' : '-- ساعت');
+        set('kpi-mttr', done.length ? Math.round(downMin / done.length) + ' دقیقه' : '-- دقیقه');
+        renderKpiChart();
+    }
 
     function refreshOEEChart() {
         const canvas = document.getElementById('oee-chart');
@@ -2939,4 +2975,4 @@
 
     </script>
 </body>
-    </html>
+                    </html>
