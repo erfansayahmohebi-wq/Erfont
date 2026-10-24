@@ -199,6 +199,165 @@
         @media (max-width:480px){.hub-card{flex-direction:row;align-items:center;gap:14px}.hub-card>div:not(.hub-icon){flex:1}}
         @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
         .ic{width:1.15em;height:1.15em;vertical-align:-.18em;flex-shrink:0}.fab .ic{width:24px;height:24px}.alert-empty .ic{width:48px;height:48px;margin-bottom:12px;opacity:.5}
+
+        /* ===== تم اینستاگرامی (پیش‌فرض) ===== */
+        body.ig{--ig-bg:#000;--ig-card:#000;--ig-line:#262626;--ig-input:#121212;--ig-text:#f5f5f5;--ig-mute:#a8a8a8;--ig-blue:#0095f6;--ig-grad:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);--bg-body:var(--ig-bg);--surface-card:var(--ig-card);--surface-input:var(--ig-input);--border-color:var(--ig-line);--text-main:var(--ig-text);--text-muted:var(--ig-mute);--primary:var(--ig-blue);--primary-glow:rgba(0,149,246,.12);--modal-bg:#262626;--border-focus:#555;--radius-box:12px;--radius-btn:8px;padding-bottom:70px;font-size:14px;background-image:none!important}
+        body.ig.light-theme{--ig-bg:#fff;--ig-card:#fff;--ig-line:#dbdbdb;--ig-input:#fafafa;--ig-text:#262626;--ig-mute:#737373;--modal-bg:#fff}
+        body.ig *{font-weight:400}
+        body.ig header{background:var(--ig-bg);border-image:none;border-bottom:1px solid var(--ig-line);backdrop-filter:none}
+        body.ig .logo{background:var(--ig-grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700;font-style:italic;letter-spacing:0}
+        body.ig .badge,body.ig .sync-badge,body.ig .role-display,body.ig .icon-btn,body.ig .back-btn{background:transparent;border:1px solid var(--ig-line);color:var(--ig-text);border-radius:8px;letter-spacing:0}
+        body.ig .icon-btn:hover,body.ig .role-display:hover{border-color:var(--ig-mute);color:var(--ig-text);box-shadow:none}
+        body.ig .card-grid .metric-card,body.ig .card,body.ig .table-container,body.ig .login-card,body.ig .modal-body{background:var(--ig-card);border:1px solid var(--ig-line);box-shadow:none;backdrop-filter:none;border-radius:12px}
+        body.ig .metric-card::before{display:none}
+        body.ig .metric-card .val{background:none;color:var(--ig-text);-webkit-text-fill-color:var(--ig-text);font-weight:600}
+        body.ig div:has(> .hub-card){display:flex!important;flex-direction:column;gap:0!important;grid-template-columns:none!important}
+        body.ig .hub-card{background:transparent;border:none;border-bottom:1px solid var(--ig-line);border-radius:0;box-shadow:none;backdrop-filter:none;display:flex;flex-direction:row;align-items:center;gap:14px;padding:12px 6px;transform:none!important}
+        body.ig .hub-card::after{display:none}
+        body.ig .hub-card:hover{background:rgba(128,128,128,.08);box-shadow:none;border-color:var(--ig-line)}
+        body.ig .hub-card>div:not(.hub-icon){flex:1}
+        body.ig .hub-icon{flex:0 0 52px;width:52px;height:52px;border-radius:50%;border:none;position:relative;background:var(--ig-bg);font-size:22px;box-shadow:0 0 0 2px var(--ig-bg),0 0 0 4px transparent}
+        body.ig .hub-icon::before{content:'';position:absolute;inset:-3px;border-radius:50%;background:var(--ig-grad);z-index:-1}
+        body.ig .hub-title{font-weight:600;font-size:14px}
+        body.ig .hub-desc{font-size:12px;color:var(--ig-mute)}
+        body.ig .btn,body.ig .btn-rose,body.ig .btn-emerald,body.ig .btn-amber,body.ig .btn-purple,body.ig .btn-cyan{background:var(--ig-blue);color:#fff;border-radius:8px;box-shadow:none;font-weight:600}
+        body.ig .btn:hover{filter:brightness(1.1);box-shadow:none}
+        body.ig .btn-rose{background:#ed4956}
+        body.ig .form-control{background:var(--ig-input);border:1px solid var(--ig-line);border-radius:8px;color:var(--ig-text);font-size:14px}
+        body.ig .form-control:focus{border-color:var(--ig-mute);box-shadow:none}
+        body.ig th{background:var(--ig-input);color:var(--ig-mute);font-weight:600}
+        body.ig td{border-bottom:1px solid var(--ig-line)}
+        body.ig tr:hover td{background:rgba(128,128,128,.06)}
+        body.ig .toast{background:#262626;color:#fff;border:none;border-radius:10px}
+        body.ig .fab{display:none}
+        body.ig #login-screen{background:var(--ig-bg)}
+        body.ig .login-card{border-radius:2px;border:1px solid var(--ig-line)}
+        body.ig .login-logo{background:var(--ig-grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-style:italic;border-bottom:none;font-size:30px}
+        body.ig .card-grid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:10px!important}
+        body.ig .card-grid .metric-card{padding:12px 14px;min-height:0}
+        body.ig .metric-card h4{font-size:12px;color:var(--ig-mute)}
+        body.ig .metric-card .val{font-size:24px}
+        body.ig #lang-btn,body.ig .cmd-kbd{display:none}
+        body.ig .header-controls{gap:6px}
+        body.ig .icon-btn,body.ig .sync-badge,body.ig .role-display{padding:6px 10px;font-size:12px}
+        .stories{display:none}
+        body.ig .stories{display:flex;gap:14px;overflow-x:auto;padding:12px 4px 14px;border-bottom:1px solid var(--ig-line);margin-bottom:6px;scrollbar-width:none}
+        body.ig .stories::-webkit-scrollbar{display:none}
+        .story{flex:0 0 auto;width:68px;text-align:center;cursor:pointer;font-size:11px;color:var(--ig-text)}
+        .story .ring{width:64px;height:64px;border-radius:50%;padding:3px;background:var(--ig-grad);margin:0 auto 5px}
+        .story .ring span{display:flex;width:100%;height:100%;border-radius:50%;background:var(--ig-bg);align-items:center;justify-content:center;font-size:24px;border:3px solid var(--ig-bg)}
+        .igbar{display:none}
+        body.ig .igbar{display:flex;position:fixed;bottom:0;left:0;right:0;height:56px;padding-bottom:env(safe-area-inset-bottom,0px);background:var(--ig-bg);border-top:1px solid var(--ig-line);z-index:900;justify-content:space-around;align-items:center}
+        .igbar button{background:none;border:none;color:var(--ig-text);padding:10px 16px;cursor:pointer;opacity:.6;position:relative}
+        .igbar button.on{opacity:1}
+        .igbar svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+        .igbar .plus svg{width:28px;height:28px;opacity:1}
+
+        body.ig header{position:sticky;top:0;z-index:800;background:var(--ig-bg);background:color-mix(in srgb,var(--ig-bg) 82%,transparent);backdrop-filter:saturate(180%) blur(16px)}
+        body.ig .card,body.ig .metric-card,body.ig .table-container{border-radius:16px;box-shadow:0 1px 2px rgba(0,0,0,.05),0 10px 28px rgba(0,0,0,.14)}
+        body.ig.light-theme .card,body.ig.light-theme .metric-card{box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 22px rgba(0,0,0,.06)}
+        body.ig .story .ring{animation:ringPulse 5s ease-in-out infinite}
+        @keyframes ringPulse{50%{filter:hue-rotate(28deg) brightness(1.12)}}
+        body.ig .story:active .ring,body.ig .hub-card:active,body.ig .btn:active,.igbar button:active{transform:scale(.95)}
+        body.ig .hub-card::after{display:block!important;content:'‹';position:static;width:auto;height:auto;background:none;opacity:.35;font-size:24px;line-height:1;margin-inline-start:auto}
+        body.ig .hub-card:hover::after{opacity:.7}
+        .greet{display:none}
+        body.ig .greet{display:flex;flex-direction:column;gap:2px;padding:14px 4px 0}
+        body.ig .greet b{font-size:19px;font-weight:700}
+        body.ig .greet span{font-size:12px;color:var(--ig-mute)}
+        body.ig .igbar{background:var(--ig-bg);background:color-mix(in srgb,var(--ig-bg) 88%,transparent);backdrop-filter:saturate(180%) blur(16px)}
+        .igbar button.on::after{content:'';position:absolute;bottom:3px;left:50%;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--ig-text)}
+        .oee-wrap{overflow-x:auto;width:100%;flex:1 1 100%;min-width:0}
+        .oee-wrap svg{display:block;width:100%;height:auto;aspect-ratio:360/220}
+        body.ig #toast-container{top:auto;bottom:74px}
+        .oee-legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;margin:4px 0 8px;color:var(--ig-mute)}
+        .oee-legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-inline-end:4px}
+        .heat{border-collapse:separate;border-spacing:2px;font-size:9px}
+        .heat td{border:none;padding:0}
+        .heat td.n{white-space:nowrap;font-size:11px;padding:0 6px;position:sticky;right:0;background:var(--ig-bg)}
+        .heat td.c{min-width:22px;height:22px;text-align:center;border-radius:6px;color:#fff;font-weight:600}
+        body.ig .metric-card small{font-size:11px;color:var(--ig-mute);-webkit-text-fill-color:var(--ig-mute)}
+
+        /* ===== CMMS Luxe (پیش‌فرض) ===== */
+        body.cm{--cm-bg:#07080b;--cm-s1:#101319;--cm-line:rgba(201,164,92,.17);--cm-gold:#c9a45c;--cm-gold2:#ecd592;--cm-text:#f3efe6;--cm-mute:#8f95a3;--cm-red:#e5646f;--cm-green:#58c79a;--cm-amber:#e9b25a;--cm-blue:#6ea8ff;--bg-body:var(--cm-bg);--surface-card:var(--cm-s1);--surface-input:#0c0f14;--border-color:var(--cm-line);--text-main:var(--cm-text);--text-muted:var(--cm-mute);--primary:var(--cm-gold);--modal-bg:#12151c;--radius-box:18px;padding-bottom:104px;background-image:radial-gradient(1000px 520px at 85% -8%,rgba(201,164,92,.14),transparent 60%),radial-gradient(800px 500px at -10% 110%,rgba(110,168,255,.07),transparent 60%)!important}
+        body.cm.light-theme{--cm-bg:#f6f2ea;--cm-s1:#fff;--cm-line:rgba(160,120,40,.22);--cm-gold:#a67c2e;--cm-gold2:#c9a45c;--cm-text:#241d12;--cm-mute:#7b7061;--modal-bg:#fff;--surface-input:#faf7f0}
+        body.cm header{position:sticky;top:0;z-index:800;background:var(--cm-bg);background:color-mix(in srgb,var(--cm-bg) 80%,transparent);backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid var(--cm-line)}
+        body.cm .card,body.cm .table-container,body.cm .modal-body{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01)),var(--cm-s1);border:1px solid var(--cm-line);border-radius:18px;box-shadow:0 12px 40px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.05)}
+        body.cm.light-theme .card,body.cm.light-theme .table-container{background:var(--cm-s1);box-shadow:0 8px 28px rgba(120,90,30,.1)}
+        body.cm .stories,body.cm .greet,body.cm .legacy-kpis{display:none!important}
+        .cm-hero{position:relative;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:20px;border-radius:24px;background:linear-gradient(135deg,rgba(201,164,92,.2),rgba(201,164,92,.03) 60%),var(--cm-s1);border:1px solid rgba(201,164,92,.38);overflow:hidden;margin-top:6px}
+        .cm-hero::after{content:'';position:absolute;width:220px;height:220px;border-radius:50%;left:-70px;top:-90px;background:radial-gradient(circle,rgba(236,213,146,.25),transparent 70%);pointer-events:none}
+        .cm-hello{font-size:21px;font-weight:700;letter-spacing:-.3px}
+        .cm-date{font-size:12.5px;color:var(--cm-mute);margin-top:4px}
+        .cm-sub{font-size:11px;color:var(--cm-gold);margin-top:12px;letter-spacing:.3px}
+        .cm-ring{width:92px;height:92px;color:var(--cm-text);flex:0 0 auto;position:relative;z-index:1}
+        .cm-qa{display:flex;gap:8px;overflow-x:auto;padding:14px 2px 4px;scrollbar-width:none}
+        .cm-qa::-webkit-scrollbar{display:none}
+        .qa{flex:0 0 auto;background:rgba(255,255,255,.05);border:1px solid var(--cm-line);color:var(--cm-text);border-radius:14px;padding:10px 15px;font-size:12.5px;cursor:pointer;white-space:nowrap}
+        .qa.gold{background:linear-gradient(135deg,var(--cm-gold2),var(--cm-gold));color:#1a1408;border:none;font-weight:700;box-shadow:0 8px 22px rgba(201,164,92,.35)}
+        .cm-alert{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding:12px 16px;border-radius:16px;background:rgba(229,100,111,.12);border:1px solid rgba(229,100,111,.45);color:var(--cm-red);font-weight:600;font-size:13px;cursor:pointer}
+        .cm-alert span{font-size:12px;opacity:.8}
+        .cm-kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+        .kt{position:relative;padding:14px 15px;border-radius:18px;background:var(--cm-s1);border:1px solid var(--cm-line);overflow:hidden}
+        .kt::before{content:'';position:absolute;top:0;left:14%;right:14%;height:1px;background:linear-gradient(90deg,transparent,var(--cm-gold),transparent);opacity:.7}
+        .kt-ic{width:32px;height:32px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:16px;background:rgba(201,164,92,.12);border:1px solid var(--cm-line)}
+        .kt-l{font-size:11.5px;color:var(--cm-mute);margin-top:11px}
+        .kt-v{font-size:28px;font-weight:700;letter-spacing:-.5px;margin-top:1px}
+        .kt-s{font-size:11px;color:var(--cm-mute);min-height:15px}
+        .kt.bad .kt-v{color:var(--cm-red)}.kt.warn .kt-v{color:var(--cm-amber)}.kt.good .kt-v{color:var(--cm-green)}
+        .cm-sec{display:flex;justify-content:space-between;align-items:center;margin:24px 4px 10px}
+        .cm-sec h3{font-size:13px;font-weight:700;color:var(--cm-gold);letter-spacing:.3px;display:flex;align-items:center;gap:8px}
+        .cm-sec h3::before{content:'';width:18px;height:2px;border-radius:2px;background:var(--cm-gold)}
+        .cm-sec a{font-size:12px;color:var(--cm-mute);cursor:pointer}
+        .seg{display:flex;height:11px;border-radius:99px;overflow:hidden;background:rgba(128,128,128,.18);gap:2px}
+        .seg i{display:block;border-radius:99px}
+        .seg-l{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:12px;font-size:12px;color:var(--cm-mute)}
+        .seg-l i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-inline-end:6px}
+        .cm-row{display:flex;align-items:center;gap:12px;padding:12px 2px;border-bottom:1px solid var(--cm-line);cursor:pointer}
+        .cm-row:last-child{border-bottom:none}
+        .cm-row b{display:block;font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .cm-row small{display:block;font-size:11.5px;color:var(--cm-mute);margin-top:2px}
+        .cm-row .dot{width:9px;height:9px;border-radius:50%;flex:0 0 auto}
+        .chip{font-size:11px;padding:3px 10px;border-radius:99px;border:1px solid;white-space:nowrap}
+        .cm-empty{padding:14px 4px;color:var(--cm-mute);font-size:13px}
+        body.cm #tab-hub div:has(> .hub-card){display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:10px!important}
+        body.cm #tab-hub .hub-card{flex-direction:column;align-items:center;text-align:center;gap:8px;padding:16px 6px;border-radius:18px;background:var(--cm-s1);border:1px solid var(--cm-line)}
+        body.cm #tab-hub .hub-card .hub-desc{display:none}
+        body.cm #tab-hub .hub-title{font-size:11.5px;font-weight:600}
+        body.cm #tab-hub .hub-icon{width:46px;height:46px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:22px;background:linear-gradient(145deg,rgba(201,164,92,.24),rgba(201,164,92,.04));border:1px solid rgba(201,164,92,.32)}
+        body.cm .fab{display:none}
+        body.cm #toast-container{top:auto;bottom:100px}
+        body.cm .igbar{display:flex;position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));height:66px;border-radius:26px;background:rgba(16,19,25,.84);backdrop-filter:blur(24px) saturate(160%);border:1px solid var(--cm-line);box-shadow:0 18px 50px rgba(0,0,0,.55);z-index:900;justify-content:space-around;align-items:center;padding:0 6px}
+        body.cm.light-theme .igbar{background:rgba(255,255,255,.9)}
+        body.cm .igbar button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 2px;font-size:10.5px;color:var(--cm-mute);opacity:1;background:none;border:none;font-family:inherit}
+        body.cm .igbar button.on{color:var(--cm-gold)}
+        body.cm .igbar button.on::after{display:none}
+        body.cm .igbar svg{width:22px;height:22px}
+        body.cm .igbar .plus{flex:0 0 56px;height:56px;margin-top:-28px;border-radius:50%;background:linear-gradient(135deg,var(--cm-gold2),var(--cm-gold));color:#1a1408;box-shadow:0 12px 30px rgba(201,164,92,.55);justify-content:center}
+        body.cm .igbar .plus svg{width:26px;height:26px;stroke-width:2.4}
+        body.cm .igbar .plus span,body.cm .igbar .wide-only{display:none}
+        @media (min-width:700px){.cm-kpis{grid-template-columns:repeat(3,1fr)}}
+        @media (min-width:900px){
+            body.cm{padding-bottom:28px;padding-right:250px}
+            body.cm header{padding-right:calc(250px + 16px)}
+            body.cm .igbar{left:auto;top:0;bottom:0;right:0;width:232px;height:auto;border-radius:0;border-width:0 0 0 1px;flex-direction:column;justify-content:flex-start;align-items:stretch;padding:96px 12px 20px;gap:3px;background:var(--cm-s1);box-shadow:none}
+            body.cm .igbar button{flex:none;flex-direction:row;gap:12px;font-size:13px;padding:12px 14px;border-radius:12px;justify-content:flex-start}
+            body.cm .igbar button.on{background:rgba(201,164,92,.13)}
+            body.cm .igbar .plus{margin:0 0 12px;width:auto;height:auto;border-radius:12px;flex:none;order:-1}
+            body.cm .igbar .plus span,body.cm .igbar .wide-only{display:flex}
+            body.cm #toast-container{bottom:24px}
+            .cm-kpis{grid-template-columns:repeat(6,1fr)}
+            body.cm #tab-hub div:has(> .hub-card){grid-template-columns:repeat(6,1fr)!important}
+        }
+
+        @media (max-width:899px){
+            body.cm header{padding:8px 14px;gap:8px}
+            body.cm header .badge{display:none}
+            body.cm .header-controls{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;width:100%;padding-bottom:2px}
+            body.cm .header-controls::-webkit-scrollbar{display:none}
+            body.cm .header-controls>*{flex:0 0 auto}
+        }
+        body.cm.light-theme{background-image:radial-gradient(900px 500px at 85% -8%,rgba(201,164,92,.2),transparent 60%)!important}
     </style>
 </head>
 <body dir="rtl">
@@ -270,7 +429,7 @@
     <header>
         <div class="logo-group">
             <div class="logo" onclick="navigateTo('hub')" title="خانه">
-                <span>⚡</span> ErfoNT pro <span style="font-size:10px; color:var(--accent-emerald); font-family:monospace;">v3.1.4</span>
+                <span>⚡</span> ErfoNT pro <span style="font-size:10px; color:var(--accent-emerald); font-family:monospace;">v5.0.0</span>
             </div>
             <span class="badge" id="company-badge-text">NODE: erfont1995</span>
             <button onclick="navigateTo('settings')" class="icon-btn" title="تنظیمات">⚙️</button>
@@ -323,7 +482,10 @@
         </div>
 
         <div id="tab-hub" class="tab-content active">
-            <div class="card-grid">
+            <div id="cm-dash"></div>
+            <div id="ig-greet" class="greet"></div>
+            <div class="stories"><div class="story" onclick="navigateTo('oee')"><div class="ring"><span>📈</span></div>OEE</div><div class="story" onclick="navigateTo('equipment')"><div class="ring"><span>⚙️</span></div>تجهیزات</div><div class="story" onclick="navigateTo('workorders')"><div class="ring"><span>🔧</span></div>دستورکار</div><div class="story" onclick="navigateTo('inventory')"><div class="ring"><span>📦</span></div>انبار</div><div class="story" onclick="navigateTo('daily')"><div class="ring"><span>📝</span></div>گزارش</div><div class="story" onclick="navigateTo('kpi')"><div class="ring"><span>📊</span></div>شاخص‌ها</div><div class="story" onclick="navigateTo('pm')"><div class="ring"><span>🗓️</span></div>سرویس</div><div class="story" onclick="navigateTo('toolbox')"><div class="ring"><span>🧰</span></div>ابزارها</div><div class="story" onclick="navigateTo('scanner')"><div class="ring"><span>📷</span></div>اسکنر</div><div class="story" onclick="navigateTo('settings')"><div class="ring"><span>👤</span></div>تنظیمات</div><div class="story" onclick="toggleUiStyle()"><div class="ring"><span>🎨</span></div>ظاهر</div></div>
+            <div class="card-grid legacy-kpis">
                 <div class="metric-card"><h4 data-i18n="mttr_title">میانگین MTTR (دقیقه)</h4><div class="val" id="val-mttr">0</div></div>
                 <div class="metric-card"><h4 data-i18n="mtbf_title">میانگین MTBF (ساعت)</h4><div class="val" id="val-mtbf">0</div></div>
                 <div class="metric-card"><h4 data-i18n="eq_count_title">تجهیزات تحت نظارت</h4><div class="val" id="dash-eq-count">30</div></div>
@@ -337,6 +499,7 @@
             <div class="menu-hub-grid">
                 <div class="hub-card" onclick="navigateTo('equipment')"><div class="hub-icon">🏭</div><div class="hub-title" data-i18n="mod_eq">شناسنامه و تجهیزات</div><div class="hub-desc" data-i18n="mod_eq_desc">مدیریت ماشین‌آلات، ثبت شناسنامه فنی و زیرقطعات.</div></div>
                 <div class="hub-card" onclick="navigateTo('kpi')"><div class="hub-icon">📈</div><div class="hub-title" data-i18n="mod_kpi">شاخص‌های فنی تجهیزات (OEE)</div><div class="hub-desc" data-i18n="mod_kpi_desc">محاسبه اثربخشی، دسترس‌پذیری و ارزیابی کارکرد واقعی.</div></div>
+                <div class="hub-card" onclick="navigateTo('oee')"><div class="hub-icon">📈</div><div><div class="hub-title">نمودار OEE روزانه</div><div class="hub-desc">OEE هر دستگاه به تفکیک روز شمسی، نقشه حرارتی و ثبت تولید</div></div></div>
                 <div class="hub-card" onclick="navigateTo('pm')"><div class="hub-icon">📋</div><div class="hub-title" data-i18n="mod_pm">چک‌لیست سرویس‌های PM</div><div class="hub-desc" data-i18n="mod_pm_desc">برنامه‌ریزی، پایش ساعت کارکرد و سوابق دوره‌ای.</div></div>
                 <div class="hub-card" onclick="navigateTo('workorders')"><div class="hub-icon">🔧</div><div class="hub-title" data-i18n="mod_wo">دستورات کار (EM / CM)</div><div class="hub-desc" data-i18n="mod_wo_desc">ثبت ساعت شروع/پایان، زمان توقف و تیک اتمام کار.</div></div>
                 <div class="hub-card" onclick="navigateTo('daily')"><div class="hub-icon">📊</div><div class="hub-title" data-i18n="mod_daily">گزارش‌نویسی شیفت و خروجی CSV</div><div class="hub-desc" data-i18n="mod_daily_desc">ثبت وضعیت خطوط تولید و گزارش تحویل شیفت.</div></div>
@@ -345,7 +508,7 @@
                 <div class="hub-card" onclick="navigateTo('logs')"><div class="hub-icon">📜</div><div class="hub-title" data-i18n="mod_logs">لاگ رویدادهای زنده (Audit Trail)</div><div class="hub-desc" data-i18n="mod_logs_desc">ثبت تمامی تغییرات و فعالیت‌های کاربران در سیستم.</div></div>
                 <div class="hub-card" onclick="navigateTo('ai')"><div class="hub-icon">🤖</div><div class="hub-title" data-i18n="mod_ai">عیب‌یاب هوشمند صنعتی AI</div><div class="hub-desc" data-i18n="mod_ai_desc">تحلیل خطاهای درایو، پمپ و تجهیزات برقی.</div></div>
                 <div class="hub-card" onclick="navigateTo('settings')"><div class="hub-icon">⚙️</div><div class="hub-title" data-i18n="mod_settings">پروفایل، امنیت و تنظیمات</div><div class="hub-desc" data-i18n="mod_settings_desc">مدیریت رمزها، گالری تصاویر و پشتیبان‌گیری ابری.</div></div>
-                <div class="hub-card" onclick="navigateTo('toolbox')"><div class="hub-icon">🧰</div><div class="hub-title">جعبه‌ابزار هوشمند نت</div><div class="hub-desc">۳۰ ابزار کاربردی برای تحلیل خرابی، کنترل انبار، گزارش و پشتیبان‌گیری.</div></div>
+                <div class="hub-card" onclick="navigateTo('toolbox')"><div class="hub-icon">🧰</div><div class="hub-title">جعبه‌ابزار هوشمند نت</div><div class="hub-desc">۳۱ ابزار کاربردی برای تحلیل خرابی، کنترل انبار، گزارش و پشتیبان‌گیری.</div></div>
             </div>
         </div>
 
@@ -516,14 +679,31 @@
                 <div class="hub-card" onclick="runTool('share')"><div class="hub-icon">📲</div><div class="hub-title">۲۸. خلاصه برای واتساپ/تلگرام</div><div class="hub-desc">متن آماده شیر وضعیت کارخانه و خرید</div></div>
                 <div class="hub-card" onclick="runTool('cloudtest')"><div class="hub-icon">🩺</div><div class="hub-title">۲۹. عیب‌یابی همگام‌سازی</div><div class="hub-desc">تست اتصال سرور و ثبت کلید API فایربیس</div></div>
                 <div class="hub-card" onclick="runTool('forcesync')"><div class="hub-icon">🔄</div><div class="hub-title">۳۰. همگام‌سازی اجباری</div><div class="hub-desc">ارسال همه دستورکارها به سرور و دریافت آخرین نسخه</div></div>
+                <div class="hub-card" onclick="runTool('autorestore')"><div class="hub-icon">🛟</div><div class="hub-title">۳۱. بازگردانی پشتیبان خودکار</div><div class="hub-desc">پشتیبان‌های خودکار قبل از هر به‌روزرسانی و روزانه</div></div>
             </div>
             <div class="card" style="margin-top:14px;">
                 <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;"><h4 style="color:var(--primary);font-size:12px;">نتیجه ابزار</h4><button class="btn btn-purple" onclick="clearToolResults()">پاک‌کردن نتیجه</button></div>
-                <div id="toolbox-results" style="font-size:12px;line-height:1.9;overflow-wrap:anywhere;">برای شروع یکی از ۳۰ ابزار بالا را انتخاب کنید.</div>
+                <div id="toolbox-results" style="font-size:12px;line-height:1.9;overflow-wrap:anywhere;">برای شروع یکی از ۳۱ ابزار بالا را انتخاب کنید.</div>
             </div>
             <input type="file" id="toolbox-restore-file" accept="application/json,.json" style="display:none" onchange="restoreToolBackup(event)">
         </div>
 
+
+        <div id="tab-oee" class="tab-content">
+            <div class="card" style="margin-bottom:12px">
+                <div class="form-row">
+                    <div class="form-group"><label>دستگاه:</label><select id="oee-eq" class="form-control" onchange="renderOEE()"></select></div>
+                    <div class="form-group"><label>بازه:</label><select id="oee-days" class="form-control" onchange="renderOEE()"><option value="7">۷ روز اخیر</option><option value="14" selected>۱۴ روز اخیر</option><option value="30">۳۰ روز اخیر</option></select></div>
+                </div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn" onclick="openProdLog()">+ ثبت تولید روزانه</button><button class="btn" style="background:#475569" onclick="exportOEE()">⬇ خروجی CSV</button></div>
+            </div>
+            <div class="card-grid" id="oee-summary"></div>
+            <div class="card" style="margin-top:12px"><h4 style="margin-bottom:6px">📈 روند OEE روزانه (تاریخ شمسی)</h4>
+                <div class="oee-legend"><span><i style="background:#d62976"></i>OEE</span><span><i style="background:#0095f6"></i>دسترس‌پذیری</span><span><i style="background:#2ecc71"></i>کارایی</span><span><i style="background:#962fbf"></i>کیفیت</span><span>┄ هدف ۸۵٪</span></div>
+                <div id="oee2-chart" class="oee-wrap"></div></div>
+            <div class="card" style="margin-top:12px"><h4 style="margin-bottom:6px">🔥 نقشه حرارتی دستگاه‌ها</h4><div id="oee-heat" class="oee-wrap"></div></div>
+            <div class="card" style="margin-top:12px"><h4 style="margin-bottom:6px">📋 جدول روزانه</h4><div id="oee-table" class="oee-wrap"></div></div>
+        </div>
         <div id="tab-settings" class="tab-content">
             <h3 style="font-size:12px; font-weight:700; color:var(--primary); text-transform:uppercase; margin-bottom:14px;" data-i18n="settings_page_title">⚙️ تنظیمات سیستم</h3>
             
@@ -635,6 +815,23 @@
         </div>
     </div>
 
+
+    <div id="prod-modal" class="modal">
+        <div class="modal-body">
+            <h3 style="font-size:13px;font-weight:700;color:var(--primary);margin-bottom:10px;">ثبت تولید روزانه (برای OEE کامل)</h3>
+            <div class="form-group"><label>دستگاه:</label><select id="pl-eq" class="form-control"></select></div>
+            <div class="form-row">
+                <div class="form-group"><label>تاریخ شمسی:</label><input id="pl-date" class="form-control" placeholder="1405/08/02" inputmode="numeric"></div>
+                <div class="form-group"><label>زمان برنامه‌ریزی (دقیقه):</label><input id="pl-planned" type="number" class="form-control" value="1440"></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>تولید کل (واحد):</label><input id="pl-prod" type="number" class="form-control"></div>
+                <div class="form-group"><label>ضایعات (واحد):</label><input id="pl-rej" type="number" class="form-control" value="0"></div>
+            </div>
+            <div class="form-group"><label>ظرفیت ایده‌آل (واحد در ساعت):</label><input id="pl-rate" type="number" class="form-control"></div>
+            <div style="display:flex;justify-content:flex-end;gap:6px;margin-top:12px;"><button onclick="closeModal('prod-modal')" class="btn" style="background:#475569;">انصراف</button><button onclick="saveProdLog()" class="btn btn-emerald">ثبت</button></div>
+        </div>
+    </div>
     <div id="daily-modal" class="modal">
         <div class="modal-body">
             <h3 style="font-size:12px; font-weight:700; color:var(--accent-amber); margin-bottom:10px; text-transform:uppercase;" data-i18n="modal_daily">ثبت گزارش شیفت</h3>
@@ -684,7 +881,7 @@
     // ============================================
     // 🎯 CONSTANTS & CONFIG
     // ============================================
-    const APP_VERSION = '3.1.4';
+    const APP_VERSION = '5.0.0';
     const LOCAL_STORAGE_KEY = 'erfont_turbo_db_v30_persistent';
     const LOCAL_THEME_KEY = 'erfont_theme_v30';
     const LOCAL_LANG_KEY = 'erfont_lang_v30';
@@ -900,6 +1097,44 @@
         }
     }
 
+    // ===== پشتیبان خودکار: قبل از هر نسخه جدید و هر روز، یک کپی از داده‌ها نگه داشته می‌شود =====
+    const BACKUP_INDEX_KEY = 'erfont_backup_index';
+    function listAutoBackups() {
+        try { const a = JSON.parse(localStorage.getItem(BACKUP_INDEX_KEY) || '[]'); return Array.isArray(a) ? a.filter(b => b && localStorage.getItem(b.key) != null) : []; } catch(e) { return []; }
+    }
+    function saveAutoBackup(label) {
+        try {
+            const raw = localStorage.getItem(LOCAL_STORAGE_KEY); if (!raw) return false;
+            const key = 'erfont_backup_' + Date.now();
+            let list = listAutoBackups();
+            const put = () => { localStorage.setItem(key, raw); list.push({key, label, at: new Date().toISOString(), size: raw.length}); };
+            try { put(); } catch(e) { while (list.length) { const o = list.shift(); localStorage.removeItem(o.key); try { put(); break; } catch(e2) {} } }
+            while (list.length > 4) { const o = list.shift(); localStorage.removeItem(o.key); }
+            localStorage.setItem(BACKUP_INDEX_KEY, JSON.stringify(list));
+            return true;
+        } catch(e) { console.warn('Auto backup failed', e); return false; }
+    }
+    function runAutoBackups() {
+        try {
+            const prev = localStorage.getItem('erfont_app_version');
+            if (prev !== APP_VERSION) { saveAutoBackup('قبل از به‌روزرسانی به ' + APP_VERSION); localStorage.setItem('erfont_app_version', APP_VERSION); }
+            const day = new Date().toISOString().slice(0, 10);
+            if (localStorage.getItem('erfont_last_daily_backup') !== day) { saveAutoBackup('پشتیبان روزانه ' + day); localStorage.setItem('erfont_last_daily_backup', day); }
+        } catch(e) {}
+    }
+    function restoreAutoBackup(key) {
+        if (!confirm('اطلاعات این پشتیبان با داده‌های فعلی ادغام می‌شود (چیزی حذف نمی‌شود). ادامه می‌دهید؟')) return;
+        try {
+            const parsed = JSON.parse(localStorage.getItem(key));
+            saveAutoBackup('قبل از بازگردانی');
+            const now = Date.now(); if (!db.tombstones) db.tombstones = {};
+            SYNC_ARRAYS.forEach(a => (parsed[a] || []).forEach(it => { if (it && it.id != null) { it.updatedAt = now; delete db.tombstones[a + ':' + it.id]; } }));
+            db = mergeCloudAndLocal(parsed, db);
+            safeLocalSave(); syncToCloud(true); renderAll();
+            showToast('بازگردانی انجام شد.', 'success');
+        } catch(e) { showToast('پشتیبان معتبر نیست.', 'error'); }
+    }
+
     function loadFromLocal() {
         try {
             const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -931,9 +1166,30 @@
         return Array.from(map.values());
     }
 
+
+    // ===== تشخیص خودکار تغییر/حذف تجهیز و قطعه برای همگام‌سازی درست =====
+    const SYNC_ARRAYS = ['equipment', 'inventory', 'productionLogs'];
+    let _snap = {};
+    function _k(a, it) { return a + ':' + String(it.id); }
+    function _sig(it) { const c = Object.assign({}, it); delete c.updatedAt; delete c.updatedBy; return JSON.stringify(c); }
+    function snapshotDb() {
+        _snap = {};
+        SYNC_ARRAYS.forEach(a => (db[a] || []).forEach(it => { if (it && it.id != null) _snap[_k(a, it)] = _sig(it); }));
+    }
+    function stampChanges() {
+        const now = Date.now(); if (!db.tombstones || typeof db.tombstones !== 'object') db.tombstones = {};
+        const seen = {};
+        SYNC_ARRAYS.forEach(a => (db[a] || []).forEach(it => {
+            if (!it || it.id == null) return;
+            const k = _k(a, it); seen[k] = 1; const sg = _sig(it);
+            if (_snap[k] !== sg) { it.updatedAt = now; it.updatedBy = currentRole || ''; _snap[k] = sg; delete db.tombstones[k]; }
+        }));
+        Object.keys(_snap).forEach(k => { if (!seen[k]) { db.tombstones[k] = now; delete _snap[k]; } });
+    }
+
     function mergeCloudAndLocal(cloudData, localData) {
         const merged = Object.assign({}, localData || {}, cloudData || {});
-        ['equipment','workOrders','inventory','activityLogs','dailyReports','reportHistory'].forEach(k => {
+        ['equipment','workOrders','inventory','activityLogs','dailyReports','reportHistory','productionLogs'].forEach(k => {
             if (Array.isArray(cloudData && cloudData[k]) || Array.isArray(localData && localData[k])) {
                 merged[k] = mergeById(localData && localData[k], cloudData && cloudData[k]);
             }
@@ -943,6 +1199,7 @@
         if (!Array.isArray(merged.equipment) || !merged.equipment.length) merged.equipment = JSON.parse(JSON.stringify(exactEquipmentList));
         if (!Array.isArray(merged.inventory) || !merged.inventory.length) merged.inventory = generateMassiveInventory();
         if (!Array.isArray(merged.workOrders)) merged.workOrders = [];
+        if (!Array.isArray(merged.productionLogs)) merged.productionLogs = [];
         if (!Array.isArray(merged.reportHistory)) merged.reportHistory = [];
         const permanentlyDeletedWO = new Set(merged.reportHistory.filter(x => x && x.recordType === 'workOrder').map(x => String(x.recordId)));
         merged.workOrders = merged.workOrders.filter(w => !permanentlyDeletedWO.has(String(w.id)));
@@ -950,6 +1207,10 @@
         if (!Array.isArray(merged.dailyReports)) merged.dailyReports = [];
         if (!merged.settings || typeof merged.settings !== 'object') merged.settings = {};
         if (!merged.settings.passwords) merged.settings.passwords = { ...defaultRolePasswords };
+        const tomb = {};
+        [localData && localData.tombstones, cloudData && cloudData.tombstones].forEach(t => { if (t && typeof t === 'object') Object.keys(t).forEach(k => { tomb[k] = Math.max(Number(tomb[k] || 0), Number(t[k] || 0)); }); });
+        SYNC_ARRAYS.forEach(a => { merged[a] = (merged[a] || []).filter(it => !(it && it.id != null && tomb[a + ':' + it.id] && tomb[a + ':' + it.id] >= Number(it.updatedAt || 0))); });
+        merged.tombstones = tomb;
         delete merged._live_wo;
         return merged;
     }
@@ -1067,6 +1328,22 @@
         r.once('value').then(() => { liveReady = true; }).catch(liveErr);
     }
 
+    let _lsFirst = true;
+    function diffSummary(a, b) {
+        const names = {equipment: 'تجهیزات', inventory: 'انبار', workOrders: 'دستورکارها', dailyReports: 'گزارش شیفت', productionLogs: 'تولید/OEE'};
+        const idOf = x => String(x && x.id != null ? x.id : JSON.stringify(x));
+        const out = [];
+        Object.keys(names).forEach(k => {
+            const A = new Map((a[k] || []).map(x => [idOf(x), JSON.stringify(x)]));
+            const B = new Map((b[k] || []).map(x => [idOf(x), JSON.stringify(x)]));
+            let add = 0, chg = 0, del = 0;
+            B.forEach((v, id) => { if (!A.has(id)) add++; else if (A.get(id) !== v) chg++; });
+            A.forEach((v, id) => { if (!B.has(id)) del++; });
+            if (add || chg || del) out.push(names[k] + ': ' + [add && ('+' + add), chg && ('✎' + chg), del && ('−' + del)].filter(Boolean).join(' '));
+        });
+        return out.join(' | ');
+    }
+
     function attachRealtimeListener() {
         if (!rootRef || !auth || !auth.currentUser) return;
         rootRef.off('value');
@@ -1074,13 +1351,16 @@
             const cloudData = snapshot.val();
             if (!cloudData) return;
             const beforeStr = JSON.stringify(db);
+            const first = _lsFirst; _lsFirst = false;
             db = mergeCloudAndLocal(cloudData, db);
+            snapshotDb();
             const afterStr = JSON.stringify(db);
             if (beforeStr !== afterStr) {
                 safeLocalSave();
                 renderAll();
-                if (typeof showToast === 'function') {
-                    showToast('🔄 اطلاعات به‌روز شد', 'info', 2000);
+                if (!first && typeof showToast === 'function') {
+                    showToast('🔄 ' + (diffSummary(JSON.parse(beforeStr), db) || 'اطلاعات به‌روز شد'), 'info', 4500);
+                    haptic('success');
                 }
             }
         }, (err) => console.warn('Listener error:', err));
@@ -1098,6 +1378,7 @@
             const cloudData = snapshot.val();
             if (cloudData) {
                 db = mergeCloudAndLocal(cloudData, db);
+                snapshotDb();
                 safeLocalSave();
                 renderAll();
                 if (typeof showToast === 'function') showToast('✅ به‌روز شد', 'success');
@@ -1130,6 +1411,7 @@
     }
 
     function syncToCloud(immediate = false) {
+        try { stampChanges(); } catch(e) { console.warn(e); }
         safeLocalSave();
         checkLowStockNotifications(false);
         
@@ -1191,8 +1473,10 @@
         const ls = document.getElementById('login-screen');
         if (ls) ls.style.display = 'flex';
 
+        runAutoBackups();
         const localData = loadFromLocal();
         if (localData) db = mergeCloudAndLocal(localData, db);
+        snapshotDb();
         safeLocalSave();
 
         loadExtraLibs();
@@ -1481,8 +1765,8 @@
         } else {
             if (backBar) backBar.style.display = 'flex';
             const titles = {
-                fa: { equipment: 'شناسنامه', kpi: 'شاخص‌ها', pm: 'PM', workorders: 'دستور کار', daily: 'گزارش شیفت', inventory: 'انبار', scanner: 'اسکنر', logs: 'لاگ', ai: 'AI', settings: 'تنظیمات', toolbox: 'جعبه‌ابزار هوشمند' },
-                en: { equipment: 'Equipment', kpi: 'KPIs', pm: 'PM', workorders: 'Work Orders', daily: 'Daily', inventory: 'Inventory', scanner: 'Scanner', logs: 'Logs', ai: 'AI', settings: 'Settings', toolbox: 'Smart Toolbox' }
+                fa: { equipment: 'شناسنامه', kpi: 'شاخص‌ها', oee: 'نمودار OEE', pm: 'PM', workorders: 'دستور کار', daily: 'گزارش شیفت', inventory: 'انبار', scanner: 'اسکنر', logs: 'لاگ', ai: 'AI', settings: 'تنظیمات', toolbox: 'جعبه‌ابزار هوشمند' },
+                en: { oee: 'OEE Chart', equipment: 'Equipment', kpi: 'KPIs', pm: 'PM', workorders: 'Work Orders', daily: 'Daily', inventory: 'Inventory', scanner: 'Scanner', logs: 'Logs', ai: 'AI', settings: 'Settings', toolbox: 'Smart Toolbox' }
             };
             if (pageTitle) pageTitle.textContent = titles[currentLang]?.[tabId] || '';
         }
@@ -1800,7 +2084,7 @@
         if (!text) { showToast('متن گزارش خالی است.', 'warning'); return; }
         if (!db.dailyReports) db.dailyReports = [];
         db.dailyReports.unshift({
-            time: new Date().toLocaleTimeString('fa-IR'),
+            id: Date.now(), date: new Date().toISOString(), time: new Date().toLocaleTimeString('fa-IR'),
             shift, author, text
         });
         logAct('ثبت گزارش شیفت');
@@ -2052,7 +2336,7 @@
     // ============================================
     function clearToolResults() {
         const el = document.getElementById('toolbox-results');
-        if (el) el.innerHTML = 'برای شروع یکی از ۳۰ ابزار بالا را انتخاب کنید.';
+        if (el) el.innerHTML = 'برای شروع یکی از ۳۱ ابزار بالا را انتخاب کنید.';
     }
     function toolTable(headers, rows) {
         if (!rows.length) return '<p>موردی برای نمایش پیدا نشد.</p>';
@@ -2084,7 +2368,7 @@
         const rows = [];
         rows.push(['کلید API', firebaseConfig.apiKey.indexOf('REPLACE') === 0 ? '❌ تنظیم نشده' : '✅ ثبت شده']);
         rows.push(['اینترنت', navigator.onLine ? '✅ آنلاین' : '❌ آفلاین']);
-        rows.push(['نسخه فایل (باید 3.1.4 باشد)', APP_VERSION]);
+        rows.push(['نسخه فایل (باید 5.0.0 باشد)', APP_VERSION]);
         const sdk = window.firebase;
         rows.push(['کتابخانه app', sdk ? '✅ بارگذاری شد' : '❌ بارگذاری نشد (gstatic.com باز نمی‌شود)']);
         rows.push(['کتابخانه auth', (sdk && sdk.auth) ? '✅' : '❌ بارگذاری نشد']);
@@ -2144,7 +2428,11 @@
             case 'share': {
                 const t = '📋 گزارش ErfoNT — ' + new Date().toLocaleDateString('fa-IR') + '\nدستورکار باز: ' + open.length + '\nقطعات کم‌موجود: ' + low.length + '\n\n🔧 باز:\n' + open.slice(0, 10).map(w => '• ' + w.equipment + ': ' + w.title).join('\n') + '\n\n🛒 خرید:\n' + low.slice(0, 15).map(i => '• ' + i.name + ' (' + i.qty + '/' + i.min + ')').join('\n');
                 out.innerHTML = '<textarea id="share-txt" style="width:100%;height:220px" readonly>' + escapeHtml(t) + '</textarea>';
-                if (navigator.share) navigator.share({text: t}).catch(() => {}); else if (navigator.clipboard) navigator.clipboard.writeText(t).then(() => showToast('کپی شد.', 'success')); return true;
+                if (navigator.share) navigator.share({text: t}).catch(() => {}); else if (navigator.clipboard) navigator.clipboard.writeText(t).then(() => showToast('کپی شد.', 'success')).catch(() => {}); return true;
+            }
+            case 'autorestore': {
+                const l = listAutoBackups().reverse();
+                out.innerHTML = l.length ? l.map(b => '<div style="display:flex;justify-content:space-between;gap:8px;align-items:center;margin:6px 0"><span>' + escapeHtml(b.label) + '<br><small>' + escapeHtml(new Date(b.at).toLocaleString('fa-IR')) + ' — ' + Math.round(b.size / 1024) + ' KB</small></span><button class="btn" onclick="restoreAutoBackup(\'' + b.key + '\')">بازگردانی</button></div>').join('') : '<p>هنوز پشتیبان خودکاری ثبت نشده است.</p>'; return true;
             }
             case 'cloudtest': cloudDiagnostics(out); return true;
             case 'forcesync': { wos.forEach(pushLiveWO); syncToCloud(true); manualRefresh(); out.textContent = 'همه دستورکارها به سرور ارسال شد و آخرین نسخه دریافت می‌شود.'; return true; }
@@ -2220,6 +2508,7 @@
 
     function renderAll() {
         updateRoleDisplay();
+        try { renderOEE(); updateGreeting(); renderDashboard(); } catch(e) { console.warn(e); }
         try { populateWoSelect(); populateKpiDeviceSelect(); } catch(e) {}
         renderHubMetrics();
         renderEquipmentTable();
@@ -2788,6 +3077,7 @@
                 const imported = JSON.parse(e.target.result);
                 if (imported && typeof imported === 'object') {
                     db = mergeCloudAndLocal(imported, db);
+                    snapshotDb();
                     syncToCloud(true);
                     renderAll();
                     showToast('پشتیبان بازیابی شد.', 'success');
@@ -2998,6 +3288,197 @@
         }
     };
 
-    </script>
+    
+
+    // ===== OEE روزانه به تفکیک دستگاه با تاریخ شمسی =====
+    const J_FMT = new Intl.DateTimeFormat('fa-IR-u-ca-persian', {month: '2-digit', day: '2-digit'});
+    const J_FULL = new Intl.DateTimeFormat('fa-IR-u-ca-persian', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'});
+    function dKey(d) { const x = new Date(d); return x.getFullYear() + '-' + String(x.getMonth() + 1).padStart(2, '0') + '-' + String(x.getDate()).padStart(2, '0'); }
+    function jShort(k) { return J_FMT.format(new Date(k + 'T12:00:00')); }
+    function jLatin(k) { const p = new Intl.DateTimeFormat('en-u-ca-persian-nu-latn', {year: 'numeric', month: '2-digit', day: '2-digit'}).formatToParts(new Date(k + 'T12:00:00')); const g = t => p.find(x => x.type === t).value; return g('year') + '/' + g('month') + '/' + g('day'); }
+    function jToKey(str) {
+        const a = jParse(str); if (!a) return null;
+        const base = new Date(a[0] + 621, 2, 21, 12).getTime(), g = Math.round((a[1] - 1) * 30.45 + a[2] - 1);
+        for (let o = -8; o <= 8; o++) { const k = dKey(base + (g + o) * 864e5), b = jParse(jLatin(k)); if (b && b[0] === a[0] && b[1] === a[1] && b[2] === a[2]) return k; }
+        return null;
+    }
+    function oeeCalc(eq, key) {
+        const log = (db.productionLogs || []).find(l => l.eq === eq && l.dateKey === key);
+        const wos = (db.workOrders || []).filter(w => w.equipment === eq && w.createdAt && dKey(w.createdAt) === key);
+        if (!log && !wos.length) return null;
+        const planned = (log && Number(log.planned)) || 1440;
+        const down = Math.min(planned, wos.reduce((a, w) => a + Number(w.durationMinutes || 0), 0));
+        const A = (planned - down) / planned; let P = null, Q = null, O = A, full = false;
+        if (log && Number(log.produced) > 0 && Number(log.rate) > 0 && planned - down > 0) {
+            P = Math.min(1, log.produced / ((planned - down) / 60 * log.rate));
+            Q = Math.max(0, (log.produced - (Number(log.rejects) || 0)) / log.produced);
+            O = A * P * Q; full = true;
+        }
+        return {A, P, Q, O, down, planned, produced: log ? Number(log.produced) || 0 : 0, full};
+    }
+    function oeeSeries() {
+        const sel = document.getElementById('oee-eq'), n = Number(document.getElementById('oee-days').value) || 14;
+        const names = sel.value === '__all__' ? (db.equipment || []).map(e => e.name) : [sel.value];
+        const keys = []; for (let i = n - 1; i >= 0; i--) keys.push(dKey(Date.now() - i * 864e5));
+        const rows = keys.map(k => {
+            const rs = names.map(nm => oeeCalc(nm, k)).filter(Boolean); if (!rs.length) return {key: k};
+            const av = f => { const v = rs.map(r => r[f]).filter(x => x != null); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; };
+            return {key: k, A: av('A'), P: av('P'), Q: av('Q'), O: av('O'), down: rs.reduce((a, r) => a + r.down, 0), prod: rs.reduce((a, r) => a + r.produced, 0), full: rs.some(r => r.full)};
+        });
+        return {names, keys, rows};
+    }
+    function oeeSvg(rows) {
+        const W = 360, H = 220, l = 34, r = 10, t = 12, b = 34, n = rows.length, x = i => l + (n > 1 ? i * (W - l - r) / (n - 1) : (W - l - r) / 2), y = v => t + (1 - v) * (H - t - b);
+        let g = '';
+        [0, .25, .5, .75, 1].forEach(v => { g += '<line x1="' + l + '" x2="' + (W - r) + '" y1="' + y(v) + '" y2="' + y(v) + '" stroke="currentColor" opacity=".12"/><text x="' + (l - 5) + '" y="' + (y(v) + 3) + '" font-size="9" text-anchor="end" fill="currentColor" opacity=".6">' + Math.round(v * 100) + '</text>'; });
+        g += '<line x1="' + l + '" x2="' + (W - r) + '" y1="' + y(.85) + '" y2="' + y(.85) + '" stroke="#2ecc71" stroke-dasharray="4 4" opacity=".8"/>';
+        const step = Math.ceil(n / 7);
+        rows.forEach((rw, i) => { if (i % step === 0 || i === n - 1) g += '<text x="' + x(i) + '" y="' + (H - 14) + '" font-size="9" text-anchor="middle" fill="currentColor" opacity=".7">' + jShort(rw.key) + '</text>'; });
+        [['A', '#0095f6'], ['P', '#2ecc71'], ['Q', '#962fbf'], ['O', '#d62976']].forEach(([f, c]) => {
+            let d = '', pen = false;
+            rows.forEach((rw, i) => { if (rw[f] == null) { pen = false; return; } d += (pen ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(rw[f]).toFixed(1); pen = true; });
+            if (d) g += '<path d="' + d + '" fill="none" stroke="' + c + '" stroke-width="' + (f === 'O' ? 3 : 1.6) + '" stroke-linecap="round" stroke-linejoin="round" opacity="' + (f === 'O' ? 1 : .75) + '"/>';
+            if (f === 'O') rows.forEach((rw, i) => { if (rw.O != null) g += '<circle cx="' + x(i).toFixed(1) + '" cy="' + y(rw.O).toFixed(1) + '" r="3.5" fill="' + c + '"><title>' + jShort(rw.key) + ' — OEE ' + Math.round(rw.O * 100) + '٪</title></circle>'; });
+        });
+        return '<svg viewBox="0 0 ' + W + ' ' + H + '" style="width:100%;min-width:320px;color:var(--ig-text,#fff)">' + g + '</svg>';
+    }
+    function renderOEE() {
+        const sel = document.getElementById('oee-eq'); if (!sel) return;
+        const cnt = String((db.equipment || []).length);
+        if (sel.dataset.n !== cnt) { fillSelect(sel, [{v: '__all__', t: 'میانگین همه دستگاه‌ها'}].concat((db.equipment || []).map(e => ({v: e.name, t: e.name})))); sel.dataset.n = cnt; }
+        const {names, keys, rows} = oeeSeries(), have = rows.filter(r => r.O != null), pc = v => v == null ? '—' : Math.round(v * 100) + '٪';
+        const avg = have.length ? have.reduce((a, r) => a + r.O, 0) / have.length : null;
+        const best = have.length ? have.reduce((a, r) => r.O > a.O ? r : a) : null, worst = have.length ? have.reduce((a, r) => r.O < a.O ? r : a) : null;
+        const down = rows.reduce((a, r) => a + (r.down || 0), 0);
+        const card = (h, v, c) => '<div class="metric-card"><h4>' + h + '</h4><div class="val"' + (c ? ' style="-webkit-text-fill-color:' + c + '"' : '') + '>' + v + '</div></div>';
+        const col = v => v == null ? '' : v >= .85 ? '#2ecc71' : v >= .6 ? '#fa7e1e' : '#ed4956';
+        document.getElementById('oee-summary').innerHTML = card('میانگین OEE', pc(avg), col(avg)) + card('بهترین روز', best ? pc(best.O) + ' <small>' + jShort(best.key) + '</small>' : '—') + card('ضعیف‌ترین روز', worst ? pc(worst.O) + ' <small>' + jShort(worst.key) + '</small>' : '—') + card('توقف کل', Math.round(down / 6) / 10 + ' ساعت') + (have.length && !have.some(r => r.full) ? '<div class="card" style="grid-column:1/-1;font-size:12px">ℹ️ فقط دسترس‌پذیری از روی دستورکارها محاسبه شده. برای OEE کامل (کارایی و کیفیت) از «ثبت تولید روزانه» استفاده کنید.</div>' : '');
+        document.getElementById('oee2-chart').innerHTML = have.length ? oeeSvg(rows) : '<p style="padding:14px;color:var(--ig-mute)">در این بازه داده‌ای نیست. دستورکار یا تولید روزانه ثبت کنید.</p>';
+        // نقشه حرارتی
+        const per = (db.equipment || []).map(e => ({n: e.name, cells: keys.map(k => oeeCalc(e.name, k))})).filter(d => d.cells.some(Boolean));
+        per.forEach(d => { const v = d.cells.filter(Boolean).map(c => c.O); d.avg = v.reduce((a, b) => a + b, 0) / v.length; }); per.sort((a, b) => a.avg - b.avg);
+        const hc = c => !c ? 'rgba(128,128,128,.25)' : c.O >= .85 ? '#2ecc71' : c.O >= .6 ? '#fa7e1e' : '#ed4956';
+        document.getElementById('oee-heat').innerHTML = per.length ? '<table class="heat">' + '<tr><td class="n"></td>' + keys.map(k => '<td style="font-size:8px;text-align:center">' + jShort(k).slice(-2) + '</td>').join('') + '</tr>' + per.slice(0, 20).map(d => '<tr><td class="n">' + escapeHtml(d.n) + '</td>' + d.cells.map((c, i) => '<td class="c" style="background:' + hc(c) + '" title="' + escapeHtml(d.n) + ' ' + jShort(keys[i]) + (c ? ' — ' + Math.round(c.O * 100) + '٪' : '') + '">' + (c && keys.length <= 14 ? Math.round(c.O * 100) : '') + '</td>').join('') + '</tr>').join('') + '</table>' : '<p style="padding:14px;color:var(--ig-mute)">داده‌ای نیست.</p>';
+        document.getElementById('oee-table').innerHTML = toolTable(['تاریخ شمسی', 'OEE', 'دسترس‌پذیری', 'کارایی', 'کیفیت', 'توقف (دقیقه)'], rows.filter(r => r.O != null).reverse().map(r => [jLatin(r.key), pc(r.O), pc(r.A), pc(r.P), pc(r.Q), r.down]));
+    }
+    function exportOEE() {
+        const {rows} = oeeSeries();
+        exportToolCSV('oee_' + dKey(Date.now()), ['تاریخ شمسی', 'OEE', 'A', 'P', 'Q', 'توقف دقیقه', 'تولید'], rows.filter(r => r.O != null).map(r => [jLatin(r.key), (r.O * 100).toFixed(1), r.A != null ? (r.A * 100).toFixed(1) : '', r.P != null ? (r.P * 100).toFixed(1) : '', r.Q != null ? (r.Q * 100).toFixed(1) : '', r.down, r.prod]));
+    }
+    function openProdLog() {
+        const eqs = db.equipment || [], pe = document.getElementById('pl-eq');
+        fillSelect(pe, eqs.map(e => ({v: e.name, t: e.name})), false);
+        const s = document.getElementById('oee-eq').value; if (s && s !== '__all__') pe.value = s;
+        const eq = eqs.find(e => e.name === pe.value);
+        document.getElementById('pl-date').value = jLatin(dKey(Date.now()));
+        document.getElementById('pl-rate').value = (eq && eq.idealRate) || '';
+        pe.onchange = () => { const q = eqs.find(e => e.name === pe.value); document.getElementById('pl-rate').value = (q && q.idealRate) || ''; };
+        openModal('prod-modal');
+    }
+    function saveProdLog() {
+        if (!['creator', 'manager', 'tech1', 'tech2'].includes(currentRole)) { showToast('این نقش مجاز به ثبت تولید نیست.', 'error'); return; }
+        const v = id => document.getElementById(id).value, eq = v('pl-eq'), key = jToKey(v('pl-date'));
+        const planned = Number(v('pl-planned')), produced = Number(v('pl-prod')), rejects = Number(v('pl-rej')) || 0, rate = Number(v('pl-rate'));
+        if (!eq) { showToast('دستگاه را انتخاب کنید.', 'error'); return; }
+        if (!key) { showToast('تاریخ شمسی معتبر نیست (مثال 1405/08/02).', 'error'); return; }
+        if (!(planned > 0 && planned <= 1440)) { showToast('زمان برنامه‌ریزی باید بین ۱ تا ۱۴۴۰ دقیقه باشد.', 'error'); return; }
+        if (!(produced > 0) || rejects < 0 || rejects > produced || !(rate > 0)) { showToast('تولید، ضایعات و ظرفیت ایده‌آل را درست وارد کنید.', 'error'); return; }
+        pushUndo();
+        if (!db.productionLogs) db.productionLogs = [];
+        const old = db.productionLogs.find(l => l.eq === eq && l.dateKey === key);
+        if (old) Object.assign(old, {planned, produced, rejects, rate, by: currentRole});
+        else db.productionLogs.push({id: Date.now(), eq, dateKey: key, planned, produced, rejects, rate, by: currentRole});
+        const e = (db.equipment || []).find(x => x.name === eq); if (e) e.idealRate = rate;
+        logAct('ثبت تولید روزانه: ' + eq + ' ' + v('pl-date'));
+        closeModal('prod-modal'); syncToCloud(); renderAll(); renderOEE(); haptic('success'); showToast('تولید ثبت شد.', 'success');
+    }
+    function updateGreeting() {
+        const el = document.getElementById('ig-greet'); if (!el) return;
+        const nm = currentRole && ROLE_NAMES && ROLE_NAMES.fa ? ROLE_NAMES.fa[currentRole] : '';
+        el.innerHTML = '<b>سلام' + (nm ? ' ' + escapeHtml(nm) : '') + ' 👋</b><span>' + J_FULL.format(new Date()) + '</span>';
+    }
+    function dictate(id) {
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SR) { showToast('دیکته در این مرورگر پشتیبانی نمی‌شود.', 'warning'); return; }
+        const r = new SR(); r.lang = 'fa-IR';
+        r.onresult = e => { const el = document.getElementById(id); el.value = (el.value + ' ' + e.results[0][0].transcript).trim(); };
+        r.onerror = () => showToast('دیکته انجام نشد.', 'warning');
+        r.start(); showToast('🎤 صحبت کنید...', 'info', 2000);
+    }
+
+
+    // ===== داشبورد CMMS =====
+    function renderDashboard() {
+        const el = document.getElementById('cm-dash'); if (!el || !document.body.classList.contains('cm')) return;
+        const wos = db.workOrders || [], eqs = db.equipment || [], inv = db.inventory || [], now = Date.now();
+        const fa = n => Number(n).toLocaleString('en');
+        const open = wos.filter(w => !w.completed), crit = open.filter(w => w.priority === 'بحرانی'), urg = open.filter(w => w.priority === 'فوری');
+        const sla = open.filter(w => w.startTimestamp && now - Number(w.startTimestamp) > 864e5);
+        const low = inv.filter(i => Number(i.qty) <= Number(i.min));
+        const today = dKey(now), doneToday = wos.filter(w => w.completed && w.createdAt && dKey(w.createdAt) === today).length;
+        const done = wos.filter(w => w.completed && Number(w.durationMinutes) > 0);
+        const mttr = done.length ? Math.round(done.reduce((a, w) => a + Number(w.durationMinutes), 0) / done.length) : 0;
+        let sum = 0, c = 0; for (let i = 0; i < 7; i++) { const k = dKey(now - i * 864e5); eqs.forEach(e => { const r = oeeCalc(e.name, k); if (r) { sum += r.O; c++; } }); }
+        const oee = c ? Math.round(sum / c * 100) : null;
+        const nm = currentRole && ROLE_NAMES && ROLE_NAMES.fa ? ROLE_NAMES.fa[currentRole] : '';
+        const col = oee == null ? 'var(--cm-mute)' : oee >= 85 ? 'var(--cm-green)' : oee >= 60 ? 'var(--cm-amber)' : 'var(--cm-red)';
+        const R = 34, C = 2 * Math.PI * R, ring = '<svg viewBox="0 0 84 84" class="cm-ring"><circle cx="42" cy="42" r="' + R + '" fill="none" stroke="currentColor" stroke-opacity=".12" stroke-width="7"/><circle cx="42" cy="42" r="' + R + '" fill="none" stroke="' + col + '" stroke-width="7" stroke-linecap="round" stroke-dasharray="' + (C * (oee || 0) / 100).toFixed(1) + ' ' + C.toFixed(1) + '" transform="rotate(-90 42 42)"/><text x="42" y="47" text-anchor="middle" font-size="17" font-weight="700" fill="currentColor">' + (oee == null ? '—' : fa(oee) + '٪') + '</text></svg>';
+        const tile = (i, l, v, sub, cls) => '<div class="kt ' + (cls || '') + '"><div class="kt-ic">' + i + '</div><div class="kt-l">' + l + '</div><div class="kt-v">' + v + '</div><div class="kt-s">' + (sub || '&nbsp;') + '</div></div>';
+        const sec = (t, a, f) => '<div class="cm-sec"><h3>' + t + '</h3>' + (a ? '<a onclick="' + f + '">' + a + ' ‹</a>' : '') + '</div>';
+        const norm = open.length - crit.length - urg.length, tot = norm + urg.length + crit.length + done.length || 1;
+        const seg = (n, cl) => n ? '<i style="flex:' + n + ';background:' + cl + '"></i>' : '';
+        const chip = w => { const p = w.priority; const cl = p === 'بحرانی' ? 'var(--cm-red)' : p === 'فوری' ? 'var(--cm-amber)' : 'var(--cm-blue)'; return '<span class="chip" style="color:' + cl + ';border-color:' + cl + '">' + escapeHtml(p || 'عادی') + '</span>'; };
+        const recent = [...wos].sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || ''))).slice(0, 6);
+        const down = {}; wos.forEach(w => { down[w.equipment] = (down[w.equipment] || 0) + Number(w.durationMinutes || 0); });
+        const topDown = Object.entries(down).filter(e => e[1] > 0).sort((a, b) => b[1] - a[1]).slice(0, 5).map(e => [e[0], Math.round(e[1] / 6) / 10, 'ساعت']);
+        const lowL = low.sort((a, b) => (a.qty - a.min) - (b.qty - b.min)).slice(0, 5);
+        el.innerHTML =
+            '<div class="cm-hero"><div><div class="cm-hello">سلام' + (nm ? ' ' + escapeHtml(nm) : '') + ' 👋</div><div class="cm-date">' + J_FULL.format(new Date()) + '</div><div class="cm-sub">OEE میانگین ۷ روز اخیر</div></div>' + ring + '</div>' +
+            '<div class="cm-qa"><button class="qa gold" onclick="openModal(\'wo-modal\')">＋ دستورکار</button><button class="qa" onclick="navigateTo(\'oee\');openProdLog()">＋ تولید روزانه</button><button class="qa" onclick="navigateTo(\'scanner\')">📷 اسکن</button><button class="qa" onclick="navigateTo(\'oee\')">📈 OEE</button><button class="qa" onclick="toggleUiStyle()">🎨 ظاهر</button></div>' +
+            (crit.length ? '<div class="cm-alert" onclick="navigateTo(\'workorders\')">🚨 ' + fa(crit.length) + ' دستورکار بحرانی باز است <span>مشاهده ‹</span></div>' : '') +
+            '<div class="cm-kpis">' +
+            tile('🔧', 'دستورکار باز', fa(open.length), urg.length ? fa(urg.length) + ' فوری' : '', open.length ? 'warn' : 'good') +
+            tile('⏱️', 'عبور از ۲۴ ساعت', fa(sla.length), 'هشدار SLA', sla.length ? 'bad' : 'good') +
+            tile('✅', 'تکمیل امروز', fa(doneToday), 'از ' + fa(wos.length) + ' کل', 'good') +
+            tile('📦', 'کمبود انبار', fa(low.length), 'از ' + fa(inv.length) + ' قطعه', low.length ? 'bad' : 'good') +
+            tile('⚙️', 'تجهیزات', fa(eqs.length), 'تحت نظارت') +
+            tile('🛠️', 'میانگین MTTR', fa(mttr), 'دقیقه') + '</div>' +
+            sec('وضعیت دستورکارها', '', '') +
+            '<div class="card"><div class="seg">' + seg(norm, 'var(--cm-blue)') + seg(urg.length, 'var(--cm-amber)') + seg(crit.length, 'var(--cm-red)') + seg(done.length, 'var(--cm-green)') + '</div><div class="seg-l"><span><i style="background:var(--cm-blue)"></i>عادی ' + fa(norm) + '</span><span><i style="background:var(--cm-amber)"></i>فوری ' + fa(urg.length) + '</span><span><i style="background:var(--cm-red)"></i>بحرانی ' + fa(crit.length) + '</span><span><i style="background:var(--cm-green)"></i>تکمیل ' + fa(done.length) + '</span></div></div>' +
+            sec('آخرین دستورکارها', 'همه', "navigateTo('workorders')") +
+            '<div class="card">' + (recent.length ? recent.map(w => '<div class="cm-row" onclick="navigateTo(\'workorders\')"><span class="dot" style="background:' + (w.completed ? 'var(--cm-green)' : 'var(--cm-amber)') + '"></span><div style="flex:1;min-width:0"><b>' + escapeHtml(w.title || '') + '</b><small>' + escapeHtml(w.equipment || '') + (w.createdAt ? ' · ' + jShort(dKey(w.createdAt)) : '') + '</small></div>' + chip(w) + '</div>').join('') : '<p class="cm-empty">هنوز دستورکاری ثبت نشده است.</p>') + '</div>' +
+            sec('بیشترین توقف', 'نمودار OEE', "navigateTo('oee')") + '<div class="card">' + (topDown.length ? barList(topDown) : '<p class="cm-empty">داده توقفی ثبت نشده است.</p>') + '</div>' +
+            sec('کمبود موجودی انبار', 'انبار', "navigateTo('inventory')") +
+            '<div class="card">' + (lowL.length ? lowL.map(i => '<div class="cm-row" onclick="navigateTo(\'inventory\')"><span class="dot" style="background:var(--cm-red)"></span><div style="flex:1;min-width:0"><b>' + escapeHtml(i.name || '') + '</b><small>' + escapeHtml(i.code || '') + '</small></div><span class="chip" style="color:var(--cm-red);border-color:var(--cm-red)">' + fa(i.qty) + ' / ' + fa(i.min) + '</span></div>').join('') : '<p class="cm-empty">موجودی همه قطعات کافی است ✨</p>') + '</div>' +
+            sec('ماژول‌ها', '', '');
+    }
+
+    function toggleUiStyle() {
+        const b = document.body, cur = b.classList.contains('cm') ? 'cm' : b.classList.contains('ig') ? 'ig' : 'lux', nx = {cm: 'ig', ig: 'lux', lux: 'cm'}[cur];
+        b.classList.remove('cm', 'ig'); if (nx !== 'lux') b.classList.add(nx);
+        try { localStorage.setItem('erfont_ui', nx); } catch(e) {}
+        renderAll();
+    }
+    (function () {
+        let ui = 'cm'; try { ui = localStorage.getItem('erfont_ui') || 'cm'; } catch(e) {} if (ui === 'ig' || ui === 'cm') document.body.classList.add(ui);
+        const orig = navigateTo;
+        navigateTo = function (t) { orig(t); if (t === 'oee') renderOEE(); if (t === 'hub') renderDashboard(); document.querySelectorAll('#igbar [data-t]').forEach(b => b.classList.toggle('on', b.dataset.t === t)); window.scrollTo(0, 0); };
+        document.querySelectorAll('#igbar [data-t="hub"]').forEach(b => b.classList.add('on'));
+        [['wo-title', 'wo-title'], ['rep-text', 'rep-text']].forEach(([id]) => { const el = document.getElementById(id); if (el) el.insertAdjacentHTML('afterend', '<button type="button" class="btn" style="margin-top:6px;padding:4px 10px;font-size:12px" onclick="dictate(\'' + id + '\')">🎤 دیکته</button>'); });
+    })();
+</script>
+
+    <nav class="igbar" id="igbar">
+        <button data-t="hub" class="on" onclick="navigateTo('hub')"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><span>داشبورد</span></button>
+        <button data-t="workorders" onclick="navigateTo('workorders')"><svg viewBox="0 0 24 24"><rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h4"/></svg><span>دستورکار</span></button>
+        <button class="plus" onclick="openModal('wo-modal')" title="دستورکار جدید"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span>دستورکار جدید</span></button>
+        <button data-t="equipment" onclick="navigateTo('equipment')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg><span>تجهیزات</span></button>
+        <button data-t="inventory" onclick="navigateTo('inventory')"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg><span>انبار</span></button>
+        <button data-t="oee" class="wide-only " onclick="navigateTo('oee')"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg><span>نمودار OEE</span></button>
+        <button data-t="kpi" class="wide-only " onclick="navigateTo('kpi')"><svg viewBox="0 0 24 24"><path d="M4 18a8 8 0 1 1 16 0"/><path d="M12 18l4-5"/></svg><span>شاخص‌ها</span></button>
+        <button data-t="daily" class="wide-only " onclick="navigateTo('daily')"><svg viewBox="0 0 24 24"><path d="M5 3h14v18H5zM9 8h6M9 12h6M9 16h3"/></svg><span>گزارش شیفت</span></button>
+        <button data-t="toolbox" class="wide-only " onclick="navigateTo('toolbox')"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M9 8V5h6v3M3 13h18"/></svg><span>جعبه‌ابزار</span></button>
+        <button data-t="settings" class="wide-only " onclick="navigateTo('settings')"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>تنظیمات</span></button>
+    </nav>
 </body>
-                                                                                                                                                     </html>
+                    </html>
