@@ -487,14 +487,16 @@
         <div style="background:var(--surface-card); border:1px solid var(--accent-rose); padding:30px; border-radius:var(--radius-box); max-width:400px; box-shadow:0 0 60px rgba(220,38,38,0.4);">
             <div style="font-size:28px; margin-bottom:10px; color:var(--accent-rose);">⚠️ سیستم قفل شد</div>
             <h2 style="font-size:14px; font-weight:700; margin-bottom:8px;" data-i18n="locked_title">اعتبار لایسنس به پایان رسیده است</h2>
-            <p style="color:var(--text-muted); font-size:11px; line-height:1.5;" data-i18n="locked_desc">دسترسی به سیستم توسط سرور مرکزی محدود گردیده است.</p>
+            <p style="color:var(--text-muted); font-size:11px; line-height:1.7;" data-i18n="locked_desc">وضعیت فعال‌بودن برنامه در تنظیمات ذخیره‌شده غیرفعال است. برای بازیابی، با نقش سازنده وارد شوید.</p>
+            <button type="button" onclick="recoverLicenseAccess()" class="btn btn-emerald" style="width:100%;justify-content:center;margin-top:16px;padding:12px;">ورود سازنده و بازیابی دسترسی</button>
+            <p style="color:var(--text-muted);font-size:10px;line-height:1.6;margin-top:10px;">این گزینه قفل را دور نمی‌زند؛ فقط صفحه ورود را باز می‌کند. فعال‌سازی نیازمند رمز نقش سازنده است.</p>
         </div>
     </div>
 
     <header>
         <div class="logo-group">
             <div class="logo" onclick="navigateTo('hub')" title="خانه">
-                <span>⚡</span> ErfoNT pro <span style="font-size:10px; color:var(--accent-emerald); font-family:monospace;">v5.0.0</span>
+                <span>⚡</span> ErfoNT pro <span style="font-size:10px; color:var(--accent-emerald); font-family:monospace;">v5.1.1</span>
             </div>
             <span class="badge" id="company-badge-text">NODE: erfont1995</span>
             <button onclick="navigateTo('settings')" class="icon-btn" title="تنظیمات">⚙️</button>
@@ -1336,8 +1338,8 @@
                             const s = document.getElementById('auth-status');
                             if (s) s.textContent = '🔒 احراز هویت امن فعال است';
                             lastAuthError = '';
-                            setConnectivityStatus('احراز هویت ابری برقرار است؛ همگام‌سازی فعال شد.', false);
-                            setSyncStatus('ok');
+                            setConnectivityStatus('احراز هویت برقرار است؛ در حال تأیید همگام‌سازی با سرور...', false);
+                            setSyncStatus('syncing');
                             const statusText = document.getElementById('auth-status'); if (statusText) { statusText.textContent = '🔒 احراز هویت Firebase فعال است'; statusText.style.color = 'var(--accent-emerald)'; }
                             setTimeout(() => { attachRealtimeListener(); attachLiveWO(); syncToCloud(true); }, 0);
                         } else {
@@ -1595,8 +1597,8 @@
             attachLiveWO();
             try {
                 safeLocalSave();
-                setConnectivityStatus('اتصال ابری و همگام‌سازی امن برقرار شد.', false);
-                setSyncStatus('ok');
+                setConnectivityStatus('احراز هویت برقرار است؛ در حال تأیید ذخیره‌سازی ابری...', false);
+                setSyncStatus('syncing');
                 if (db.settings && db.settings.appActive === false) {
                     const lock = document.getElementById('license-lock-screen');
                     if (lock) lock.style.display = 'flex';
@@ -1819,15 +1821,25 @@
         showToast(`${changed} رمز با موفقیت ذخیره شد.`, 'success');
     }
 
+    function recoverLicenseAccess() {
+        // Recovery only exposes the existing login form; it does not grant access or change cloud data.
+        const lock = document.getElementById('license-lock-screen');
+        const login = document.getElementById('login-screen');
+        if (lock) lock.style.display = 'none';
+        currentRole = '';
+        if (login) login.style.display = 'flex';
+        const status = document.getElementById('auth-status');
+        if (status) status.textContent = 'برای بازیابی وضعیت برنامه، با نقش سازنده وارد شوید.';
+        onLoginRoleChange();
+    }
+
     function toggleAppLicense(status) {
         if (currentRole !== 'creator') { showToast('دسترسی غیرمجاز', 'error'); return; }
         db.settings.appActive = status;
         syncToCloud(true);
         showToast(status ? 'سیستم فعال شد' : 'سیستم قفل شد', status ? 'success' : 'warning');
-        if (!status) {
-            const lock = document.getElementById('license-lock-screen');
-            if (lock) lock.style.display = 'flex';
-        }
+        const lock = document.getElementById('license-lock-screen');
+        if (lock) lock.style.display = status ? 'none' : 'flex';
     }
 
     function set2FA() {
@@ -3346,7 +3358,7 @@
             login_role_label: "انتخاب نقش:",
             role_creator: "👑 سازنده", role_manager: "👔 مدیر", role_tech1: "🔧 تکنسین ارشد", role_tech2: "🔧 تکنسین شیفت", role_production: "🏭 تولید", role_plastic: "🧴 پلاستیک‌سازی",
             login_pass_label: "کلمه عبور:", login_btn: "ورود",
-            locked_title: "اعتبار لایسنس پایان یافته", locked_desc: "دسترسی توسط سرور مرکزی محدود شده.",
+            locked_title: "برنامه غیرفعال است", locked_desc: "برای بازیابی، با نقش سازنده وارد شوید.",
             undo: "بازگشت", theme: "تم", back_to_hub: "بازگشت به هاب",
             mttr_title: "MTTR (دقیقه)", mtbf_title: "MTBF (ساعت)", eq_count_title: "تجهیزات", reports_title: "گزارش‌ها",
             modules_title: "ماژول‌ها",
@@ -3620,4 +3632,4 @@
         <button data-t="settings" class="wide-only " onclick="navigateTo('settings')"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>تنظیمات</span></button>
     </nav>
 </body>
-                    </html>
+</html>
