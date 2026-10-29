@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#08070a">
+    <meta name="theme-color" content="#0b0d12">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="color-scheme" content="dark light">
     <meta name="application-name" content="ErfoNT pro">
     <meta name="description" content="Industrial CMMS & SCADA System">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon-192.png">
-    <title>ErfoNT pro - Industrial CMMS & SCADA v3.1</title>
+    <title>ErfoNT pro - Industrial CMMS & SCADA v5.1.0</title>
 
     <!-- Firebase SDK -->
     
@@ -83,7 +87,7 @@
         .role-display:hover{border-color:var(--accent-rose);}
         .user-avatar-head{width:20px;height:20px;border-radius:50%;object-fit:cover;border:1px solid var(--primary);}
         .sync-badge{font-size:10px;background:rgba(5,150,105,0.15);color:var(--accent-emerald);padding:4px 8px;border-radius:var(--radius-btn);border:1px solid var(--border-color);font-family:monospace;font-weight:600;display:flex;align-items:center;gap:4px;}
-        .sync-badge.syncing{color:var(--accent-amber);background:rgba(217,119,6,0.15);} .sync-badge.offline{color:var(--accent-rose);background:rgba(220,38,38,0.15);}
+        .sync-badge.syncing{color:var(--accent-amber);background:rgba(217,119,6,0.15);} .sync-badge.offline{color:var(--accent-rose);background:rgba(220,38,38,0.15);} .sync-badge.local{color:var(--text-muted);background:rgba(128,128,128,0.12);}
         .sync-dot{width:6px;height:6px;border-radius:50%;background:currentColor;animation:syncPulse 1.5s infinite;}
         @keyframes syncPulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
         .undo-btn-head{background:var(--accent-purple);color:#fff;border-color:var(--accent-purple);display:none;}
@@ -358,6 +362,67 @@
             body.cm .header-controls>*{flex:0 0 auto}
         }
         body.cm.light-theme{background-image:radial-gradient(900px 500px at 85% -8%,rgba(201,164,92,.2),transparent 60%)!important}
+
+        /* ===== ErfoNT 5.1 — iOS-inspired Liquid Glass design layer ===== */
+        :root{--ios-blue:#0a84ff;--ios-cyan:#64d2ff;--ios-glass:rgba(25,29,38,.72);--ios-hairline:rgba(255,255,255,.105);--ios-radius:22px;--ios-shadow:0 12px 36px rgba(0,0,0,.20)}
+        html{scroll-padding-top:90px;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+        body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",system-ui,"Vazirmatn",sans-serif;letter-spacing:-.12px;overscroll-behavior-y:contain;-webkit-tap-highlight-color:transparent}
+        button,input,select,textarea{font:inherit}
+        button{touch-action:manipulation}
+        body.cm{--cm-bg:#090b10;--cm-s1:rgba(23,27,36,.78);--cm-line:rgba(255,255,255,.105);--cm-gold:#64aaff;--cm-gold2:#9bd4ff;--cm-text:#f5f7fb;--cm-mute:#a1a9b8;--cm-blue:#64aaff;--primary:#0a84ff;--primary-glow:rgba(10,132,255,.22);--surface-card:rgba(24,29,39,.76);--surface-input:rgba(10,13,19,.78);--modal-bg:rgba(24,28,37,.96);--radius-box:22px;background-image:radial-gradient(1000px 560px at 85% -10%,rgba(10,132,255,.16),transparent 62%),radial-gradient(700px 460px at -15% 100%,rgba(100,210,255,.07),transparent 60%)!important}
+        body.cm.light-theme{--cm-bg:#f2f4f8;--cm-s1:rgba(255,255,255,.78);--cm-line:rgba(60,70,90,.12);--cm-gold:#007aff;--cm-gold2:#52a5ff;--cm-text:#171a21;--cm-mute:#687181;--primary:#007aff;--surface-card:rgba(255,255,255,.78);--surface-input:rgba(247,248,251,.88);--modal-bg:rgba(255,255,255,.96);background-image:radial-gradient(900px 500px at 85% -8%,rgba(0,122,255,.10),transparent 62%)!important}
+        body.cm header{background:rgba(17,21,29,.76);border-bottom:1px solid var(--cm-line);backdrop-filter:saturate(180%) blur(24px);-webkit-backdrop-filter:saturate(180%) blur(24px);box-shadow:0 1px 0 rgba(255,255,255,.025)}
+        body.cm.light-theme header{background:rgba(250,251,253,.78)}
+        body.cm .card,body.cm .metric-card,body.cm .table-container,body.cm .hub-card,body.cm .login-card,body.cm .modal-body,body.cm .user-profile-card{border:1px solid var(--cm-line);border-radius:var(--ios-radius);background:var(--surface-card);backdrop-filter:saturate(160%) blur(22px);-webkit-backdrop-filter:saturate(160%) blur(22px);box-shadow:var(--ios-shadow)}
+        body.cm .card{padding:clamp(14px,2.5vw,22px)}
+        body.cm .hub-card{transition:transform .2s ease,border-color .2s ease,background .2s ease}
+        body.cm .hub-card:active,body.cm .btn:active,body.cm .qa:active,body.cm .icon-btn:active{transform:scale(.975)}
+        body.cm .btn,body.cm .btn-rose,body.cm .btn-emerald,body.cm .btn-amber,body.cm .btn-purple,body.cm .btn-cyan{border-radius:14px;min-height:38px;font-size:12px;font-weight:650;box-shadow:0 4px 12px rgba(0,0,0,.10)}
+        body.cm .qa{border-radius:15px;border-color:var(--cm-line);background:rgba(128,145,170,.10);padding:11px 15px}
+        body.cm .qa.gold{background:linear-gradient(135deg,#4aa5ff,#087cff);color:#fff;box-shadow:0 8px 22px rgba(10,132,255,.25)}
+        body.cm .cm-sec h3{color:var(--cm-gold);font-size:13.5px;letter-spacing:0}
+        body.cm .kt{border-radius:20px;background:var(--surface-card);border-color:var(--cm-line);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+        body.cm .kt::before{background:linear-gradient(90deg,transparent,var(--cm-gold),transparent)}
+        body.cm .kt-v{font-variant-numeric:tabular-nums;letter-spacing:-.8px}
+        body.cm .form-control{min-height:42px;border-radius:13px;border:1px solid var(--cm-line);background:var(--surface-input);font-size:14px;padding:11px 13px;transition:border-color .18s ease,box-shadow .18s ease}
+        body.cm .form-control:focus{border-color:var(--ios-blue);box-shadow:0 0 0 3px rgba(10,132,255,.16);outline:none}
+        body.cm label{font-size:12px;line-height:1.7}
+        body.cm .table-container{overflow:auto;overscroll-behavior:contain}
+        body.cm table{border-collapse:separate;border-spacing:0;min-width:620px}
+        body.cm th{background:rgba(20,25,34,.96);font-size:11px;letter-spacing:0;border-bottom:1px solid var(--cm-line)}
+        body.cm.light-theme th{background:rgba(244,246,250,.96)}
+        body.cm td{font-size:12px;line-height:1.75}
+        body.cm .igbar{background:rgba(25,29,38,.78);border:1px solid rgba(255,255,255,.13);backdrop-filter:saturate(180%) blur(28px);-webkit-backdrop-filter:saturate(180%) blur(28px);box-shadow:0 10px 40px rgba(0,0,0,.30)}
+        body.cm.light-theme .igbar{background:rgba(250,251,254,.82);border-color:rgba(60,70,90,.12);box-shadow:0 10px 34px rgba(20,30,50,.12)}
+        body.cm .igbar button.on{color:var(--ios-blue)}
+        body.cm .igbar .plus{background:linear-gradient(145deg,#55b7ff,#087cff);color:#fff;box-shadow:0 8px 24px rgba(10,132,255,.38)}
+        body.cm .sync-badge,body.cm .role-display,body.cm .icon-btn,body.cm .back-btn{border-radius:12px;min-height:34px}
+        body.cm .toast{border-radius:17px;background:rgba(28,33,43,.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--cm-line);box-shadow:0 16px 42px rgba(0,0,0,.24)}
+        body.cm.light-theme .toast{background:rgba(255,255,255,.94);color:var(--cm-text)}
+        body.cm .modal{padding:18px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+        body.cm .modal-body{max-height:min(88dvh,820px);overflow:auto;overscroll-behavior:contain}
+        body.cm .login-card{max-width:440px;padding:clamp(22px,5vw,34px)}
+        body.cm .login-logo{border-bottom:1px solid var(--cm-line);color:var(--ios-blue)}
+        body.cm #toast-container{padding-inline:10px}
+        @media(max-width:899px){
+          body.cm{padding-bottom:calc(106px + env(safe-area-inset-bottom,0px))}
+          body.cm main.workspace{padding:14px 12px calc(22px + env(safe-area-inset-bottom,0px))}
+          body.cm header{padding-top:calc(9px + env(safe-area-inset-top,0px));}
+          body.cm .igbar{bottom:calc(9px + env(safe-area-inset-bottom,0px));height:66px;border-radius:23px;left:10px;right:10px;padding-inline:5px}
+          body.cm .igbar button{min-width:0}
+          body.cm .igbar button span{font-size:10px}
+          body.cm .cm-kpis{gap:9px}
+          body.cm .kt{padding:13px;border-radius:18px}
+          body.cm .kt-v{font-size:26px}
+          body.cm .card-grid{gap:9px}
+          body.cm .modal{align-items:flex-end;padding:0}
+          body.cm .modal-body{width:100%;max-width:none;border-radius:25px 25px 0 0;border-bottom:0;padding:24px 18px calc(22px + env(safe-area-inset-bottom,0px));max-height:90dvh}
+          body.cm #cmd-palette{padding:calc(12px + env(safe-area-inset-top,0px)) 10px 10px;align-items:flex-start}
+          body.cm .cmd-palette-box{border-radius:22px}
+        }
+        @media(min-width:900px){body.cm .igbar{background:rgba(18,22,30,.88);backdrop-filter:blur(26px);-webkit-backdrop-filter:blur(26px)}body.cm.light-theme .igbar{background:rgba(250,251,253,.88)}}
+        @media(prefers-reduced-motion:reduce){body.cm *,body.cm *::before,body.cm *::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
     </style>
 </head>
 <body dir="rtl">
@@ -635,6 +700,7 @@
         <div id="tab-ai" class="tab-content">
             <div class="card">
                 <h3 style="font-size:12px; font-weight:700; color:var(--primary); text-transform:uppercase;" data-i18n="ai_page_title">🤖 عیب‌یاب هوشمند Erfont AI</h3>
+                <p style="font-size:10px;color:var(--text-muted);line-height:1.7;margin-top:6px;">نسخه فعلی از راهنمای داخلی و قواعد عیب‌یابی استفاده می‌کند؛ هنوز به مدل مولد هوش مصنوعی متصل نیست. پیش از تعمیر، ایمنی و دستورالعمل سازنده را رعایت کنید.</p>
                 <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;">
                     <input type="text" id="ai-query" placeholder="مثلاً: خطای درایو INVT یا افت فشار پمپ..." class="form-control" style="margin:0; flex:1; min-width:200px;" data-i18n-ph="ai_ph">
                     <button onclick="runAi()" class="btn" data-i18n="ai_btn">تحلیل</button>
@@ -881,7 +947,7 @@
     // ============================================
     // 🎯 CONSTANTS & CONFIG
     // ============================================
-    const APP_VERSION = '5.0.0';
+    const APP_VERSION = '5.1.0';
     const LOCAL_STORAGE_KEY = 'erfont_turbo_db_v30_persistent';
     const LOCAL_THEME_KEY = 'erfont_theme_v30';
     const LOCAL_LANG_KEY = 'erfont_lang_v30';
@@ -1063,7 +1129,7 @@
             category: r[0],
             name: r[1],
             code: r[2],
-            qty: 5,
+            qty: 0,
             min: r[3],
             history: []
         }));
@@ -1168,7 +1234,7 @@
 
 
     // ===== تشخیص خودکار تغییر/حذف تجهیز و قطعه برای همگام‌سازی درست =====
-    const SYNC_ARRAYS = ['equipment', 'inventory', 'productionLogs'];
+    const SYNC_ARRAYS = ['equipment', 'inventory', 'productionLogs', 'workOrders', 'dailyReports', 'activityLogs', 'reportHistory'];
     let _snap = {};
     function _k(a, it) { return a + ':' + String(it.id); }
     function _sig(it) { const c = Object.assign({}, it); delete c.updatedAt; delete c.updatedBy; return JSON.stringify(c); }
@@ -1196,8 +1262,8 @@
         });
         merged.settings = Object.assign({}, (localData && localData.settings) || {}, (cloudData && cloudData.settings) || {});
         merged.profiles = Object.assign({}, (localData && localData.profiles) || {}, (cloudData && cloudData.profiles) || {});
-        if (!Array.isArray(merged.equipment) || !merged.equipment.length) merged.equipment = JSON.parse(JSON.stringify(exactEquipmentList));
-        if (!Array.isArray(merged.inventory) || !merged.inventory.length) merged.inventory = generateMassiveInventory();
+        if (!Array.isArray(merged.equipment)) merged.equipment = JSON.parse(JSON.stringify(exactEquipmentList));
+        if (!Array.isArray(merged.inventory)) merged.inventory = generateMassiveInventory();
         if (!Array.isArray(merged.workOrders)) merged.workOrders = [];
         if (!Array.isArray(merged.productionLogs)) merged.productionLogs = [];
         if (!Array.isArray(merged.reportHistory)) merged.reportHistory = [];
@@ -1270,9 +1336,14 @@
                             const s = document.getElementById('auth-status');
                             if (s) s.textContent = '🔒 احراز هویت امن فعال است';
                             lastAuthError = '';
-                            setTimeout(() => { attachRealtimeListener(); attachLiveWO(); setSyncStatus('ok'); syncToCloud(true); }, 0);
+                            setConnectivityStatus('احراز هویت ابری برقرار است؛ همگام‌سازی فعال شد.', false);
+                            setSyncStatus('ok');
+                            const statusText = document.getElementById('auth-status'); if (statusText) { statusText.textContent = '🔒 احراز هویت Firebase فعال است'; statusText.style.color = 'var(--accent-emerald)'; }
+                            setTimeout(() => { attachRealtimeListener(); attachLiveWO(); syncToCloud(true); }, 0);
                         } else {
                             console.warn('⚠️ Firebase not authenticated (anonymous auth may be disabled).');
+                            setConnectivityStatus('احراز هویت Firebase انجام نشده؛ همگام‌سازی ابری فعلاً غیرفعال است.', true);
+                            setSyncStatus('offline');
                         }
                     });
                     trySignIn(0);
@@ -1363,12 +1434,17 @@
                     haptic('success');
                 }
             }
-        }, (err) => console.warn('Listener error:', err));
+        }, (err) => {
+            console.warn('Realtime listener error:', err);
+            setSyncStatus('offline');
+            setConnectivityStatus('دریافت زنده از Firebase ناموفق است؛ قوانین دسترسی و اتصال را بررسی کنید.', true);
+        });
     }
 
     async function manualRefresh() {
-        if (!rootRef) {
-            if (typeof showToast === 'function') showToast('آفلاین — Firebase در دسترس نیست', 'warning');
+        if (!rootRef || !auth || !auth.currentUser) {
+            setSyncStatus('offline');
+            if (typeof showToast === 'function') showToast('همگام‌سازی دستی ممکن نیست؛ اتصال Firebase و احراز هویت را بررسی کنید.', 'warning', 5000);
             return;
         }
         const btn = document.getElementById('refresh-btn');
@@ -1404,9 +1480,10 @@
         const el = document.getElementById('sync-status');
         const txt = document.getElementById('sync-text');
         if (!el || !txt) return;
-        el.classList.remove('syncing', 'offline');
+        el.classList.remove('syncing', 'offline', 'local');
         if (status === 'syncing') { el.classList.add('syncing'); txt.textContent = 'در حال ذخیره...'; }
         else if (status === 'offline') { el.classList.add('offline'); txt.textContent = 'آفلاین'; }
+        else if (status === 'local') { el.classList.add('local'); txt.textContent = 'محلی'; }
         else { txt.textContent = 'همگام'; }
     }
 
@@ -1424,20 +1501,39 @@
         const doSync = () => {
             if (cloudSyncInProgress) { cloudSyncQueued = true; return; }
             cloudSyncInProgress = true;
-            rootRef.transaction(function(remote) {
-                if (!remote) return db;
-                const r = mergeCloudAndLocal(remote, db);
-                if (remote._live_wo) r._live_wo = remote._live_wo;
-                return r;
-            }, function(error, committed) {
+            try {
+                rootRef.transaction(function(remote) {
+                    if (!remote) return db;
+                    const r = mergeCloudAndLocal(remote, db);
+                    // Keep the dedicated live-work-order channel outside the main merge.
+                    if (remote._live_wo) r._live_wo = remote._live_wo;
+                    return r;
+                }, function(error, committed) {
+                    cloudSyncInProgress = false;
+                    if (error) {
+                        setSyncStatus('offline');
+                        setConnectivityStatus('ارسال به Firebase ناموفق بود؛ اطلاعات محلی حفظ شده است. جزئیات: ' + (error.code || error.message || 'خطای نامشخص'), true);
+                        showToast('خطای همگام‌سازی: ' + (error.code || error.message) + ' — اطلاعات محلی حفظ شد.', 'error', 6000);
+                    } else if (committed) {
+                        setSyncStatus('ok');
+                        setConnectivityStatus('اتصال ابری برقرار است و تغییرات ذخیره شدند.', false);
+                    } else {
+                        setSyncStatus('offline');
+                        showToast('تغییرات روی سرور تأیید نشد؛ اطلاعات محلی حفظ شده است.', 'warning', 6000);
+                    }
+                    if (cloudSyncQueued) {
+                        cloudSyncQueued = false;
+                        setTimeout(() => syncToCloud(), 1500);
+                    }
+                }, false);
+            } catch (err) {
                 cloudSyncInProgress = false;
-                if (error) { setSyncStatus('offline'); showToast('خطای همگام‌سازی: ' + (error.code || error.message) + ' — ابزار ۲۹ را اجرا کنید', 'error', 6000); }
-                else { setSyncStatus('ok'); }
-                if (cloudSyncQueued) {
-                    cloudSyncQueued = false;
-                    setTimeout(() => syncToCloud(), 1500);
-                }
-            }, false);
+                setSyncStatus('offline');
+                setConnectivityStatus('خطای داخلی هنگام ارسال به Firebase؛ اطلاعات محلی حفظ شده است.', true);
+                console.error('Firebase transaction threw:', err);
+                showToast('ارسال به سرور انجام نشد؛ نسخه محلی محفوظ است.', 'error', 6000);
+                if (cloudSyncQueued) { cloudSyncQueued = false; setTimeout(() => syncToCloud(), 1500); }
+            }
         };
 
         if (immediate) {
@@ -1449,7 +1545,7 @@
         }
     }
 
-    window.addEventListener('online', () => { setSyncStatus('ok'); syncToCloud(true); });
+    window.addEventListener('online', () => { setSyncStatus('syncing'); syncToCloud(true); });
     window.addEventListener('offline', () => { setSyncStatus('offline'); });
 
     // ============================================
@@ -1483,17 +1579,18 @@
         const ok = await initFirebase();
         
         const statusText = document.getElementById('auth-status');
+        const cloudAuthenticated = !!(ok && rootRef && auth && auth.currentUser);
         if (statusText) {
-            if (ok && rootRef) {
-                statusText.innerHTML = "✅ اتصال به فایربیس برقرار شد";
-                statusText.style.color = "var(--accent-emerald)";
+            if (cloudAuthenticated) {
+                statusText.textContent = '✅ اتصال ابری و احراز هویت برقرار است';
+                statusText.style.color = 'var(--accent-emerald)';
             } else {
-                statusText.innerHTML = "❌ خطا در اتصال به فایربیس!";
-                statusText.style.color = "var(--accent-rose)";
+                statusText.textContent = ok && rootRef ? '⚠️ Firebase بارگذاری شد اما احراز هویت کامل نیست؛ حالت محلی' : '❌ اتصال به Firebase برقرار نشد؛ حالت محلی';
+                statusText.style.color = 'var(--accent-rose)';
             }
         }
 
-        if (ok && rootRef) {
+        if (cloudAuthenticated) {
             attachRealtimeListener();
             attachLiveWO();
             try {
@@ -1817,6 +1914,7 @@
         const prof = (db.profiles && db.profiles[currentRole]) || {};
         const userDesc = prof.fullname || currentRole || 'سیستم';
         db.activityLogs.unshift({
+            id: 'log-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8),
             time: new Date().toLocaleTimeString('fa-IR'),
             user: sanitizeText(userDesc, 40),
             action: sanitizeText(text, 200)
@@ -1826,12 +1924,13 @@
     }
 
     function openModal(id) {
+        if (id === 'inv-modal' && !['creator','manager','tech1','tech2'].includes(currentRole)) { showToast('این نقش فقط مجاز به مشاهده و درخواست است.', 'error'); return; }
         if (id === 'inv-modal') {
             document.getElementById('edit-inv-id').value = '';
             document.getElementById('inv-name').value = '';
             document.getElementById('inv-code').value = '';
-            document.getElementById('inv-qty').value = '5';
-            document.getElementById('inv-min').value = '5';
+            document.getElementById('inv-qty').value = '0';
+            document.getElementById('inv-min').value = '1';
         }
         if (id === 'eq-modal') {
             document.getElementById('edit-eq-id').value = '';
@@ -1931,6 +2030,10 @@
         const eq = (db.equipment || []).find(e => String(e.id) === String(eqId));
         if (!eq) return;
         document.getElementById('eq-sub-title').textContent = 'زیرمجموعه‌های: ' + eq.name;
+        const subInput = document.getElementById('new-eq-subitem-input');
+        const subAdd = subInput && subInput.parentElement ? subInput.parentElement.querySelector('button') : null;
+        if (subInput) subInput.disabled = !isManagerOrAbove();
+        if (subAdd) subAdd.style.display = isManagerOrAbove() ? '' : 'none';
         renderEqSubItems();
         openModal('eq-sub-modal');
     }
@@ -1944,11 +2047,12 @@
             return;
         }
         cont.innerHTML = eq.subItems.map((sub, i) =>
-            `<div class="sub-item-chip"><span>• ${escapeHtml(sub)}</span><button onclick="removeEquipmentSubItem(${i})" style="background:none; border:none; color:var(--accent-rose); cursor:pointer;">✕</button></div>`
+            `<div class="sub-item-chip"><span>• ${escapeHtml(sub)}</span>${isManagerOrAbove() ? `<button onclick="removeEquipmentSubItem(${i})" style="background:none; border:none; color:var(--accent-rose); cursor:pointer;">✕</button>` : ''}</div>`
         ).join('');
     }
 
     function addEquipmentSubItem() {
+        if (!isManagerOrAbove()) { showToast('فقط سازنده یا مدیر می‌تواند زیرمجموعه تجهیز را تغییر دهد.', 'error'); return; }
         const val = sanitizeText(document.getElementById('new-eq-subitem-input').value, 80);
         if (!val) return;
         pushUndo();
@@ -1963,6 +2067,7 @@
     }
 
     function removeEquipmentSubItem(idx) {
+        if (!isManagerOrAbove()) { showToast('فقط سازنده یا مدیر می‌تواند زیرمجموعه تجهیز را تغییر دهد.', 'error'); return; }
         pushUndo();
         const eq = (db.equipment || []).find(e => String(e.id) === String(activeEqSubId));
         if (!eq || !eq.subItems) return;
@@ -1982,6 +2087,7 @@
     }
 
     function resetRunningHours() {
+        if (!['creator','manager','tech1','tech2'].includes(currentRole)) { showToast('این نقش فقط مجاز به مشاهده PM است.', 'error'); return; }
         document.getElementById('pm-running-hours').value = 0;
     }
 
@@ -1989,6 +2095,12 @@
         const eq = (db.equipment || []).find(e => String(e.id) === String(activePmEqId));
         if (!eq) return;
         document.getElementById('pm-exec-title').textContent = 'PM: ' + eq.name;
+        const canEditPm = ['creator','manager','tech1','tech2'].includes(currentRole);
+        const hoursInput = document.getElementById('pm-running-hours'); if (hoursInput) hoursInput.readOnly = !canEditPm;
+        const noteInput = document.getElementById('pm-exec-note'); if (noteInput) noteInput.readOnly = !canEditPm;
+        const resetBtn = hoursInput && hoursInput.parentElement ? hoursInput.parentElement.querySelector('button') : null; if (resetBtn) resetBtn.style.display = canEditPm ? '' : 'none';
+        const quickInput = document.getElementById('quick-pm-input'); const quickWrap = quickInput ? quickInput.parentElement : null; if (quickWrap) quickWrap.style.display = canEditPm ? '' : 'none';
+        const submitBtn = document.querySelector('#pm-exec-modal button[onclick="savePMExec()"]'); if (submitBtn) submitBtn.style.display = canEditPm ? '' : 'none';
         
         const prevChecked = {};
         document.querySelectorAll('.pm-chk:checked').forEach(c => { prevChecked[c.value] = true; });
@@ -2001,10 +2113,10 @@
                 const checked = prevChecked[item] ? 'checked' : '';
                 return `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; background:var(--surface-card); padding:6px 8px; border-radius:4px;">
                     <label style="display:flex; align-items:center; gap:6px; flex-grow:1; cursor:pointer;">
-                        <input type="checkbox" class="pm-chk" value="${escapeHtml(item)}" ${checked}>
+                        <input type="checkbox" class="pm-chk" value="${escapeHtml(item)}" ${checked} ${canEditPm ? '' : 'disabled'}>
                         ${escapeHtml(item)}
                     </label>
-                    <button onclick="removePmItem(${i})" style="background:none; border:none; color:var(--accent-rose); cursor:pointer;">✕</button>
+                    ${canEditPm ? `<button onclick="removePmItem(${i})" style="background:none; border:none; color:var(--accent-rose); cursor:pointer;">✕</button>` : ''}
                 </div>`;
             }).join('');
         }
@@ -2025,6 +2137,7 @@
     }
 
     function addPmItemToActiveEq() {
+        if (!['creator','manager','tech1','tech2'].includes(currentRole)) { showToast('این نقش فقط مجاز به مشاهده PM است.', 'error'); return; }
         const txt = sanitizeText(document.getElementById('quick-pm-input').value, 100);
         if (!txt) return;
         pushUndo();
@@ -2039,6 +2152,7 @@
     }
 
     function removePmItem(idx) {
+        if (!['creator','manager','tech1','tech2'].includes(currentRole)) { showToast('این نقش فقط مجاز به مشاهده PM است.', 'error'); return; }
         pushUndo();
         const eq = (db.equipment || []).find(e => String(e.id) === String(activePmEqId));
         if (!eq || !eq.pmItems) return;
@@ -2048,6 +2162,7 @@
     }
 
     function savePMExec() {
+        if (!['creator','manager','tech1','tech2'].includes(currentRole)) { showToast('این نقش مجاز به ثبت یا ویرایش سرویس PM نیست.', 'error'); return; }
         const chks = document.querySelectorAll('.pm-chk:checked');
         const checkedItems = Array.from(chks).map(c => c.value);
         if (checkedItems.length === 0) { showToast('حداقل یک آیتم را انتخاب کنید.', 'warning'); return; }
@@ -2255,8 +2370,19 @@
         if (editId) {
             const item = db.inventory.find(i => String(i.id) === String(editId));
             if (item) {
+                const oldQty = Math.max(0, Number(item.qty ?? 0));
                 item.category = category; item.name = name;
                 item.code = code; item.qty = qty; item.min = min;
+                if (qty !== oldQty) {
+                    if (!Array.isArray(item.history)) item.history = [];
+                    item.history.unshift({
+                        date: new Date().toLocaleDateString('fa-IR'),
+                        time: new Date().toLocaleTimeString('fa-IR'),
+                        user: currentRole, equipment: 'انبار فنی',
+                        workOrder: qty > oldQty ? 'اصلاح موجودی / ورود دستی' : 'اصلاح موجودی / خروج دستی',
+                        movement: qty - oldQty, qtyBefore: oldQty, qtyAfter: qty
+                    });
+                }
             }
             logAct('ویرایش قطعه: ' + name);
         } else {
@@ -2269,12 +2395,13 @@
         closeModal('inv-modal');
         syncToCloud();
         renderAll();
-        checkLowStockNotifications(true);
+        checkLowStockNotifications(false);
         haptic('success');
         showToast('قطعه ذخیره شد.', 'success');
     }
 
     function editInventoryItem(id) {
+        if (!['creator','manager','tech1','tech2'].includes(currentRole)) { showToast('این نقش فقط مجاز به مشاهده و درخواست است.', 'error'); return; }
         const item = (db.inventory || []).find(i => String(i.id) === String(id));
         if (!item) return;
         document.getElementById('edit-inv-id').value = item.id;
@@ -2309,8 +2436,9 @@
             cont.innerHTML = item.history.slice(0, 50).map(h =>
                 `<div class="pm-history-item">
                     <div style="color:var(--primary); font-weight:600;">${escapeHtml(h.date)} - ${escapeHtml(h.time)} (${escapeHtml(h.user)})</div>
-                    <div>تجهیز: ${escapeHtml(h.equipment || '-')}</div>
-                    <div>WO: ${escapeHtml(h.workOrder || '-')}</div>
+                    <div>تجهیز/بخش: ${escapeHtml(h.equipment || '-')}</div>
+                    <div>شرح گردش: ${escapeHtml(h.workOrder || '-')}</div>
+                    ${h.movement != null ? `<div>تغییر موجودی: ${Number(h.movement) > 0 ? '+' : ''}${Number(h.movement)} | قبل: ${Number(h.qtyBefore ?? 0)} | بعد: ${Number(h.qtyAfter ?? 0)}</div>` : ''}
                 </div>`
             ).join('');
         }
@@ -2496,12 +2624,16 @@
         logAct('استفاده از جعبه‌ابزار: '+tool);
     }
     function restoreToolBackup(event) {
+        if (currentRole !== 'creator') { showToast('بازیابی نسخه پشتیبان فقط برای سازنده مجاز است.', 'error'); event.target.value=''; return; }
         const file=event.target.files && event.target.files[0]; if(!file)return;
-        if(!confirm('بازیابی نسخه پشتیبان، داده‌های فعلی را با اطلاعات فایل جایگزین/ادغام می‌کند. قبلاً پشتیبان گرفته‌اید؟ ادامه می‌دهید؟')){event.target.value='';return;}
+        if(!confirm('اطلاعات فایل با داده‌های فعلی ادغام می‌شود و رکوردهای موجود حذف نمی‌شوند. قبل از ادامه از اطلاعات فعلی پشتیبان گرفته می‌شود. ادامه می‌دهید؟')){event.target.value='';return;}
         const reader=new FileReader(); reader.onload=()=>{try{
             const parsed=JSON.parse(reader.result); if(!parsed||typeof parsed!=='object'||!Array.isArray(parsed.equipment)||!Array.isArray(parsed.workOrders)||!Array.isArray(parsed.inventory)) throw new Error('invalid');
             if(!Array.isArray(parsed.reportHistory))parsed.reportHistory=[]; if(!Array.isArray(parsed.activityLogs))parsed.activityLogs=[]; if(!Array.isArray(parsed.dailyReports))parsed.dailyReports=[];
-            db=parsed; safeLocalSave(); syncToCloud(true); renderAll(); logAct('بازیابی نسخه پشتیبان JSON');
+            safeLocalSave();
+            if (!saveAutoBackup('قبل از بازیابی نسخه پشتیبان JSON')) throw new Error('pre-restore backup failed');
+            db=mergeCloudAndLocal(parsed, db);
+            snapshotDb(); safeLocalSave(); syncToCloud(true); renderAll(); logAct('ادغام نسخه پشتیبان JSON');
             const out=document.getElementById('toolbox-results'); if(out)out.textContent='بازیابی با موفقیت انجام شد. کنترل کنید که داده‌ها و نقش‌ها درست باشند.'; showToast('بازیابی انجام شد.','success');
         }catch(e){showToast('فایل پشتیبان معتبر نیست یا ساختار آن پشتیبانی نمی‌شود.','error');} event.target.value='';}; reader.readAsText(file);
     }
@@ -2595,7 +2727,7 @@
                 <h3 style="font-size:12px; font-weight:700; margin:6px 0;">${escapeHtml(eq.name)}</h3>
                 <p style="font-size:11px; color:var(--primary); font-family:monospace; margin-bottom:4px;">⏱ ${eq.runningHours || 0} ساعت</p>
                 <p style="font-size:11px; color:var(--accent-amber); margin-bottom:8px;">🔧 آخرین سرویس: ${escapeHtml(eq.lastPm || 'انجام نشده')}</p>
-                <button onclick="openPmExecModal('${eq.id}')" class="btn" style="width:100%; justify-content:center;">مدیریت PM</button>
+                <button onclick="openPmExecModal('${eq.id}')" class="btn" style="width:100%; justify-content:center;">${['creator','manager','tech1','tech2'].includes(currentRole) ? 'مدیریت PM' : 'مشاهده PM'}</button>
             </div>
         `).join('');
         cont.innerHTML = html || '<p style="color:var(--text-muted); text-align:center; padding:20px;">تجهیزاتی ثبت نشده</p>';
@@ -2672,7 +2804,7 @@
 
             const historyCount = (inv.history || []).length;
             const cardexBtn = `<button onclick="showInventoryHistory('${inv.id}')" class="btn btn-purple" style="padding:3px 8px; font-size:10px;">📋 ${historyCount}</button>`;
-            const editBtn = `<button onclick="editInventoryItem('${inv.id}')" class="btn btn-amber" style="padding:3px 8px; font-size:10px;">ویرایش</button>`;
+            const editBtn = ['creator','manager','tech1','tech2'].includes(currentRole) ? `<button onclick="editInventoryItem('${inv.id}')" class="btn btn-amber" style="padding:3px 8px; font-size:10px;">ویرایش</button>` : '';
             const delBtn = isManagerOrAbove() ? `<button onclick="deleteInventoryItem('${inv.id}')" class="btn btn-rose" style="padding:3px 8px; font-size:10px;">حذف</button>` : '';
 
             return `<tr>
@@ -2730,7 +2862,8 @@
             alerts.push({ type: 'critical', icon: '🚨', title: 'دستور کار اضطراری باز', desc: `${wo.title} | ${wo.equipment} | شروع: ${wo.startTime}` });
         });
         (db.equipment || []).forEach(eq => {
-            if (eq.endDate && eq.endDate.startsWith('1403')) {
+            const warrantyEndKey = eq.endDate ? jToKey(eq.endDate) : null;
+            if (warrantyEndKey && warrantyEndKey < dKey(new Date())) {
                 alerts.push({ type: 'warning', icon: '📅', title: `گارانتی ${eq.name} منقضی شده`, desc: `پایان: ${eq.endDate}` });
             }
         });
@@ -3069,6 +3202,7 @@
     }
 
     function importFullBackup(event) {
+        if (currentRole !== 'creator') { showToast('بازیابی نسخه پشتیبان فقط برای سازنده مجاز است.', 'error'); event.target.value = ''; return; }
         const file = event.target.files[0];
         if (!file) return;
         const reader = new FileReader();
@@ -3090,7 +3224,9 @@
 
     function resetFactoryData() {
         if (currentRole !== 'creator') { showToast('فقط سازنده مجاز است.', 'error'); return; }
-        if (!confirm('بازنشانی کامل؟ همه داده‌ها پاک می‌شود!')) return;
+        if (!confirm('بازنشانی کارخانه، داده‌های فعال را به فهرست پیش‌فرض برمی‌گرداند. ابتدا نسخه پشتیبان محلی ساخته می‌شود تا امکان بازیابی باقی بماند. ادامه می‌دهید؟')) return;
+        safeLocalSave();
+        if (!saveAutoBackup('قبل از بازنشانی کارخانه')) { showToast('پشتیبان محلی ساخته نشد؛ برای جلوگیری از ازدست‌رفتن اطلاعات، بازنشانی لغو شد.', 'error'); return; }
         pushUndo();
         db.equipment = JSON.parse(JSON.stringify(exactEquipmentList));
         db.inventory = generateMassiveInventory();
@@ -3456,11 +3592,14 @@
     function toggleUiStyle() {
         const b = document.body, cur = b.classList.contains('cm') ? 'cm' : b.classList.contains('ig') ? 'ig' : 'lux', nx = {cm: 'ig', ig: 'lux', lux: 'cm'}[cur];
         b.classList.remove('cm', 'ig'); if (nx !== 'lux') b.classList.add(nx);
-        try { localStorage.setItem('erfont_ui', nx); } catch(e) {}
+        try { localStorage.setItem('erfont_ui_v51', nx); } catch(e) {}
         renderAll();
     }
     (function () {
-        let ui = 'cm'; try { ui = localStorage.getItem('erfont_ui') || 'cm'; } catch(e) {} if (ui === 'ig' || ui === 'cm') document.body.classList.add(ui);
+        // Versioned preference: start the redesigned iOS-inspired UI by default without touching saved business data.
+        let ui = 'cm'; try { ui = localStorage.getItem('erfont_ui_v51') || 'cm'; } catch(e) {}
+        document.body.classList.remove('cm', 'ig');
+        if (ui === 'ig' || ui === 'cm') document.body.classList.add(ui);
         const orig = navigateTo;
         navigateTo = function (t) { orig(t); if (t === 'oee') renderOEE(); if (t === 'hub') renderDashboard(); document.querySelectorAll('#igbar [data-t]').forEach(b => b.classList.toggle('on', b.dataset.t === t)); window.scrollTo(0, 0); };
         document.querySelectorAll('#igbar [data-t="hub"]').forEach(b => b.classList.add('on'));
