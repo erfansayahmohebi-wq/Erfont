@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#000000">
+    <meta name="theme-color" content="#0f6cbd">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">
@@ -12,7 +12,9 @@
     <meta name="description" content="Industrial CMMS & SCADA System">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon-192.png">
-    <title>ErfoNT pro - Industrial CMMS & SCADA v6.0.0</title>
+    <link rel="icon" type="image/png" href="icon-192.png">
+    <meta name="format-detection" content="telephone=no">
+    <title>ErfoNT pro - Industrial CMMS & SCADA v9.0.0</title>
 
     <!-- Firebase SDK -->
     
@@ -753,28 +755,589 @@
             body.spx.cm::before{display:none}
         }
 
+        /* ===== ErfoNT 6.0 — جزئیات اپلیکیشنی ===== */
+        html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-behavior:smooth}
+        body.spx{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent}
+        body.spx button,body.spx .hub-card,body.spx .qa,body.spx .igbar,body.spx .spx-row,body.spx .cc-t{touch-action:manipulation;-webkit-user-select:none;user-select:none}
+        @media(max-width:899px){body.spx.cm .form-control,body.spx.cm input,body.spx.cm select,body.spx.cm textarea{font-size:16px}}
+        @media(display-mode:standalone){#pwa-install-btn{display:none!important}}
+        .spx-skip{position:fixed;top:-60px;inset-inline-start:12px;z-index:1000003;background:#fff;color:#000;padding:10px 16px;font-size:13px;font-weight:600;transition:top .15s}
+        .spx-skip:focus{top:10px}
+        #spx-help{position:fixed;inset:0;z-index:1000001;background:rgba(0,0,0,.82);display:none;align-items:center;justify-content:center;padding:16px}
+        #spx-help.on{display:flex}
+        #spx-help .box{width:min(440px,100%);background:var(--cm-bg);border:1px solid var(--cm-text);padding:20px 22px;max-height:88vh;overflow:auto}
+        #spx-help h3{font-size:15px;font-weight:500;margin-bottom:12px}
+        #spx-help dl{display:grid;grid-template-columns:auto 1fr;gap:8px 18px;font-size:13px;align-items:center}
+        #spx-help dt{direction:ltr;--spx-ff:var(--spx-mono);font-size:11px}
+        #spx-help kbd{border:1px solid var(--cm-line);padding:2px 7px;margin-inline-end:4px;font-family:inherit;color:var(--cm-text)}
+        #spx-help dd{margin:0;color:var(--cm-mute)}
+        #spx-help p{margin-top:14px;font-size:11px;color:var(--cm-mute)}
+
+        /* ===== ErfoNT 6.0 — نظم و میز کار ===== */
+        [hidden]{display:none!important}
+        body.spx.cm{zoom:var(--spx-fs,1)}
+        body.spx-compact.cm .kt{padding:10px 12px}body.spx-compact.cm .cm-hero{padding:14px}body.spx-compact.cm .cm-sec{margin:16px 0 8px}
+        body.spx-compact.cm td,body.spx-compact.cm th{padding-block:6px}body.spx-compact.cm .hub-card{padding:10px 6px}body.spx-compact.cm .cc-b{padding:10px 12px}
+        body.spx-focus.cm #spx-telemetry,body.spx-focus.cm #spx-quick,body.spx-focus.cm #cm-dash>:not(.cm-hero):not(.spx-board):not(.cm-kpis):not(.cm-qa):not(.cm-alert){display:none!important}
+        body.spx-wall.cm header,body.spx-wall.cm .igbar,body.spx-wall.cm #spx-telemetry,body.spx-wall.cm #spx-quick,body.spx-wall.cm .back-nav-bar{display:none!important}
+        body.spx-wall.cm{padding:0!important}
+        /* header: فقط موارد اصلی؛ بقیه در منوی ⋯ */
+        @media(max-width:899px){body.spx.cm .header-controls>.icon-btn>span:not(.alert-badge-count):not(.cmd-kbd),body.spx.cm .header-controls .cmd-kbd{display:none}body.spx.cm #company-badge-text{display:none}}
+        #spx-more{position:fixed;top:64px;inset-inline-end:12px;z-index:1000;width:min(330px,calc(100vw - 24px));max-height:calc(100vh - 90px);overflow:auto;background:var(--modal-bg,#000);border:1px solid var(--cm-text);padding:14px;box-shadow:0 30px 80px rgba(0,0,0,.7)}
+        #spx-more h4{font-size:10.5px;font-weight:500;color:var(--cm-mute);letter-spacing:.1em;margin:12px 0 8px}#spx-more h4:first-child{margin-top:0}
+        #spx-more .mrow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+        #spx-more .mgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+        #spx-more .mgrid button{border:1px solid var(--cm-line);background:transparent;color:var(--cm-text);padding:9px 8px;font-size:11.5px;min-height:38px;cursor:pointer}
+        #spx-more .mgrid button:hover,#spx-more .mgrid button.on{background:var(--spx-fill);color:var(--spx-on-fill);border-color:var(--spx-fill)}
+        #spx-more select{width:100%}
+        /* نوار دسترسی سریع */
+        #spx-quick{display:none}
+        body.spx.cm #spx-quick:not(:empty){display:flex;gap:6px;padding:8px 18px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--cm-line)}
+        #spx-quick::-webkit-scrollbar{display:none}
+        #spx-quick button{flex:0 0 auto;border:1px solid var(--cm-line);background:transparent;color:var(--cm-text);font-size:11.5px;padding:5px 11px;cursor:pointer}
+        #spx-quick button.pin::before{content:"★ ";color:var(--cm-amber)}#spx-quick button.rec{color:var(--cm-mute)}#spx-quick button:hover{border-color:var(--cm-text)}
+        /* گروه‌بندی ماژول‌ها */
+        .spx-grp{margin:22px 0 8px;font-size:11px;font-weight:500;color:var(--cm-mute);letter-spacing:.1em;display:flex;align-items:center;gap:10px}
+        .spx-grp::after{content:"";flex:1;height:1px;background:var(--cm-line)}
+        .spx-star{position:absolute;top:6px;inset-inline-end:8px;font-size:14px;color:var(--cm-mute);cursor:pointer;line-height:1;padding:4px}
+        .spx-star.on{color:var(--cm-amber)}.hub-card{position:relative}
+        #cm-dash .cm-sec{cursor:pointer;-webkit-user-select:none;user-select:none}
+        #cm-dash .cm-sec::after{content:"−";margin-inline-start:auto;color:var(--cm-mute);font-size:16px;line-height:1}
+        #cm-dash .cm-sec.closed::after{content:"+"}
+        /* میز کار */
+        .wb-grid{display:grid;grid-template-columns:1fr;gap:0 12px}
+        @media(min-width:980px){.wb-grid{grid-template-columns:1fr 1fr}}
+        .wb-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}.wb-row .form-control{flex:1;min-width:0}
+        .wb-ta{width:100%;min-height:120px;resize:vertical;line-height:1.8}
+        .wb-li{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--cm-line);font-size:13px}.wb-li:last-child{border:0}
+        .wb-li.done span{color:var(--cm-mute);text-decoration:line-through}.wb-li span{flex:1}
+        .wb-li button{background:none;border:0;color:var(--cm-mute);cursor:pointer;font-size:16px}
+        .wb-big{font-size:34px;font-weight:200;--spx-ff:var(--spx-mono);font-variant-numeric:tabular-nums;direction:ltr;text-align:center;padding:8px 0}
+        .wb-meter{height:6px;background:var(--cm-line);margin:8px 0}.wb-meter i{display:block;height:100%;background:var(--cm-green)}
+        .wb-chk{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--cm-line);font-size:12.5px}.wb-chk:last-child{border:0}
+        .wb-chk b{--spx-ff:var(--spx-mono);font-weight:500}.wb-chk b.ok{color:var(--cm-green)}.wb-chk b.bad{color:var(--cm-amber)}
+        .wb-res{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;font-size:12px;direction:ltr;--spx-ff:var(--spx-mono)}
+        .wb-res div{border:1px solid var(--cm-line);padding:6px 8px}.wb-res small{color:var(--cm-mute);margin-inline-start:6px}
+        .wb-hist{font-size:12px;color:var(--cm-mute);padding:8px 0;border-bottom:1px solid var(--cm-line);cursor:pointer}.wb-hist:hover{color:var(--cm-text)}
+
+        /* =====================================================================
+           ErfoNT 7.0 — Design System (Material 3 / Apple HIG / WCAG AA)
+           رنگ‌های خنثی + آبی استاندارد، رنگ‌های معنایی استاندارد، سطوح نرم،
+           اهداف لمسی ≥ 44px، بدون جلوه‌های پرتحرک؛ مناسب کار طولانی.
+           ===================================================================== */
+        /* --- Tokens: روشن (پیش‌فرض بر اساس سیستم) --- */
+        body.spx.cm.light-theme,body.spx.cm{
+            --spx-font:"Vazirmatn","Inter","Segoe UI",system-ui,-apple-system,Roboto,Tahoma,sans-serif;
+            --spx-mono:var(--spx-font);
+            --spx-ff:var(--spx-font);
+            --cm-bg:#f6f7f9;--cm-s1:#ffffff;--cm-line:#dfe3e8;--cm-text:#1f2328;--cm-mute:#5f6b7a;
+            --cm-gold:#0b57d0;--cm-gold2:#0842a0;--cm-blue:#0b57d0;--cm-green:#1e8e3e;--cm-amber:#b45309;--cm-red:#c5221f;
+            --primary:#0b57d0;--primary-glow:rgba(11,87,208,.12);--ios-blue:#0b57d0;
+            --surface-card:#ffffff;--surface-card-hover:#f1f4f9;--surface-input:#ffffff;--border-color:#dfe3e8;--border-focus:#0b57d0;--modal-bg:#ffffff;
+            --text-main:#1f2328;--text-muted:#5f6b7a;--accent-emerald:#1e8e3e;--accent-rose:#c5221f;--accent-amber:#b45309;--accent-purple:#6b4fbb;--accent-cyan:#0b6e99;
+            --spx-fill:#0b57d0;--spx-on-fill:#ffffff;--spx-hover:rgba(11,87,208,.07);--spx-tonal:rgba(11,87,208,.10);--spx-emoji:none;
+            --spx-shadow:0 1px 2px rgba(16,24,40,.06),0 1px 3px rgba(16,24,40,.08);--spx-shadow2:0 8px 24px rgba(16,24,40,.12);
+            --spx-r:12px;--spx-r2:10px;
+        }
+        /* --- Tokens: تیره (خاکستری نرم، نه مشکی خالص) --- */
+        body.spx.cm:not(.light-theme):not(.industrial-theme){
+            --cm-bg:#111418;--cm-s1:#1a1e24;--cm-line:#2c323a;--cm-text:#e6e8eb;--cm-mute:#9aa4b0;
+            --cm-gold:#8ab4f8;--cm-gold2:#aecbfa;--cm-blue:#8ab4f8;--cm-green:#81c995;--cm-amber:#fdd663;--cm-red:#f28b82;
+            --primary:#8ab4f8;--primary-glow:rgba(138,180,248,.16);--ios-blue:#8ab4f8;
+            --surface-card:#1a1e24;--surface-card-hover:#222730;--surface-input:#141820;--border-color:#2c323a;--border-focus:#8ab4f8;--modal-bg:#1a1e24;
+            --text-main:#e6e8eb;--text-muted:#9aa4b0;--accent-emerald:#81c995;--accent-rose:#f28b82;--accent-amber:#fdd663;--accent-purple:#c4b0ff;--accent-cyan:#7fd4ee;
+            --spx-fill:#8ab4f8;--spx-on-fill:#0b2a5b;--spx-hover:rgba(138,180,248,.10);--spx-tonal:rgba(138,180,248,.14);
+            --spx-shadow:0 1px 2px rgba(0,0,0,.4);--spx-shadow2:0 12px 32px rgba(0,0,0,.5);
+        }
+        /* --- Tokens: کارگاهی (گرم، مناسب نور محیط کارخانه) --- */
+        body.spx.cm.industrial-theme{
+            --cm-bg:#16130e;--cm-s1:#201b13;--cm-line:#3a3326;--cm-text:#f0e9dc;--cm-mute:#aa9d86;
+            --cm-gold:#f2b24a;--cm-gold2:#f7cc82;--cm-blue:#8ab4f8;--cm-green:#81c995;--cm-amber:#f2b24a;--cm-red:#f28b82;
+            --primary:#f2b24a;--primary-glow:rgba(242,178,74,.16);--ios-blue:#f2b24a;
+            --surface-card:#201b13;--surface-card-hover:#2a2418;--surface-input:#18140d;--border-color:#3a3326;--border-focus:#f2b24a;--modal-bg:#201b13;
+            --text-main:#f0e9dc;--text-muted:#aa9d86;--spx-fill:#f2b24a;--spx-on-fill:#2b1b00;--spx-hover:rgba(242,178,74,.10);--spx-tonal:rgba(242,178,74,.14);
+            --spx-shadow:0 1px 2px rgba(0,0,0,.4);--spx-shadow2:0 12px 32px rgba(0,0,0,.5);
+        }
+        html,html:has(body.spx.cm),html:has(body.spx.cm.light-theme),html:has(body.spx.cm.industrial-theme){background:#f6f7f9}
+        html:has(body.spx.cm:not(.light-theme):not(.industrial-theme)){background:#111418}
+        html:has(body.spx.cm.industrial-theme){background:#16130e}
+        body.spx.cm{background:var(--cm-bg)!important;color:var(--cm-text);font-size:15px;line-height:1.7}
+
+        /* --- حذف جلوه‌های پرتحرک/تزئینی --- */
+        #spx-boot,#spx-stars,body.spx.cm::before,body.spx.cm #login-screen::before,body.spx.cm .cm-hero::after,body.spx.cm .spx-row .n small,body.spx.cm .cc-p>h3 em,body.spx.cm #spx-telemetry .push{display:none!important}
+        body.spx.cm *{letter-spacing:normal!important;text-transform:none!important}
+        body.spx.cm .tab-content.active{animation:spxFade .18s ease}
+        @keyframes spxFade{from{opacity:.4}to{opacity:1}}
+        body.spx.cm #spx-telemetry .spx-led,body.spx.cm .alert-badge-count{animation:none!important}
+
+        /* --- هدر و ناوبری --- */
+        body.spx.cm header{background:color-mix(in srgb,var(--cm-s1) 92%,transparent);border-bottom:1px solid var(--cm-line);box-shadow:none}
+        body.spx.cm .logo{font-size:15px;font-weight:700;color:var(--cm-text)}
+        body.spx.cm .logo::before{border-color:var(--primary);background:radial-gradient(circle,var(--primary) 0 2px,transparent 2.6px)}
+        body.spx.cm .logo>span:last-child{font-size:11px!important;font-weight:500}
+        body.spx.cm .icon-btn,body.spx.cm .back-btn,body.spx.cm .role-display,body.spx.cm .sync-badge{border-radius:var(--spx-r2);background:var(--cm-s1);border:1px solid var(--cm-line);min-height:40px;font-size:12.5px;box-shadow:none}
+        body.spx.cm .icon-btn:hover,body.spx.cm .back-btn:hover,body.spx.cm .role-display:hover{background:var(--spx-tonal);color:var(--primary);border-color:var(--primary)}
+        body.spx.cm .badge{border-radius:999px;font-size:11px;background:var(--cm-s1)}
+        body.spx.cm #spx-telemetry{background:var(--cm-s1);font-size:12px;border-bottom:1px solid var(--cm-line);padding:6px 18px}
+        body.spx.cm #spx-telemetry b{font-weight:600}
+        body.spx.cm #connectivity-status{background:var(--spx-tonal)!important;color:var(--cm-text)!important;font-size:12px!important;border-bottom:0!important}
+        body.spx.cm .igbar{background:color-mix(in srgb,var(--cm-s1) 94%,transparent);border-top:1px solid var(--cm-line);box-shadow:0 -4px 16px rgba(16,24,40,.06)}
+        body.spx.cm .igbar button{font-size:11px;font-weight:500;min-height:48px}
+        body.spx.cm .igbar button.on{color:var(--primary)}
+        body.spx.cm .igbar button.on::before{height:3px;border-radius:0 0 3px 3px;background:var(--primary);left:30%;right:30%}
+        body.spx.cm .igbar .plus{border-radius:16px;box-shadow:var(--spx-shadow2);background:var(--spx-fill);color:var(--spx-on-fill)}
+        @media(min-width:900px){body.spx.cm .igbar{background:var(--cm-s1);border-left:1px solid var(--cm-line);box-shadow:none}body.spx.cm .igbar button{border-radius:var(--spx-r2);font-size:13.5px}body.spx.cm .igbar button.on{background:var(--spx-tonal);box-shadow:none}}
+        body.spx.cm #spx-quick:not(:empty){background:var(--cm-bg);border-bottom:0;padding:10px 18px}
+        body.spx.cm #spx-quick button{border-radius:999px;background:var(--cm-s1);font-size:12.5px;padding:6px 14px}
+        body.spx.cm #spx-quick button:hover{border-color:var(--primary);color:var(--primary)}
+
+        /* --- سطوح (کارت‌ها) --- */
+        body.spx.cm .card,body.spx.cm .table-container,body.spx.cm .metric-card,body.spx.cm .user-profile-card,body.spx.cm .cc-p,body.spx.cm .cm-hero,body.spx.cm .hub-card,body.spx.cm .kt,body.spx.cm .cc-k,body.spx.cm .spx-board>div,body.spx.cm .modal-body,body.spx.cm .login-card{
+            background:var(--cm-s1);border:1px solid var(--cm-line);border-radius:var(--spx-r);box-shadow:var(--spx-shadow)}
+        body.spx.cm .cm-hero{padding:22px;background:linear-gradient(135deg,var(--cm-s1),color-mix(in srgb,var(--primary) 6%,var(--cm-s1)))}
+        body.spx.cm .cm-hello{font-size:22px;font-weight:600}
+        body.spx.cm .cm-date,body.spx.cm .cm-sub{font-size:13px}
+        body.spx.cm .cm-ring circle{stroke-width:5px;stroke-linecap:round}body.spx.cm .cm-ring text{font-size:18px;font-weight:600}
+        body.spx.cm .cm-kpis,body.spx.cm .cc-grid,body.spx.cm .spx-board{gap:10px;background:none;border:0}
+        body.spx.cm .kt{padding:16px}
+        body.spx.cm .kt::before,body.spx.cm .cc-k::before{width:8px;height:8px;box-shadow:none}
+        body.spx.cm .kt-v,body.spx.cm .cc-k b{font-weight:600;font-size:28px;letter-spacing:0}
+        body.spx.cm .kt-l,body.spx.cm .cc-k span{font-size:13px}
+        body.spx.cm .kt-s,body.spx.cm .cc-k i{font-size:12px}
+        body.spx.cm .kt-ic{filter:none}
+        body.spx.cm .cm-sec h3{font-size:14px;font-weight:600;color:var(--cm-text)}body.spx.cm .cm-sec h3::before{display:none}
+        body.spx.cm .cm-sec{margin:24px 0 10px}
+        body.spx.cm .cc-p{overflow:hidden}body.spx.cm .cc-p>h3{font-size:14px;font-weight:600;color:var(--cm-text);padding:14px 16px}
+        body.spx.cm .cc-head h2{font-size:22px;font-weight:600}
+        body.spx.cm .cc-t{border-radius:10px;background:var(--cm-bg)}body.spx.cm .cc-t::after{display:none}body.spx.cm .cc-t{border-inline-start:4px solid var(--led)}
+        body.spx.cm .cc-t.bad{background:color-mix(in srgb,var(--cm-red) 8%,var(--cm-s1))}
+        body.spx.cm .cc-rk .bar{height:6px;border-radius:99px;overflow:hidden}body.spx.cm .cc-rk .bar i{border-radius:99px}
+        body.spx.cm .cc-age,body.spx.cm .seg{border-radius:99px;overflow:hidden;height:10px}body.spx.cm .seg i{border-radius:0}
+        body.spx.cm .hub-card{padding:16px 10px;transition:box-shadow .15s,border-color .15s}
+        body.spx.cm .hub-card::after{display:none}
+        body.spx.cm .hub-card:hover{background:var(--cm-s1);border-color:var(--primary);box-shadow:var(--spx-shadow2)}
+        body.spx.cm #tab-hub .hub-icon,body.spx.cm .hub-icon{font-size:26px;filter:none}
+        body.spx.cm .hub-title{font-size:13px;font-weight:600}
+        body.spx.cm .spx-grp{font-size:13px;font-weight:600;color:var(--cm-text)}
+
+        /* --- GO / NO-GO: نشان‌های وضعیت استاندارد --- */
+        body.spx.cm .spx-board>div{padding:20px}
+        body.spx.cm .spx-met-v{font-size:clamp(28px,8vw,38px);font-weight:600}
+        body.spx.cm .spx-met-l{font-size:13px}
+        body.spx.cm .spx-verdict,body.spx.cm .spx-row .tok,body.spx.cm .cc-ord .q,body.spx.cm .chip,body.spx.cm .status-badge{border:0;border-radius:999px;padding:4px 12px;font-size:12px;font-weight:600;background:color-mix(in srgb,currentColor 13%,transparent)}
+        body.spx.cm .spx-row .tok{min-width:64px}
+        body.spx.cm .spx-row{padding:13px 4px;border-radius:8px}body.spx.cm .spx-row .n{font-size:14px}body.spx.cm .spx-row .v{font-size:13px}
+        body.spx.cm .spx-poll-head>b{font-size:14px;font-weight:600;color:var(--cm-text)}
+        body.spx.cm .status-pending{background:color-mix(in srgb,var(--cm-amber) 14%,transparent);border:0}
+        body.spx.cm .status-completed{background:color-mix(in srgb,var(--cm-green) 14%,transparent);border:0}
+        body.spx.cm .spx-led,body.spx.cm .kt::before,body.spx.cm .cc-k::before{box-shadow:none}
+
+        /* --- دکمه‌ها و فرم‌ها --- */
+        body.spx.cm .btn,body.spx.cm .btn-emerald,body.spx.cm .btn-amber,body.spx.cm .btn-rose,body.spx.cm .btn-purple,body.spx.cm .btn-cyan{border-radius:var(--spx-r2);min-height:44px;font-size:14px;font-weight:600;padding-inline:18px}
+        body.spx.cm .btn:hover{background:color-mix(in srgb,var(--spx-fill) 88%,#000);color:var(--spx-on-fill);border-color:transparent}
+        body.spx.cm .btn-emerald,body.spx.cm .btn-amber,body.spx.cm .btn-rose,body.spx.cm .btn-purple,body.spx.cm .btn-cyan{background:color-mix(in srgb,currentColor 12%,transparent);border-color:transparent}
+        body.spx.cm .btn-emerald:hover,body.spx.cm .btn-amber:hover,body.spx.cm .btn-rose:hover,body.spx.cm .btn-purple:hover,body.spx.cm .btn-cyan:hover{background:color-mix(in srgb,currentColor 22%,transparent);color:inherit}
+        body.spx.cm .btn-emerald{color:var(--cm-green)}body.spx.cm .btn-amber{color:var(--cm-amber)}body.spx.cm .btn-rose{color:var(--cm-red)}body.spx.cm .btn-purple{color:var(--accent-purple)}body.spx.cm .btn-cyan{color:var(--cm-blue)}
+        body.spx.cm .qa{border-radius:var(--spx-r2);background:var(--cm-s1);font-size:13px;min-height:42px}
+        body.spx.cm .qa:hover{border-color:var(--primary);color:var(--primary)}
+        body.spx.cm .qa.gold{background:var(--spx-fill);color:var(--spx-on-fill);border-color:var(--spx-fill)}
+        body.spx.cm .qa.gold:hover{color:var(--spx-on-fill);filter:brightness(.92)}
+        body.spx.cm .form-control{border-radius:var(--spx-r2);min-height:44px;font-size:15px;background:var(--surface-input);border:1px solid var(--cm-line)}
+        body.spx.cm .form-control:focus,body.spx.cm :focus-visible{border-color:var(--primary);outline:2px solid var(--primary);outline-offset:2px;box-shadow:none}
+        body.spx.cm label{font-size:13px;color:var(--cm-mute)}
+        body.spx.cm input[type=checkbox],body.spx.cm input[type=radio]{accent-color:var(--primary);width:18px;height:18px}
+        body.spx.cm th{font-size:12.5px;font-weight:600;color:var(--cm-mute);background:var(--cm-bg);letter-spacing:0}
+        body.spx.cm td{font-size:14px}body.spx.cm tr:hover td{background:var(--spx-hover)}
+
+        /* --- پنجره‌ها و منوها --- */
+        body.spx.cm .modal{background:rgba(16,24,40,.5)}
+        body.spx.cm .modal-body{border-radius:20px;box-shadow:var(--spx-shadow2)}
+        @media(max-width:899px){body.spx.cm .modal-body{border-radius:20px 20px 0 0;border-width:1px 0 0;border-top-color:var(--cm-line)}}
+        body.spx.cm .toast{border-radius:12px;background:var(--cm-s1);border:1px solid var(--cm-line);box-shadow:var(--spx-shadow2);color:var(--cm-text)}
+        body.spx.cm .cmd-palette-box,body.spx.cm #spx-more,body.spx.cm #spx-help .box{border-radius:16px;border:1px solid var(--cm-line);background:var(--cm-s1);box-shadow:var(--spx-shadow2)}
+        body.spx.cm #spx-more .mgrid button{border-radius:10px;background:var(--cm-bg);font-size:13px;min-height:44px}
+        body.spx.cm #spx-more .mgrid button:hover,body.spx.cm #spx-more .mgrid button.on{background:var(--spx-fill);color:var(--spx-on-fill)}
+        body.spx.cm #spx-more h4,#spx-help h3{font-size:13px;font-weight:600;color:var(--cm-text)}
+        body.spx.cm .cmd-item.selected,body.spx.cm .cmd-item:hover{background:var(--spx-tonal);border-right:0}
+        body.spx.cm #alert-center{background:var(--cm-s1);border-left:1px solid var(--cm-line);box-shadow:var(--spx-shadow2)}
+        body.spx.cm #alert-center:not(.active){box-shadow:none}
+        body.spx.cm .alert-item{border-radius:12px}
+        body.spx.cm #login-screen{background:var(--cm-bg);background-image:radial-gradient(ellipse at 50% 0,color-mix(in srgb,var(--primary) 12%,transparent),transparent 60%)}
+        body.spx.cm .login-card{padding:28px;box-shadow:var(--spx-shadow2)}
+        body.spx.cm .login-logo{font-size:20px;font-weight:700;border-bottom:0;color:var(--cm-text)}
+        body.spx.cm .wb-li button,body.spx.cm .wb-big{letter-spacing:0}body.spx.cm .wb-big{font-weight:500}
+        body.spx.cm .wb-res div{border-radius:8px}
+        body.spx.cm ::-webkit-scrollbar{width:10px;height:10px}body.spx.cm ::-webkit-scrollbar-thumb{background:var(--cm-line);border-radius:99px;border:2px solid transparent;background-clip:padding-box}
+        @media(max-width:899px){body.spx.cm{padding-bottom:calc(90px + env(safe-area-inset-bottom,0px))}}
+        @media(prefers-reduced-motion:reduce){body.spx.cm *{animation:none!important;transition:none!important}}
+
+        body.spx.cm #spx-telemetry{direction:rtl}
+
+        @media(max-width:759px){body.spx.cm .cc-grid>.cc-k:last-child:nth-child(odd){grid-column:1/-1}}
+
+        /* =====================================================================
+           ErfoNT 8.0 — Microsoft Fluent 2 (Windows 11 / Microsoft 365)
+           پالت خنثی و برند آبی Fluent، متریال Mica/Acrylic، سایه‌های Fluent،
+           گوشه‌ی ۴/۸ پیکسل، تایپوگرافی Segoe UI، نشانگر انتخاب در ناوبری.
+           ===================================================================== */
+        body.spx.cm,body.spx.cm.light-theme{
+            --spx-font:"Segoe UI Variable Text","Segoe UI Variable","Segoe UI","Vazirmatn","Inter",system-ui,-apple-system,Roboto,Tahoma,sans-serif;
+            --cm-bg:#f5f5f5;--cm-s1:#ffffff;--cm-line:#e0e0e0;--cm-text:#242424;--cm-mute:#616161;
+            --cm-gold:#0f6cbd;--cm-gold2:#115ea3;--cm-blue:#0f6cbd;--cm-green:#107c10;--cm-amber:#bc4b09;--cm-red:#b10e1c;
+            --primary:#0f6cbd;--primary-glow:rgba(15,108,189,.14);--ios-blue:#0f6cbd;
+            --surface-card:#ffffff;--surface-card-hover:#f5f5f5;--surface-input:#ffffff;--border-color:#e0e0e0;--border-focus:#0f6cbd;--modal-bg:#ffffff;
+            --text-main:#242424;--text-muted:#616161;--accent-emerald:#107c10;--accent-rose:#b10e1c;--accent-amber:#bc4b09;--accent-purple:#8764b8;--accent-cyan:#0099bc;
+            --spx-fill:#0f6cbd;--spx-on-fill:#ffffff;--spx-hover:rgba(0,0,0,.04);--spx-tonal:rgba(15,108,189,.10);
+            --spx-shadow:0 0 2px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.14);--spx-shadow2:0 0 2px rgba(0,0,0,.12),0 8px 16px rgba(0,0,0,.14);--spx-shadow3:0 0 8px rgba(0,0,0,.12),0 32px 64px rgba(0,0,0,.14);
+            --spx-r:8px;--spx-r2:4px;
+            --spx-hdr-bg:#0f6cbd;--spx-hdr-fg:#ffffff;--spx-hdr-hover:rgba(255,255,255,.16);--spx-hero-a:#0f6cbd;--spx-hero-b:#2b88d8;--spx-acrylic:rgba(255,255,255,.82);
+        }
+        body.spx.cm:not(.light-theme):not(.industrial-theme){
+            --cm-bg:#1f1f1f;--cm-s1:#292929;--cm-line:#424242;--cm-text:#f5f5f5;--cm-mute:#adadad;
+            --cm-gold:#479ef5;--cm-gold2:#62abf5;--cm-blue:#479ef5;--cm-green:#54b054;--cm-amber:#faa06b;--cm-red:#dc626d;
+            --primary:#479ef5;--primary-glow:rgba(71,158,245,.18);--ios-blue:#479ef5;
+            --surface-card:#292929;--surface-card-hover:#333333;--surface-input:#1f1f1f;--border-color:#424242;--border-focus:#479ef5;--modal-bg:#292929;
+            --text-main:#f5f5f5;--text-muted:#adadad;--accent-emerald:#54b054;--accent-rose:#dc626d;--accent-amber:#faa06b;--accent-purple:#b4a0ff;--accent-cyan:#3dc7e8;
+            --spx-fill:#115ea3;--spx-on-fill:#ffffff;--spx-hover:rgba(255,255,255,.06);--spx-tonal:rgba(71,158,245,.16);
+            --spx-shadow:0 0 2px rgba(0,0,0,.24),0 1px 2px rgba(0,0,0,.28);--spx-shadow2:0 0 2px rgba(0,0,0,.24),0 8px 16px rgba(0,0,0,.28);--spx-shadow3:0 0 8px rgba(0,0,0,.24),0 32px 64px rgba(0,0,0,.28);
+            --spx-hdr-bg:#292929;--spx-hdr-fg:#f5f5f5;--spx-hdr-hover:rgba(255,255,255,.10);--spx-hero-a:#0c3b5e;--spx-hero-b:#115ea3;--spx-acrylic:rgba(41,41,41,.84);
+        }
+        body.spx.cm.industrial-theme{--spx-hdr-bg:#201b13;--spx-hdr-fg:#f0e9dc;--spx-hdr-hover:rgba(255,255,255,.10);--spx-hero-a:#5a3c06;--spx-hero-b:#a06a0c;--spx-acrylic:rgba(32,27,19,.86);--spx-shadow2:0 0 2px rgba(0,0,0,.3),0 8px 16px rgba(0,0,0,.35);--spx-shadow3:0 0 8px rgba(0,0,0,.3),0 32px 64px rgba(0,0,0,.4)}
+        html,html:has(body.spx.cm),html:has(body.spx.cm.light-theme){background:#f5f5f5}
+        html:has(body.spx.cm:not(.light-theme):not(.industrial-theme)){background:#1f1f1f}
+        html:has(body.spx.cm.industrial-theme){background:#16130e}
+
+        /* --- Mica: پس‌زمینه‌ی نرم با تابش رنگی بسیار ملایم --- */
+        body.spx.cm{font-size:14px;line-height:1.65;
+            background:radial-gradient(900px 420px at 100% -8%,color-mix(in srgb,var(--primary) 9%,transparent),transparent 70%),radial-gradient(700px 420px at 0 0,color-mix(in srgb,#8764b8 6%,transparent),transparent 70%),var(--cm-bg)!important;background-attachment:fixed!important}
+        @media(max-width:899px){body.spx.cm{font-size:15px}}
+
+        /* --- هدر: نوار برند Microsoft 365 --- */
+        body.spx.cm header{background:var(--spx-hdr-bg);color:var(--spx-hdr-fg);border-bottom:1px solid color-mix(in srgb,var(--spx-hdr-fg) 14%,transparent);box-shadow:var(--spx-shadow);backdrop-filter:none}
+        body.spx.cm header .logo{color:var(--spx-hdr-fg);font-size:16px;font-weight:600}
+        body.spx.cm header .logo::before{border-color:var(--spx-hdr-fg);background:radial-gradient(circle,var(--spx-hdr-fg) 0 2px,transparent 2.6px)}
+        body.spx.cm header .logo>span:last-child{color:color-mix(in srgb,var(--spx-hdr-fg) 75%,transparent)!important}
+        body.spx.cm header .badge{background:color-mix(in srgb,var(--spx-hdr-fg) 14%,transparent);border-color:transparent;color:var(--spx-hdr-fg)}
+        body.spx.cm header .icon-btn,body.spx.cm header .role-display{background:transparent;border:1px solid transparent;color:var(--spx-hdr-fg);border-radius:var(--spx-r2);min-height:36px;box-shadow:none}
+        body.spx.cm header .icon-btn:hover,body.spx.cm header .role-display:hover{background:var(--spx-hdr-hover);color:var(--spx-hdr-fg);border-color:transparent}
+        body.spx.cm header .icon-btn:active{background:color-mix(in srgb,var(--spx-hdr-fg) 24%,transparent)}
+        body.spx.cm header .cmd-kbd{border-color:color-mix(in srgb,var(--spx-hdr-fg) 35%,transparent);color:var(--spx-hdr-fg);background:transparent}
+        body.spx.cm header .alert-badge-count{background:#c50f1f;color:#fff}
+        body.spx.cm #spx-telemetry{background:color-mix(in srgb,var(--cm-s1) 70%,transparent);backdrop-filter:blur(20px);font-size:12px}
+        body.spx.cm #connectivity-status{background:var(--spx-tonal)!important;border-radius:0;color:var(--cm-text)!important}
+
+        /* --- ناوبری: Windows 11 NavigationView --- */
+        body.spx.cm .igbar{background:var(--spx-acrylic);backdrop-filter:blur(30px) saturate(125%);-webkit-backdrop-filter:blur(30px) saturate(125%);border-top:1px solid var(--cm-line);box-shadow:none}
+        body.spx.cm .igbar button{color:var(--cm-mute);font-size:11px;font-weight:400;border-radius:var(--spx-r2)}
+        body.spx.cm .igbar button.on{color:var(--primary);font-weight:600;background:transparent}
+        body.spx.cm .igbar button.on::before{left:50%;right:auto;width:18px;margin-inline-start:-9px;height:3px;border-radius:3px;background:var(--primary);top:2px}
+        body.spx.cm .igbar .plus{border-radius:8px;width:48px;height:48px;flex:0 0 48px;margin-top:-16px;background:var(--spx-fill);color:var(--spx-on-fill);box-shadow:var(--spx-shadow2)}
+        @media(min-width:900px){
+            body.spx.cm .igbar{background:var(--spx-acrylic);border-top:0;border-left:1px solid var(--cm-line);padding:12px 8px}
+            body.spx.cm .igbar button{font-size:14px;min-height:40px;border-radius:var(--spx-r2);margin-bottom:2px}
+            body.spx.cm .igbar button:hover{background:var(--spx-hover)}
+            body.spx.cm .igbar button.on{background:color-mix(in srgb,var(--cm-text) 6%,transparent);color:var(--cm-text)}
+            body.spx.cm .igbar button.on::before{display:block;top:50%;left:auto;right:0;margin:-8px 0 0;width:3px;height:16px;border-radius:3px;background:var(--primary)}
+            body.spx.cm .igbar .plus{width:auto;height:40px;flex:none;margin:0 0 12px;border-radius:var(--spx-r2)}
+        }
+        body.spx.cm #spx-quick:not(:empty){background:transparent}
+        body.spx.cm #spx-quick button{background:var(--cm-s1);border:1px solid var(--cm-line);border-radius:999px;box-shadow:var(--spx-shadow)}
+
+        /* --- سطوح: کارت‌های Fluent --- */
+        body.spx.cm .card,body.spx.cm .table-container,body.spx.cm .metric-card,body.spx.cm .user-profile-card,body.spx.cm .cc-p,body.spx.cm .hub-card,body.spx.cm .kt,body.spx.cm .cc-k,body.spx.cm .spx-board>div{
+            background:var(--cm-s1);border:1px solid var(--cm-line);border-radius:var(--spx-r);box-shadow:var(--spx-shadow)}
+        body.spx.cm .cm-hero{border:0;border-radius:12px;box-shadow:var(--spx-shadow2);color:#fff;padding:24px;
+            background:radial-gradient(420px 200px at 15% 120%,rgba(255,255,255,.14),transparent),linear-gradient(135deg,var(--spx-hero-a),var(--spx-hero-b))}
+        body.spx.cm .cm-hero .cm-hello{color:#fff;font-size:24px;font-weight:600}
+        body.spx.cm .cm-hero .cm-date,body.spx.cm .cm-hero .cm-sub{color:rgba(255,255,255,.86)}
+        body.spx.cm .cm-hero .cm-ring{background:#fff;border-radius:50%;padding:6px;box-shadow:var(--spx-shadow2)}
+        body.spx.cm .cm-hero .cm-ring text{fill:#242424!important}
+        body.spx.cm .cm-hero .cm-ring circle:first-child{stroke:#e0e0e0!important}
+        body.spx.cm .kt,body.spx.cm .cc-k{padding:16px 18px 14px;overflow:hidden}
+        body.spx.cm .kt::before,body.spx.cm .cc-k::before{top:0;bottom:0;inset-inline-start:0;inset-inline-end:auto;width:4px;height:auto;border-radius:0;background:var(--led)}
+        body.spx.cm .kt-v,body.spx.cm .cc-k b{font-size:28px;font-weight:600}
+        body.spx.cm .kt:hover,body.spx.cm .hub-card:hover{box-shadow:var(--spx-shadow2)}
+        body.spx.cm .cm-sec h3,body.spx.cm .cc-p>h3,body.spx.cm .spx-poll-head>b,body.spx.cm .spx-grp{font-size:16px;font-weight:600;color:var(--cm-text)}
+        body.spx.cm .cc-head h2{font-size:24px;font-weight:600}
+        body.spx.cm .cc-p>h3{background:transparent;border-bottom:1px solid var(--cm-line);padding:14px 18px}
+        body.spx.cm .cc-b{padding:16px 18px}
+        body.spx.cm .cc-t{border-radius:var(--spx-r2);background:var(--cm-s1);box-shadow:none}
+        body.spx.cm .hub-card{padding:18px 10px}
+        body.spx.cm .hub-card:hover{background:var(--cm-s1);border-color:color-mix(in srgb,var(--primary) 55%,var(--cm-line))}
+        body.spx.cm .spx-row:hover{background:var(--spx-hover)}
+        body.spx.cm .spx-verdict,body.spx.cm .spx-row .tok,body.spx.cm .cc-ord .q,body.spx.cm .chip,body.spx.cm .status-badge{font-weight:600;font-size:12px}
+
+        /* --- دکمه‌ها: Primary / Standard / Subtle --- */
+        body.spx.cm .btn,body.spx.cm .btn-emerald,body.spx.cm .btn-amber,body.spx.cm .btn-rose,body.spx.cm .btn-purple,body.spx.cm .btn-cyan{border-radius:var(--spx-r2);min-height:36px;font-size:14px;font-weight:600;box-shadow:none}
+        @media(pointer:coarse){body.spx.cm .btn,body.spx.cm .qa,body.spx.cm .form-control{min-height:44px}}
+        body.spx.cm .btn{background:var(--spx-fill);color:var(--spx-on-fill);border:1px solid transparent}
+        body.spx.cm .btn:hover{background:color-mix(in srgb,var(--spx-fill) 86%,#000);color:var(--spx-on-fill)}
+        body.spx.cm .btn:active{background:color-mix(in srgb,var(--spx-fill) 74%,#000);transform:none}
+        body.spx.cm .qa{background:var(--cm-s1);border:1px solid color-mix(in srgb,var(--cm-text) 22%,var(--cm-line));border-radius:var(--spx-r2);color:var(--cm-text);font-weight:600;min-height:36px}
+        body.spx.cm .qa:hover{background:var(--spx-hover);border-color:color-mix(in srgb,var(--cm-text) 30%,var(--cm-line));color:var(--cm-text)}
+        body.spx.cm .qa:active{background:color-mix(in srgb,var(--cm-text) 10%,transparent)}
+        body.spx.cm .qa.gold{background:var(--spx-fill);color:var(--spx-on-fill);border-color:transparent}
+        body.spx.cm .qa.gold:hover{background:color-mix(in srgb,var(--spx-fill) 86%,#000);color:var(--spx-on-fill);filter:none}
+        body.spx.cm .back-btn,body.spx.cm .sync-badge{background:transparent;border:1px solid transparent;color:var(--primary);border-radius:var(--spx-r2);box-shadow:none}
+        body.spx.cm .back-btn:hover{background:var(--spx-tonal);color:var(--primary);border-color:transparent}
+        body.spx.cm #spx-more .icon-btn{background:var(--cm-s1);border:1px solid var(--cm-line);color:var(--cm-text)}
+        body.spx.cm #spx-more .icon-btn:hover{background:var(--spx-hover);color:var(--cm-text)}
+
+        /* --- فیلدها: Fluent Input (خط پایین برند هنگام فوکوس) --- */
+        body.spx.cm .form-control{border-radius:var(--spx-r2);min-height:36px;font-size:14px;border:1px solid color-mix(in srgb,var(--cm-text) 22%,var(--cm-line));border-bottom-color:color-mix(in srgb,var(--cm-text) 45%,var(--cm-line));background:var(--surface-input)}
+        body.spx.cm .form-control:hover{border-color:color-mix(in srgb,var(--cm-text) 34%,var(--cm-line))}
+        body.spx.cm .form-control:focus{outline:0;border-color:color-mix(in srgb,var(--cm-text) 22%,var(--cm-line));border-bottom:2px solid var(--primary);box-shadow:none}
+        body.spx.cm :focus-visible{outline:2px solid var(--cm-text);outline-offset:2px;border-radius:2px}
+        body.spx.cm label{font-size:13px;font-weight:600;color:var(--cm-text)}
+
+        /* --- جدول: Fluent DataGrid --- */
+        body.spx.cm th{background:color-mix(in srgb,var(--cm-text) 3%,var(--cm-s1));font-size:12.5px;font-weight:600;color:var(--cm-text);border-bottom:1px solid var(--cm-line)}
+        body.spx.cm td{border-bottom:1px solid color-mix(in srgb,var(--cm-line) 60%,transparent)}
+        body.spx.cm tr:hover td{background:var(--spx-hover)}
+
+        /* --- دیالوگ، منو و Acrylic --- */
+        body.spx.cm .modal{background:rgba(0,0,0,.4)}
+        body.spx.cm .modal-body{border-radius:8px;border:1px solid var(--cm-line);box-shadow:var(--spx-shadow3);background:var(--cm-s1)}
+        @media(max-width:899px){body.spx.cm .modal-body{border-radius:8px 8px 0 0}}
+        body.spx.cm .cmd-palette-box,body.spx.cm #spx-more,body.spx.cm #spx-help .box{background:var(--spx-acrylic);backdrop-filter:blur(30px) saturate(125%);-webkit-backdrop-filter:blur(30px) saturate(125%);border:1px solid var(--cm-line);border-radius:8px;box-shadow:var(--spx-shadow3)}
+        body.spx.cm #spx-more h4,#spx-help h3{font-size:12px;font-weight:600;color:var(--cm-mute)}
+        body.spx.cm #spx-more .mgrid button{border-radius:var(--spx-r2);background:var(--cm-s1);border:1px solid var(--cm-line);font-size:13px;min-height:40px}
+        body.spx.cm #spx-more .mgrid button:hover{background:var(--spx-hover);color:var(--cm-text);border-color:var(--cm-line)}
+        body.spx.cm #spx-more .mgrid button.on{background:var(--spx-fill);color:var(--spx-on-fill);border-color:transparent}
+        body.spx.cm .toast{border-radius:var(--spx-r2);box-shadow:var(--spx-shadow2);background:var(--cm-s1)}
+        body.spx.cm #alert-center{background:var(--spx-acrylic);backdrop-filter:blur(30px);box-shadow:var(--spx-shadow3)}
+        body.spx.cm .alert-item{border-radius:var(--spx-r)}
+        body.spx.cm #login-screen{background:radial-gradient(900px 500px at 50% -10%,color-mix(in srgb,var(--primary) 18%,transparent),transparent 70%),var(--cm-bg)}
+        body.spx.cm .login-card{border-radius:12px;box-shadow:var(--spx-shadow3);background:var(--spx-acrylic);backdrop-filter:blur(30px)}
+        body.spx.cm .login-logo{font-size:22px;font-weight:600;color:var(--cm-text)}
+        body.spx.cm ::-webkit-scrollbar{width:8px;height:8px}
+        body.spx.cm ::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--cm-text) 38%,transparent);border-radius:4px;border:0;background-clip:border-box}
+        body.spx.cm ::-webkit-scrollbar-thumb:hover{background:color-mix(in srgb,var(--cm-text) 55%,transparent)}
+
+        /* --- اولویت‌دهی: قاعده‌های تم‌دار قدیمی نباید رنگ‌های Fluent را بشکنند --- */
+        body.spx.cm header,body.spx.cm.light-theme header,body.spx.cm.industrial-theme header{background:var(--spx-hdr-bg)!important}
+        body.spx.cm .cm-hero,body.spx.cm.light-theme .cm-hero,body.spx.cm.industrial-theme .cm-hero{background:radial-gradient(420px 200px at 15% 120%,rgba(255,255,255,.14),transparent),linear-gradient(135deg,var(--spx-hero-a),var(--spx-hero-b))!important}
+        body.spx.cm .igbar,body.spx.cm.light-theme .igbar,body.spx.cm.industrial-theme .igbar{background:var(--spx-acrylic)!important}
+        @media(min-width:900px){body.spx.cm .igbar,body.spx.cm.light-theme .igbar,body.spx.cm.industrial-theme .igbar{background:var(--spx-acrylic)!important}}
+
+        @media(min-width:900px){body.spx.cm header{flex-wrap:nowrap!important;justify-content:space-between!important;align-items:center}body.spx.cm header .header-controls{flex-wrap:nowrap}}
+        body.spx.cm header .icon-btn,body.spx.cm header .cmd-kbd,body.spx.cm header .role-display,body.spx.cm header .badge{white-space:nowrap}
+        @media(min-width:900px){body.spx.cm header>*{flex-wrap:nowrap!important}}
+        body.spx.cm header .logo{white-space:nowrap}
+
+        /* ===== ErfoNT 9.0 — خانه‌ی تک‌صفحه‌ای + ناوبری ۵ مقصدی ===== */
+        body.spx.cm #spx-quick{display:none!important}
+        body.spx.cm .igbar .wide-only{display:none!important}
+        body.spx.cm #tab-hub #cm-dash,body.spx.cm #tab-hub>*:not(#spx-home){display:none!important}
+        body[data-page="workorders"] .back-btn,body[data-page="equipment"] .back-btn,body[data-page="inventory"] .back-btn,body[data-page="overview"] #back-bar .back-btn.x{display:none}
+        body[data-page="more"] #back-bar,body[data-page="hub"] #back-bar{display:none!important}
+        @media(max-width:899px){
+            body.spx.cm #spx-telemetry{display:none!important}
+            body.spx.cm header .logo>span:last-child{display:none}
+            body.spx.cm header{padding-block:6px}
+        }
+        /* خانه */
+        #spx-home{display:flex;flex-direction:column;gap:14px;padding:4px 0 8px}
+        .hm-status{display:flex;gap:14px;align-items:center;padding:16px 18px;border-radius:var(--spx-r);border:1px solid var(--cm-line);border-inline-start:6px solid var(--led);background:var(--cm-s1);box-shadow:var(--spx-shadow);--led:var(--cm-green)}
+        .hm-status.warn{--led:var(--cm-amber)}.hm-status.bad{--led:var(--cm-red)}
+        .hm-status .dot{flex:0 0 44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:22px;font-weight:700;background:color-mix(in srgb,var(--led) 14%,transparent);color:var(--led)}
+        .hm-status b{display:block;font-size:19px;font-weight:600;line-height:1.4}
+        .hm-status small{display:block;font-size:13px;color:var(--cm-mute)}
+        .hm-tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+        .hm-tile{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:16px;min-height:104px;background:var(--cm-s1);border:1px solid var(--cm-line);border-radius:var(--spx-r);box-shadow:var(--spx-shadow);cursor:pointer;color:var(--cm-text);font:inherit;text-align:start;transition:border-color .15s,box-shadow .15s}
+        .hm-tile:hover{border-color:var(--primary);box-shadow:var(--spx-shadow2)}
+        .hm-tile.pri{background:var(--spx-fill);color:var(--spx-on-fill);border-color:transparent}
+        .hm-tile .ic{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:var(--spx-tonal);color:var(--primary)}
+        .hm-tile.pri .ic{background:rgba(255,255,255,.2);color:inherit}
+        .hm-tile .ic svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+        .hm-tile b{font-size:14.5px;font-weight:600;line-height:1.4}
+        .hm-sec{display:flex;justify-content:space-between;align-items:center;margin-top:4px}
+        .hm-sec h3{font-size:16px;font-weight:600}.hm-sec a{font-size:13px;color:var(--primary);cursor:pointer}
+        .hm-list{display:flex;flex-direction:column;border:1px solid var(--cm-line);border-radius:var(--spx-r);background:var(--cm-s1);box-shadow:var(--spx-shadow);overflow:hidden}
+        .hm-it{display:flex;align-items:center;gap:12px;padding:14px 16px;min-height:60px;border-bottom:1px solid var(--cm-line);cursor:pointer;--led:var(--cm-amber)}
+        .hm-it:last-child{border:0}.hm-it:hover{background:var(--spx-hover)}
+        .hm-it.bad{--led:var(--cm-red)}.hm-it.ok{--led:var(--cm-green);cursor:default}
+        .hm-it i{flex:0 0 10px;height:10px;border-radius:50%;background:var(--led)}
+        .hm-it div{flex:1;min-width:0}.hm-it b{display:block;font-size:14.5px;font-weight:600}.hm-it small{font-size:12.5px;color:var(--cm-mute)}
+        .hm-it::after{content:"‹";color:var(--cm-mute);font-size:22px;line-height:1}.hm-it.ok::after{display:none}
+        .hm-pins{display:flex;gap:8px;flex-wrap:wrap}
+        .hm-pins button{border:1px solid var(--cm-line);background:var(--cm-s1);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--cm-text);cursor:pointer}
+        .hm-side{display:none}
+        @media(min-width:900px){
+            #spx-home{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;max-width:1120px;margin:0 auto;align-items:start}
+            #spx-home>.hm-main{display:flex;flex-direction:column;gap:14px}
+            .hm-tiles{grid-template-columns:repeat(4,1fr)}
+            .hm-side{display:flex;flex-direction:column;gap:12px}
+            .hm-stat{background:var(--cm-s1);border:1px solid var(--cm-line);border-radius:var(--spx-r);box-shadow:var(--spx-shadow);padding:16px 18px;border-inline-start:4px solid var(--led,var(--cm-mute))}
+            .hm-stat span{display:block;font-size:13px;color:var(--cm-mute)}.hm-stat b{font-size:28px;font-weight:600}
+        }
+        @media(max-width:899px){#spx-home>.hm-main{display:contents}}
+        /* بیشتر */
+        #tab-more .hub-card{min-height:96px}
+        #mm-search{margin:0 0 6px}
+        body.spx.cm header{flex-wrap:nowrap!important;justify-content:space-between!important;align-items:center}
+        body.spx.cm header .header-controls{width:auto!important;flex:0 0 auto;flex-wrap:nowrap!important;overflow:visible!important}
+        body.spx.cm header .logo-group{flex:1 1 auto;min-width:0}
+        #tab-more .menu-hub-grid{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:8px!important}
+        @media(min-width:900px){#tab-more .menu-hub-grid{grid-template-columns:repeat(4,1fr)!important;max-width:900px}}
+        body.spx.cm #tab-more .hub-card{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;padding:14px 6px;min-height:92px}
+        #tab-more .hub-card .hub-desc{display:none}
+        body.spx.cm #tab-more .hub-icon{width:auto;height:auto;background:none;border:0;font-size:26px;margin:0}
+        body.spx.cm #tab-more .hub-title{font-size:12.5px;line-height:1.4}
+        #tab-more .spx-grp{margin:16px 0 8px}
+
+        /* =====================================================================
+           ErfoNT 8.0 — Fluent 2 (سبک طراحی مایکروسافت)
+           Segoe UI · آبی برند #0F6CBD · گوشه‌ی ۴/۸ پیکسل · سایه‌های لایه‌ای ·
+           نوار فرمان شیشه‌ای (Acrylic) · پس‌زمینه‌ی Mica/Bloom · منوی ناوبری با نشانگر
+           ===================================================================== */
+        body.spx.cm.light-theme,body.spx.cm{
+            --spx-font:"Segoe UI Variable Text","Segoe UI Variable","Segoe UI","Vazirmatn","Noto Sans Arabic",system-ui,-apple-system,Roboto,Tahoma,sans-serif;
+            --spx-mono:var(--spx-font);--spx-ff:var(--spx-font);
+            --cm-bg:#f5f5f5;--cm-s1:#ffffff;--cm-line:#e0e0e0;--cm-text:#242424;--cm-mute:#616161;
+            --cm-gold:#0f6cbd;--cm-gold2:#115ea3;--cm-blue:#0f6cbd;--cm-green:#107c10;--cm-amber:#bc4b09;--cm-red:#c50f1f;
+            --primary:#0f6cbd;--primary-glow:rgba(15,108,189,.14);--ios-blue:#0f6cbd;
+            --surface-card:#ffffff;--surface-card-hover:#f5f5f5;--surface-input:#ffffff;--border-color:#e0e0e0;--border-focus:#0f6cbd;--modal-bg:#ffffff;
+            --text-main:#242424;--text-muted:#616161;--accent-emerald:#107c10;--accent-rose:#c50f1f;--accent-amber:#bc4b09;--accent-purple:#5c2e91;--accent-cyan:#00727a;
+            --spx-fill:#0f6cbd;--spx-on-fill:#ffffff;--spx-hover:rgba(0,0,0,.045);--spx-tonal:rgba(15,108,189,.10);
+            --f-stroke1:#d1d1d1;--f-sel:#ebf3fc;--f-focus:#242424;
+            --spx-shadow:0 0 2px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.14);
+            --spx-shadow2:0 0 2px rgba(0,0,0,.12),0 8px 16px rgba(0,0,0,.14);
+            --f-shadow3:0 0 8px rgba(0,0,0,.12),0 32px 64px rgba(0,0,0,.14);
+            --spx-r:8px;--spx-r2:4px;
+        }
+        body.spx.cm:not(.light-theme):not(.industrial-theme){
+            --cm-bg:#1f1f1f;--cm-s1:#2b2b2b;--cm-line:#424242;--cm-text:#ffffff;--cm-mute:#c8c8c8;
+            --cm-gold:#479ef5;--cm-gold2:#62abf5;--cm-blue:#479ef5;--cm-green:#54b054;--cm-amber:#ff9a53;--cm-red:#e37d80;
+            --primary:#479ef5;--primary-glow:rgba(71,158,245,.18);--ios-blue:#479ef5;
+            --surface-card:#2b2b2b;--surface-card-hover:#333333;--surface-input:#2b2b2b;--border-color:#424242;--border-focus:#479ef5;--modal-bg:#2b2b2b;
+            --text-main:#ffffff;--text-muted:#c8c8c8;--accent-emerald:#54b054;--accent-rose:#e37d80;--accent-amber:#ff9a53;--accent-purple:#b48ddb;--accent-cyan:#4cc2c9;
+            --spx-fill:#115ea3;--spx-on-fill:#ffffff;--spx-hover:rgba(255,255,255,.08);--spx-tonal:rgba(71,158,245,.16);
+            --f-stroke1:#666666;--f-sel:#2f3b4a;--f-focus:#ffffff;
+            --spx-shadow:0 0 2px rgba(0,0,0,.24),0 1px 2px rgba(0,0,0,.28);--spx-shadow2:0 0 2px rgba(0,0,0,.24),0 8px 16px rgba(0,0,0,.28);--f-shadow3:0 0 8px rgba(0,0,0,.3),0 32px 64px rgba(0,0,0,.36);
+        }
+        body.spx.cm.industrial-theme{--f-stroke1:#5a5040;--f-sel:#2d2616;--f-focus:#f0e9dc;--spx-r:8px;--spx-r2:4px;--spx-shadow2:0 0 2px rgba(0,0,0,.24),0 8px 16px rgba(0,0,0,.28);--f-shadow3:0 0 8px rgba(0,0,0,.3),0 32px 64px rgba(0,0,0,.36)}
+        html,html:has(body.spx.cm),html:has(body.spx.cm.light-theme){background:#f5f5f5}
+        html:has(body.spx.cm:not(.light-theme):not(.industrial-theme)){background:#1f1f1f}
+
+        /* --- Mica / Bloom: پس‌زمینه‌ی نرم و چندلایه --- */
+        body.spx.cm{font-weight:400;line-height:1.65;font-size:14.5px;
+            background-color:var(--cm-bg)!important;background-attachment:fixed!important;
+            background-image:radial-gradient(60% 45% at 12% 0%,color-mix(in srgb,var(--primary) 9%,transparent),transparent 70%),radial-gradient(45% 40% at 100% 100%,color-mix(in srgb,var(--accent-purple) 7%,transparent),transparent 70%)!important}
+        body.spx.cm :focus-visible{outline:2px solid var(--f-focus);outline-offset:1px;border-radius:4px}
+
+        /* --- Command bar (Acrylic) --- */
+        body.spx.cm header{background:color-mix(in srgb,var(--cm-s1) 78%,transparent);backdrop-filter:saturate(180%) blur(24px);-webkit-backdrop-filter:saturate(180%) blur(24px);border-bottom:1px solid var(--cm-line)}
+        body.spx.cm .logo{font-size:16px;font-weight:600}
+        body.spx.cm .logo::before{width:16px;height:16px;border-width:2px;border-radius:50%;border-color:var(--primary);background:radial-gradient(circle,var(--primary) 0 2.4px,transparent 3px)}
+        body.spx.cm .icon-btn,body.spx.cm .back-btn,body.spx.cm .role-display,body.spx.cm .sync-badge{background:transparent;border:1px solid transparent;border-radius:4px;min-height:36px;font-weight:400;color:var(--cm-text);transition:background .12s,border-color .12s}
+        body.spx.cm .icon-btn:hover,body.spx.cm .back-btn:hover,body.spx.cm .role-display:hover{background:var(--spx-hover);border-color:transparent;color:var(--cm-text)}
+        body.spx.cm .icon-btn:active,body.spx.cm .back-btn:active{background:color-mix(in srgb,var(--cm-text) 12%,transparent)}
+        body.spx.cm .role-display{border:1px solid var(--cm-line);background:var(--cm-s1);border-radius:999px;padding-inline:12px}
+        body.spx.cm .badge{border-radius:4px;background:var(--spx-tonal);color:var(--primary);border:0;font-weight:600}
+        body.spx.cm #spx-telemetry{background:transparent;border-bottom:0;font-size:12px;padding:6px 20px}
+        body.spx.cm #connectivity-status{background:var(--f-sel)!important;border-bottom:1px solid var(--cm-line)!important;border-radius:0}
+        body.spx.cm #spx-quick:not(:empty){background:transparent;padding:10px 20px 4px}
+        body.spx.cm #spx-quick button{border-radius:999px;border:1px solid var(--f-stroke1);background:var(--cm-s1);font-weight:400}
+
+        /* --- Navigation view --- */
+        body.spx.cm .igbar{background:color-mix(in srgb,var(--cm-s1) 88%,transparent);backdrop-filter:saturate(180%) blur(24px);-webkit-backdrop-filter:saturate(180%) blur(24px);border-top:1px solid var(--cm-line);box-shadow:none}
+        body.spx.cm .igbar button{color:var(--cm-mute);font-weight:400;font-size:11.5px}
+        body.spx.cm .igbar button.on{color:var(--primary);font-weight:600}
+        body.spx.cm .igbar button.on::before{height:3px;width:28px;left:50%;right:auto;transform:translateX(-50%);top:0;border-radius:0 0 3px 3px;background:var(--primary)}
+        body.spx.cm .igbar .plus{border-radius:12px;background:var(--spx-fill);color:var(--spx-on-fill);box-shadow:var(--spx-shadow2)}
+        @media(min-width:900px){
+            body.spx.cm .igbar{background:color-mix(in srgb,var(--cm-s1) 82%,transparent);border-top:0;border-left:1px solid var(--cm-line);padding:14px 10px}
+            body.spx.cm .igbar button{position:relative;border-radius:4px;min-height:40px;font-size:14px;color:var(--cm-text);transition:background .12s}
+            body.spx.cm .igbar button:hover{background:var(--spx-hover)}
+            body.spx.cm .igbar button.on{background:var(--f-sel);color:var(--cm-text);font-weight:600}
+            body.spx.cm .igbar button.on svg{color:var(--primary)}
+            body.spx.cm .igbar button.on::before{display:block;content:"";top:50%;transform:translateY(-50%);inset-inline-start:0;left:auto;right:0;width:3px;height:18px;border-radius:2px;background:var(--primary)}
+            body.spx.cm .igbar .plus{border-radius:4px;box-shadow:none;margin-bottom:14px}
+        }
+
+        /* --- سطوح و کارت‌ها --- */
+        body.spx.cm .card,body.spx.cm .table-container,body.spx.cm .metric-card,body.spx.cm .user-profile-card,body.spx.cm .cc-p,body.spx.cm .cm-hero,body.spx.cm .hub-card,body.spx.cm .kt,body.spx.cm .cc-k,body.spx.cm .spx-board>div,body.spx.cm .login-card{
+            background:var(--cm-s1);border:1px solid var(--cm-line);border-radius:8px;box-shadow:var(--spx-shadow)}
+        body.spx.cm .cm-hero{background:linear-gradient(120deg,color-mix(in srgb,var(--primary) 10%,var(--cm-s1)),var(--cm-s1) 55%)}
+        body.spx.cm .cm-hello{font-size:24px;font-weight:600}
+        body.spx.cm .cm-ring circle{stroke-width:6px}
+        body.spx.cm .kt{transition:box-shadow .15s,transform .15s}
+        body.spx.cm .kt:hover,body.spx.cm .cc-k:hover{box-shadow:var(--spx-shadow2)}
+        body.spx.cm .kt-v,body.spx.cm .cc-k b{font-size:30px;font-weight:600}
+        body.spx.cm .kt-l,body.spx.cm .cc-k span{color:var(--cm-mute)}
+        body.spx.cm .cm-sec h3,body.spx.cm .cc-p>h3,body.spx.cm .spx-poll-head>b,body.spx.cm .spx-grp{font-size:14px;font-weight:600}
+        body.spx.cm .cc-p>h3{background:transparent;border-bottom:1px solid var(--cm-line)}
+        body.spx.cm .cc-head h2{font-size:26px;font-weight:600}
+        body.spx.cm .cc-t{border-radius:4px;border:1px solid var(--cm-line);border-inline-start:3px solid var(--led);background:var(--cm-s1)}
+        body.spx.cm .cc-t:hover{box-shadow:var(--spx-shadow2);border-color:var(--cm-line);border-inline-start-color:var(--led)}
+        body.spx.cm #cm-dash .cm-sec::after,body.spx.cm #cm-dash .cm-sec.closed::after{content:"";width:7px;height:7px;border:solid var(--cm-mute);border-width:0 1.6px 1.6px 0;transform:rotate(45deg);margin-top:-3px;transition:transform .15s}
+        body.spx.cm #cm-dash .cm-sec.closed::after{transform:rotate(135deg);margin-top:0}
+        body.spx.cm #cm-dash .cm-sec:hover h3{color:var(--primary)}
+
+        /* ماژول‌ها: کاشی Fluent با آیکون در مربع رنگی */
+        body.spx.cm .hub-card{padding:18px 12px;gap:10px}
+        body.spx.cm #tab-hub .hub-icon,body.spx.cm .hub-icon{width:48px;height:48px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:var(--spx-tonal);font-size:24px}
+        body.spx.cm .hub-card:hover{border-color:var(--f-stroke1);box-shadow:var(--spx-shadow2);background:var(--cm-s1)}
+        body.spx.cm .hub-card:active{background:var(--cm-bg)}
+        body.spx.cm .hub-title{font-size:13.5px;font-weight:600}
+        body.spx.cm .spx-star.on{color:#f7b500}
+
+        /* --- دکمه‌ها (Fluent): اصلی پر، ثانویه با خط، ملایم --- */
+        body.spx.cm .btn,body.spx.cm .btn-emerald,body.spx.cm .btn-amber,body.spx.cm .btn-rose,body.spx.cm .btn-purple,body.spx.cm .btn-cyan,body.spx.cm .qa{border-radius:4px;font-weight:600;font-size:14px;min-height:40px;transition:background .12s,border-color .12s,box-shadow .12s}
+        body.spx.cm .btn{background:var(--spx-fill);color:var(--spx-on-fill);border:1px solid transparent}
+        body.spx.cm .btn:hover{background:color-mix(in srgb,var(--spx-fill) 88%,#000);color:var(--spx-on-fill);border-color:transparent}
+        body.spx.cm .btn:active{background:color-mix(in srgb,var(--spx-fill) 76%,#000);transform:none}
+        body.spx.cm .qa{background:var(--cm-s1);border:1px solid var(--f-stroke1);color:var(--cm-text);font-weight:600}
+        body.spx.cm .qa:hover{background:var(--spx-hover);border-color:var(--f-stroke1);color:var(--cm-text)}
+        body.spx.cm .qa.gold{background:var(--spx-fill);color:var(--spx-on-fill);border-color:transparent}
+        body.spx.cm .qa.gold:hover{background:color-mix(in srgb,var(--spx-fill) 88%,#000);color:var(--spx-on-fill);filter:none}
+        body.spx.cm .btn-emerald,body.spx.cm .btn-amber,body.spx.cm .btn-rose,body.spx.cm .btn-purple,body.spx.cm .btn-cyan{background:var(--cm-s1);border:1px solid var(--f-stroke1)}
+        body.spx.cm .btn-emerald:hover,body.spx.cm .btn-amber:hover,body.spx.cm .btn-rose:hover,body.spx.cm .btn-purple:hover,body.spx.cm .btn-cyan:hover{background:var(--spx-hover);border-color:var(--f-stroke1)}
+
+        /* --- فیلدها: خط زیرین Fluent --- */
+        body.spx.cm .form-control{background:var(--surface-input);border:1px solid var(--f-stroke1);border-bottom-color:var(--cm-mute);border-radius:4px;min-height:40px;font-size:14.5px;transition:border-color .12s}
+        body.spx.cm .form-control:hover{border-color:var(--cm-mute)}
+        body.spx.cm .form-control:focus{border-color:var(--f-stroke1);border-bottom:2px solid var(--primary);outline:none;box-shadow:none}
+        body.spx.cm label{font-weight:600;font-size:13px;color:var(--cm-text)}
+
+        /* --- جدول (DataGrid) --- */
+        body.spx.cm th{background:var(--cm-bg);color:var(--cm-text);font-weight:600;font-size:12.5px;border-bottom:1px solid var(--cm-line)}
+        body.spx.cm td{border-bottom:1px solid var(--cm-line)}body.spx.cm tr:hover td{background:var(--spx-hover)}
+
+        /* --- نشان‌های وضعیت --- */
+        body.spx.cm .spx-verdict,body.spx.cm .spx-row .tok,body.spx.cm .cc-ord .q,body.spx.cm .chip,body.spx.cm .status-badge{border-radius:999px;font-weight:600;font-size:12px;padding:3px 10px}
+        body.spx.cm .spx-row{border-radius:4px}body.spx.cm .spx-row:hover{background:var(--spx-hover)}
+
+        /* --- دیالوگ، منو، پیام --- */
+        body.spx.cm .modal{background:rgba(0,0,0,.4);backdrop-filter:blur(2px)}
+        body.spx.cm .modal-body{border-radius:8px;box-shadow:var(--f-shadow3);border:1px solid var(--cm-line)}
+        @media(max-width:899px){body.spx.cm .modal-body{border-radius:12px 12px 0 0}}
+        body.spx.cm .toast{border-radius:4px;box-shadow:var(--spx-shadow2);border:1px solid var(--cm-line)}
+        body.spx.cm .cmd-palette-box,body.spx.cm #spx-more,body.spx.cm #spx-help .box{border-radius:8px;box-shadow:var(--f-shadow3);background:color-mix(in srgb,var(--cm-s1) 92%,transparent);backdrop-filter:blur(24px)}
+        body.spx.cm #spx-more .mgrid button{border-radius:4px;background:var(--cm-s1);border:1px solid var(--f-stroke1);font-weight:400}
+        body.spx.cm #spx-more .mgrid button:hover{background:var(--spx-hover);color:var(--cm-text)}
+        body.spx.cm #spx-more .mgrid button.on{background:var(--f-sel);border-color:var(--primary);color:var(--primary);font-weight:600}
+        body.spx.cm .cmd-item{border-radius:4px}body.spx.cm .cmd-item.selected,body.spx.cm .cmd-item:hover{background:var(--f-sel)}
+        body.spx.cm #alert-center{box-shadow:var(--f-shadow3)}
+        body.spx.cm .alert-item{border-radius:4px}
+
+        /* --- ورود: Bloom + کارت Fluent --- */
+        body.spx.cm #login-screen{background-color:var(--cm-bg);background-image:radial-gradient(55% 50% at 15% 10%,color-mix(in srgb,var(--primary) 22%,transparent),transparent 70%),radial-gradient(50% 45% at 90% 95%,color-mix(in srgb,var(--accent-purple) 16%,transparent),transparent 70%),radial-gradient(40% 35% at 85% 10%,color-mix(in srgb,var(--accent-cyan) 12%,transparent),transparent 70%)}
+        body.spx.cm .login-card{border-radius:8px;padding:32px;box-shadow:var(--f-shadow3);background:color-mix(in srgb,var(--cm-s1) 90%,transparent);backdrop-filter:blur(24px)}
+        body.spx.cm .login-logo{font-size:22px;font-weight:600}
+
+        /* --- اسکرول‌بار و حرکت --- */
+        body.spx.cm ::-webkit-scrollbar{width:8px;height:8px}
+        body.spx.cm ::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--cm-mute) 55%,transparent);border-radius:4px;border:0}
+        body.spx.cm ::-webkit-scrollbar-thumb:hover{background:var(--cm-mute)}
+        body.spx.cm .tab-content.active{animation:spxFade .2s cubic-bezier(.33,0,.67,1)}
+        @keyframes spxFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
     </style>
 </head>
 <body dir="rtl" class="spx">
 
-    <!-- ErfoNT 6.0 Mission Control: backdrop + launch sequence -->
-    <canvas id="spx-stars" aria-hidden="true"></canvas>
-    <div id="spx-boot" aria-hidden="true">
-        <div class="spx-boot-inner">
-            <div class="spx-boot-mark"></div>
-            <div class="spx-boot-word">ERFONT</div>
-            <div class="spx-boot-sub">MAINTENANCE MISSION CONTROL</div>
-            <ul class="spx-boot-log">
-                <li><span>CORE SYSTEMS</span><b>NOMINAL</b></li>
-                <li><span>DATA LINK</span><b>NOMINAL</b></li>
-                <li><span>EQUIPMENT REGISTRY</span><b>LOADED</b></li>
-                <li><span>AUTH GATE</span><b>ARMED</b></li>
-                <li><span>ALL SYSTEMS</span><b>GO</b></li>
-            </ul>
-            <div class="spx-boot-bar"><i></i></div>
-        </div>
-    </div>
-    <script>try{if(sessionStorage.getItem('spx_boot')||matchMedia('(prefers-reduced-motion: reduce)').matches){document.getElementById('spx-boot').remove();}}catch(e){}</script>
 
 
     <div id="toast-container" aria-live="polite"></div>
@@ -846,7 +1409,7 @@
     <header>
         <div class="logo-group">
             <div class="logo" onclick="navigateTo('hub')" title="خانه">
-                <span>⚡</span> ErfoNT pro <span style="font-size:10px; color:var(--accent-emerald); font-family:monospace;">v6.0.0</span>
+                <span>⚡</span> ErfoNT pro <span style="font-size:10px; color:var(--accent-emerald); font-family:monospace;">v9.0.0</span>
             </div>
             <span class="badge" id="company-badge-text">NODE: erfont1995</span>
             <button onclick="navigateTo('settings')" class="icon-btn" title="تنظیمات">⚙️</button>
@@ -887,10 +1450,10 @@
     </header>
 
     <div id="spx-telemetry" role="status" aria-label="Telemetry">
-        <span class="spx-led"></span><b id="spx-link">LINK NOMINAL</b>
-        <span class="sep"></span><span class="opt">NODE <b id="spx-node">—</b></span>
-        <span class="sep opt"></span><span>UTC <b id="spx-utc">00:00:00</b></span>
-        <span class="sep opt"></span><span class="opt">ROLE <b id="spx-role" dir="auto">—</b></span>
+        <span class="spx-led"></span><b id="spx-link">متصل</b>
+        <span class="sep"></span><span class="opt">گره <b id="spx-node">—</b></span>
+        <span class="sep opt"></span><span>ساعت UTC <b id="spx-utc">00:00:00</b></span>
+        <span class="sep opt"></span><span class="opt">نقش <b id="spx-role" dir="auto">—</b></span>
         <span class="push">MISSION CONTROL</span>
     </div>
 
@@ -1307,7 +1870,7 @@
     // ============================================
     // 🎯 CONSTANTS & CONFIG
     // ============================================
-    const APP_VERSION = '6.0.0';
+    const APP_VERSION = '9.0.0';
     const LOCAL_STORAGE_KEY = 'erfont_turbo_db_v30_persistent';
     const LOCAL_THEME_KEY = 'erfont_theme_v30';
     const LOCAL_LANG_KEY = 'erfont_lang_v30';
@@ -3686,7 +4249,7 @@
     }
 
     function initPWA() {
-        if ('serviceWorker' in navigator && location.protocol === 'https:') {
+        if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
             navigator.serviceWorker.register('sw.js').catch(e => console.warn('SW failed:', e));
         }
         window.addEventListener('beforeinstallprompt', e => {
@@ -4032,6 +4595,23 @@
         size(); start();
     })();
 
+
+    /* ---- 7.0: تم پیش‌فرض بر اساس تنظیم سیستم (یک‌بار) + هماهنگی رنگ نوار مرورگر ---- */
+    (function theme7() {
+        try {
+            if (!localStorage.getItem('spx_theme_v7')) {
+                localStorage.setItem('spx_theme_v7', '1');
+                var t = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                if (typeof LOCAL_THEME_KEY !== 'undefined') localStorage.setItem(LOCAL_THEME_KEY, t);
+                window.addEventListener('load', function () { try { setTheme(t); } catch (e) {} });
+            }
+            var meta = document.querySelector('meta[name="theme-color"]');
+            var paint = function () { try { var bg = getComputedStyle(document.body).getPropertyValue('--spx-hdr-bg').trim(); if (meta && bg) meta.setAttribute('content', bg); } catch (e) {} };
+            if (typeof setTheme === 'function') { var st = setTheme; setTheme = function () { var r = st.apply(this, arguments); paint(); return r; }; }
+            window.addEventListener('load', function () { setTimeout(paint, 100); });
+        } catch (e) {}
+    })();
+
     /* ---- Mission metrics (same rules the dashboard already uses) ---- */
     function metrics() {
         var d = (typeof db !== 'undefined' && db) ? db : {};
@@ -4044,6 +4624,7 @@
         try { for (var i = 0; i < 7; i++) { var k = dKey(now - i * 864e5); eqs.forEach(function (e) { var r = oeeCalc(e.name, k); if (r) { sum += r.O; c++; } }); } } catch (e) {}
         return { crit: crit, sla: sla, low: low, oee: c ? Math.round(sum / c * 100) : null };
     }
+    window.spxMetrics = metrics;
     function esc(s) { return String(s).replace(/[&<>"]/g, function (m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]; }); }
 
     /* ---- GO / NO-GO readiness poll, injected under the hero ---- */
@@ -4058,15 +4639,15 @@
             { n: 'عبور از ۲۴ ساعت (SLA)', e: 'SLA WINDOW', v: m.sla, st: m.sla === 0 ? 'go' : m.sla <= 3 ? 'hold' : 'nogo', to: 'workorders' },
             { n: 'موجودی قطعات یدکی', e: 'SPARES', v: m.low, st: m.low === 0 ? 'go' : m.low <= 3 ? 'hold' : 'nogo', to: 'inventory' },
             { n: 'OEE میانگین ۷ روز', e: 'OVERALL EQUIPMENT EFFECTIVENESS', v: m.oee == null ? '—' : m.oee + '%', st: m.oee == null ? 'na' : m.oee >= 85 ? 'go' : m.oee >= 60 ? 'hold' : 'nogo', to: 'oee' },
-            { n: 'ارتباط داده', e: 'DATA LINK', v: !online ? 'OFF' : localMode ? 'LOCAL' : 'ON', st: !online ? 'hold' : localMode ? 'na' : 'go', to: 'settings' }
+            { n: 'ارتباط داده', e: 'DATA LINK', v: !online ? 'قطع' : localMode ? 'محلی' : 'متصل', st: !online ? 'hold' : localMode ? 'na' : 'go', to: 'settings' }
         ];
-        var tok = { go: 'GO', hold: 'HOLD', nogo: 'NO-GO', na: 'N/A' };
+        var tok = { go: 'عادی', hold: 'هشدار', nogo: 'اقدام لازم', na: 'نامشخص' };
         var ng = rows.filter(function (r) { return r.st === 'nogo'; }).length, hd = rows.filter(function (r) { return r.st === 'hold'; }).length;
-        var verdict = ng ? ['nogo', 'NO-GO', ng + ' مورد نیازمند اقدام'] : hd ? ['hold', 'HOLD', hd + ' مورد نیازمند توجه'] : ['go', 'ALL SYSTEMS GO', 'همه سامانه‌ها آماده'];
+        var verdict = ng ? ['nogo', 'اقدام لازم', ng + ' مورد نیازمند اقدام'] : hd ? ['hold', 'نیازمند توجه', hd + ' مورد نیازمند توجه'] : ['go', 'همه‌چیز عادی', 'همه شاخص‌ها در محدوده‌ی مطلوب است'];
         var el = Math.floor((Date.now() - T0) / 1000);
         var html = '<div class="spx-board" id="spx-board">' +
             '<div><div class="spx-met-l">زمان نشست کاری</div>' +
-            '<div class="spx-met-v"><bdi dir="ltr" id="spx-met">T+ ' + pad(Math.floor(el / 3600)) + ':' + pad(Math.floor(el % 3600 / 60)) + ':' + pad(el % 60) + '</bdi></div>' +
+            '<div class="spx-met-v"><bdi dir="ltr" id="spx-met">' + pad(Math.floor(el / 3600)) + ':' + pad(Math.floor(el % 3600 / 60)) + ':' + pad(el % 60) + '</bdi></div>' +
             '<div class="spx-met-s"><bdi dir="ltr">UTC <b id="spx-utc2">' + new Date().toISOString().slice(11, 19) + '</b></bdi></div></div>' +
             '<div><div class="spx-poll-head"><b>نظرسنجی آمادگی عملیات</b><span class="spx-verdict ' + verdict[0] + '">' + verdict[1] + '</span></div>' +
             rows.map(function (r) {
@@ -4086,12 +4667,12 @@
     function tick() {
         var now = new Date(), utc = now.toISOString().slice(11, 19);
         var a = $('spx-utc'), b = $('spx-utc2'); if (a) a.textContent = utc; if (b) b.textContent = utc;
-        var m = $('spx-met'); if (m) { var s = Math.floor((now - T0) / 1000); m.textContent = 'T+ ' + pad(Math.floor(s / 3600)) + ':' + pad(Math.floor(s % 3600 / 60)) + ':' + pad(s % 60); }
+        var m = $('spx-met'); if (m) { var s = Math.floor((now - T0) / 1000); m.textContent = pad(Math.floor(s / 3600)) + ':' + pad(Math.floor(s % 3600 / 60)) + ':' + pad(s % 60); }
         var strip = $('spx-telemetry'), link = $('spx-link');
         if (strip && link) {
             var sb = $('sync-status'), off = navigator.onLine === false || (sb && sb.classList.contains('offline')), syn = sb && sb.classList.contains('syncing');
             strip.classList.toggle('offline', !!off); strip.classList.toggle('syncing', !off && !!syn);
-            link.textContent = off ? 'LINK OFFLINE' : syn ? 'LINK SYNCING' : 'LINK NOMINAL';
+            link.textContent = off ? 'آفلاین' : syn ? 'در حال همگام‌سازی' : 'متصل';
         }
         var nd = $('company-badge-text'), n2 = $('spx-node');
         if (nd && n2) { var t = nd.textContent.replace(/^\s*NODE:\s*/i, '').trim(); if (n2.textContent !== t) n2.textContent = t || '—'; }
@@ -4192,8 +4773,11 @@
             document.body.appendChild(l); l.click(); l.remove(); setTimeout(function () { URL.revokeObjectURL(u); }, 1500);
             showToast('فایل CSV آماده شد.', 'success');
         };
+        try { window.spxCCAfter && window.spxCCAfter(a); } catch (e) { console.warn('cc+', e); }
     }
 
+    window.spxCCRender = render;
+    window.spxBrief = function () { return brief(analyze()); };
     /* mount: tab, nav button, module card, dashboard shortcut */
     var main = document.querySelector('main.workspace');
     if (main && !$('tab-command')) { var t = document.createElement('div'); t.id = 'tab-command'; t.className = 'tab-content'; main.appendChild(t); }
@@ -4217,6 +4801,405 @@
         try { var q = document.querySelector('#cm-dash .cm-qa'); if (q && !q.querySelector('[data-cc]')) q.insertAdjacentHTML('afterbegin', '<button class="qa" data-cc="1" onclick="navigateTo(\'command\')">🛰️ فرماندهی</button>'); } catch (e) {}
         return r;
     };
+})();
+</script>
+
+<script id="spx-details">
+/* ErfoNT 6.0 — جزئیات اپلیکیشنی: دسترس‌پذیری، میان‌بر، نسخه‌ی آفلاین، به‌روزرسانی. */
+(function () {
+    'use strict';
+    var $ = function (id) { return document.getElementById(id); };
+    var toast = function (m, t) { try { showToast(m, t || 'info'); } catch (e) {} };
+
+    /* skip link + landmark */
+    var main = document.querySelector('main.workspace');
+    if (main) { if (!main.id) main.id = 'spx-main'; main.setAttribute('tabindex', '-1'); }
+    document.body.insertAdjacentHTML('afterbegin', '<a class="spx-skip" href="#' + (main ? main.id : '') + '">پرش به محتوای اصلی</a>');
+
+    /* نام قابل‌دسترس برای دکمه‌های بدون متن + وضعیت صفحه‌ی فعال + دیالوگ‌ها */
+    function a11y() {
+        document.querySelectorAll('button:not([aria-label]),[role=button]:not([aria-label])').forEach(function (b) {
+            var txt = (b.textContent || '').replace(/[\s\u200c]/g, '');
+            if (txt.length < 2 || !/[A-Za-z\u0600-\u06FF]/.test(txt)) { var l = b.getAttribute('title') || b.getAttribute('data-tip'); if (l) b.setAttribute('aria-label', l); }
+        });
+        document.querySelectorAll('.modal:not([role])').forEach(function (m) { m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); });
+        document.querySelectorAll('.igbar button').forEach(function (b) { b.classList.contains('on') ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current'); });
+    }
+    a11y();
+    var mo = new MutationObserver(function () { clearTimeout(mo.t); mo.t = setTimeout(a11y, 250); });
+    mo.observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['class'] });
+
+    /* مدیریت فوکوس دیالوگ‌ها: ورود به اولین فیلد، بازگشت فوکوس هنگام بسته‌شدن */
+    var lastFocus = null;
+    new MutationObserver(function (list) {
+        list.forEach(function (r) {
+            var m = r.target; if (!m.classList || !m.classList.contains('modal')) return;
+            if (m.classList.contains('active')) {
+                if (!lastFocus) lastFocus = document.activeElement;
+                setTimeout(function () { var f = m.querySelector('input:not([type=hidden]):not([disabled]),select,textarea'); if (f && matchMedia('(hover:hover)').matches) f.focus(); }, 80);
+            } else if (lastFocus && !document.querySelector('.modal.active')) { try { lastFocus.focus(); } catch (e) {} lastFocus = null; }
+        });
+    }).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class'] });
+
+    /* Esc: بستن دیالوگ باز */
+    document.addEventListener('keydown', function (e) {
+        if (e.key !== 'Escape') return;
+        var h = $('spx-help'); if (h && h.classList.contains('on')) { h.classList.remove('on'); return; }
+        var m = document.querySelector('.modal.active'); if (m && m.id && typeof closeModal === 'function') closeModal(m.id);
+    });
+
+    /* عنوان تب مرورگر = صفحه‌ی جاری */
+    try {
+        var prevNav = navigateTo;
+        navigateTo = function (id) {
+            prevNav.apply(this, arguments);
+            var t = $('current-page-title'); var name = t && t.textContent.trim();
+            document.title = (name ? name + ' · ' : '') + 'ErfoNT pro';
+        };
+    } catch (e) {}
+
+    /* میان‌برهای صفحه‌کلید: g سپس d/w/e/i/c ، و ؟ برای راهنما */
+    document.body.insertAdjacentHTML('beforeend', '<div id="spx-help" role="dialog" aria-modal="true" aria-label="میان‌برها"><div class="box"><h3>میان‌برهای صفحه‌کلید</h3><dl>' +
+        '<dt><kbd>Ctrl</kbd><kbd>K</kbd></dt><dd>جستجو و فرمان سریع</dd><dt><kbd>G</kbd> <kbd>D</kbd></dt><dd>داشبورد</dd><dt><kbd>G</kbd> <kbd>W</kbd></dt><dd>دستورکارها</dd>' +
+        '<dt><kbd>G</kbd> <kbd>E</kbd></dt><dd>تجهیزات</dd><dt><kbd>G</kbd> <kbd>I</kbd></dt><dd>انبار</dd><dt><kbd>G</kbd> <kbd>C</kbd></dt><dd>مرکز فرماندهی</dd>' +
+        '<dt><kbd>Esc</kbd></dt><dd>بستن پنجره</dd><dt><kbd>?</kbd></dt><dd>این راهنما</dd></dl><p>برای بستن، Esc یا لمس بیرون از کادر.</p></div></div>');
+    $('spx-help').addEventListener('click', function (e) { if (e.target === this) this.classList.remove('on'); });
+    var map = { d: 'hub', w: 'workorders', e: 'equipment', i: 'inventory', c: 'command' }, armed = 0;
+    document.addEventListener('keydown', function (e) {
+        var el = e.target, typing = el && (/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName) || el.isContentEditable);
+        if (typing || e.ctrlKey || e.metaKey || e.altKey || document.querySelector('.modal.active')) return;
+        var ls = $('login-screen'); if (ls && getComputedStyle(ls).display !== 'none') return;
+        var k = e.key.toLowerCase();
+        if (k === '?' || e.key === '؟') { $('spx-help').classList.toggle('on'); return; }
+        if (k === 'g') { armed = Date.now(); return; }
+        if (armed && Date.now() - armed < 1200 && map[k]) { armed = 0; try { navigateTo(map[k]); } catch (x) {} }
+    });
+
+    /* وضعیت شبکه */
+    window.addEventListener('offline', function () { toast('اتصال قطع شد؛ برنامه در حالت آفلاین کار می‌کند.', 'warning'); });
+    window.addEventListener('online', function () { toast('اتصال برقرار شد.', 'success'); });
+
+    /* نسخه‌ی جدید برنامه (Service Worker) */
+    if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', function (e) {
+        if (e.data && e.data.type === 'SW_UPDATED') toast('نسخه‌ی جدید برنامه نصب شد؛ با باز کردن دوباره‌ی برنامه اعمال می‌شود.', 'info');
+    });
+
+    /* میان‌بر نصب‌شده: ?go=command */
+    var go = new URLSearchParams(location.search).get('go');
+    if (go && /^[a-z]+$/.test(go)) {
+        var tries = 0, iv = setInterval(function () {
+            var ls = $('login-screen'), hidden = !ls || getComputedStyle(ls).display === 'none';
+            if (hidden && $('tab-' + go)) { clearInterval(iv); try { navigateTo(go); } catch (e) {} }
+            else if (++tries > 120) clearInterval(iv);
+        }, 500);
+    }
+})();
+</script>
+
+<script id="spx-order">
+/* ErfoNT 6.0 — نظم برنامه + «میز کار» (۲۰+ قابلیت کاربردی). داده‌های اصلی برنامه را تغییر نمی‌دهد. */
+(function () {
+    'use strict';
+    var $ = function (id) { return document.getElementById(id); };
+    var LS = function (k, d) { try { var v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } };
+    var SV = function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+    var toast = function (m, t) { try { showToast(m, t || 'info'); } catch (e) {} };
+    var esc = function (s) { return typeof escapeHtml === 'function' ? escapeHtml(String(s == null ? '' : s)) : String(s).replace(/[&<>"]/g, ''); };
+    var fa = function (n) { return Number(n).toLocaleString('en'); };
+    var pad = function (n) { return String(n).padStart(2, '0'); };
+    var ts = function (x) { var n = Number(x); if (isFinite(n) && n > 1e11) return n; var t = new Date(x).getTime(); return isFinite(t) ? t : 0; };
+    var P = Object.assign({ compact: false, fs: 1, focus: false, lock: 0, wake: false }, LS('spx_prefs', {}));
+    var save = function () { SV('spx_prefs', P); };
+
+    /* ---------- ترجیحات: تراکم، اندازه‌ی متن، حالت تمرکز ---------- */
+    function applyPrefs() {
+        var b = document.body;
+        b.classList.toggle('spx-compact', !!P.compact); b.classList.toggle('spx-focus', !!P.focus);
+        b.style.setProperty('--spx-fs', P.fs);
+    }
+    applyPrefs();
+
+    /* ---------- منوی ⋯ در هدر ---------- */
+    var hc = document.querySelector('.header-controls');
+    if (hc) {
+        var moved = ['refresh-btn', 'lang-btn', 'btn-undo-head', 'sync-status'].map($).filter(Boolean);
+        var dots = document.querySelector('.theme-dots');
+        var more = document.createElement('div'); more.id = 'spx-more'; more.hidden = true;
+        more.innerHTML = '<h4>ابزارهای سریع</h4><div class="mrow" id="mm-moved"></div><h4>نمایش</h4><div class="mgrid">' +
+            '<button data-a="compact"></button><button data-a="focus">حالت تمرکز</button><button data-a="fsm">A− کوچک‌تر</button><button data-a="fsp">A+ بزرگ‌تر</button>' +
+            '<button data-a="wake">روشن ماندن صفحه</button><button data-a="wall">نمایشگر دیواری</button></div><h4>داده و امنیت</h4><div class="mgrid">' +
+            '<button data-a="backup">پشتیبان JSON</button><button data-a="bench">میز کار</button><button data-a="reset">بازنشانی ظاهر</button><button data-a="help">میان‌برها</button></div>' +
+            '<h4>قفل خودکار بعد از بی‌کاری</h4><select id="mm-lock" class="form-control"><option value="0">غیرفعال</option><option value="5">۵ دقیقه</option><option value="15">۱۵ دقیقه</option><option value="30">۳۰ دقیقه</option></select>';
+        document.body.appendChild(more);
+        var row = $('mm-moved'); moved.forEach(function (n) { row.appendChild(n); }); if (dots) row.appendChild(dots);
+        var btn = document.createElement('button'); btn.className = 'icon-btn'; btn.id = 'spx-more-btn'; btn.title = 'منوی بیشتر'; btn.setAttribute('aria-label', 'منوی بیشتر'); btn.setAttribute('aria-expanded', 'false'); btn.textContent = '⋯';
+        var role = $('current-role-badge'); hc.insertBefore(btn, role || null);
+        btn.onclick = function (e) { e.stopPropagation(); more.hidden = !more.hidden; btn.setAttribute('aria-expanded', String(!more.hidden)); if (!more.hidden) { var top = Math.round(btn.getBoundingClientRect().bottom + 8); more.style.top = top + 'px'; more.style.maxHeight = 'calc(100vh - ' + (top + 16) + 'px)'; } sync(); };
+        document.addEventListener('click', function (e) { if (!more.hidden && !more.contains(e.target) && e.target !== btn) { more.hidden = true; btn.setAttribute('aria-expanded', 'false'); } });
+        $('mm-lock').value = String(P.lock); $('mm-lock').onchange = function () { P.lock = Number(this.value); save(); idle(); toast(P.lock ? 'قفل خودکار فعال شد.' : 'قفل خودکار غیرفعال شد.'); };
+        var wl = null;
+        function sync() {
+            var q = function (a) { return more.querySelector('[data-a="' + a + '"]'); };
+            q('compact').textContent = P.compact ? 'تراکم: فشرده' : 'تراکم: راحت'; q('compact').classList.toggle('on', P.compact);
+            q('focus').classList.toggle('on', P.focus); q('wake').classList.toggle('on', !!wl); q('wall').classList.toggle('on', document.body.classList.contains('spx-wall'));
+        }
+        more.addEventListener('click', function (e) {
+            var b = e.target.closest('button[data-a]'); if (!b) return; var a = b.dataset.a;
+            if (a === 'compact') P.compact = !P.compact; else if (a === 'focus') P.focus = !P.focus;
+            else if (a === 'fsm') P.fs = Math.max(.85, +(P.fs - .05).toFixed(2)); else if (a === 'fsp') P.fs = Math.min(1.25, +(P.fs + .05).toFixed(2));
+            else if (a === 'wake') {
+                if (wl) { wl.release(); wl = null; toast('حالت روشن‌ماندن خاموش شد.'); }
+                else if (navigator.wakeLock) navigator.wakeLock.request('screen').then(function (l) { wl = l; l.addEventListener('release', function () { wl = null; sync(); }); toast('صفحه روشن می‌ماند.', 'success'); sync(); }, function () { toast('مرورگر اجازه نداد.', 'warning'); });
+                else toast('این مرورگر پشتیبانی نمی‌کند.', 'warning');
+            } else if (a === 'wall') wall(true);
+            else if (a === 'backup') backup(); else if (a === 'bench') { more.hidden = true; navigateTo('bench'); } else if (a === 'help') { more.hidden = true; var h = $('spx-help'); if (h) h.classList.add('on'); }
+            else if (a === 'reset') { Object.keys(localStorage).filter(function (k) { return k.indexOf('spx_') === 0; }).forEach(function (k) { localStorage.removeItem(k); }); location.reload(); return; }
+            save(); applyPrefs(); sync();
+        });
+    }
+
+    /* ---------- نمایشگر دیواری (تمام‌صفحه + تازه‌سازی خودکار) ---------- */
+    var wallTimer = 0;
+    function wall(on) {
+        var b = document.body;
+        if (on) { b.classList.add('spx-wall'); try { navigateTo('hub'); document.documentElement.requestFullscreen && document.documentElement.requestFullscreen(); } catch (e) {}
+            wallTimer = setInterval(function () { try { renderDashboard(); } catch (e) {} }, 30000); toast('برای خروج Esc را بزنید.'); if ($('spx-more')) $('spx-more').hidden = true; }
+        else { b.classList.remove('spx-wall'); clearInterval(wallTimer); }
+    }
+    document.addEventListener('fullscreenchange', function () { if (!document.fullscreenElement && document.body.classList.contains('spx-wall')) wall(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && document.body.classList.contains('spx-wall')) wall(false); });
+
+    /* ---------- پشتیبان JSON ---------- */
+    function backup() {
+        try {
+            var blob = new Blob([JSON.stringify({ app: 'ErfoNT pro', version: '9.0.0', exportedAt: new Date().toISOString(), data: db }, null, 1)], { type: 'application/json' });
+            var u = URL.createObjectURL(blob), a = document.createElement('a'); a.href = u; a.download = 'erfont-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+            document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(u); }, 1500); toast('فایل پشتیبان آماده شد.', 'success');
+        } catch (e) { toast('تهیه‌ی پشتیبان ناموفق بود.', 'error'); }
+    }
+
+    /* ---------- قفل خودکار ---------- */
+    var idleT = 0;
+    function idle() {
+        clearTimeout(idleT); if (!P.lock) return;
+        idleT = setTimeout(function () { try { if (currentRole) { logoutApp(); toast('به‌دلیل بی‌کاری خارج شدید.', 'info'); } } catch (e) {} }, P.lock * 60000);
+    }
+    ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(function (ev) { document.addEventListener(ev, idle, { passive: true }); }); idle();
+
+    /* ---------- نوار دسترسی سریع: سنجاق‌ها + اخیراً دیده‌شده ---------- */
+    var quick = document.createElement('div'); quick.id = 'spx-quick'; var strip = $('spx-telemetry'); if (strip) strip.after(quick);
+    var titles = { workorders: 'دستورکار', equipment: 'تجهیزات', inventory: 'انبار', command: 'مرکز فرماندهی', bench: 'میز کار', oee: 'OEE', settings: 'تنظیمات' };
+    function quickRender() {
+        var pins = LS('spx_pins', []), rec = LS('spx_recent', []).filter(function (r) { return pins.indexOf(r.id) < 0; });
+        var cur = (document.querySelector('.tab-content.active') || {}).id; cur = cur && cur.replace('tab-', '');
+        quick.innerHTML = pins.map(function (id) { return '<button class="pin" data-g="' + esc(id) + '">' + esc(titles[id] || id) + '</button>'; }).join('') +
+            rec.filter(function (r) { return r.id !== cur; }).slice(0, 4).map(function (r) { return '<button class="rec" data-g="' + esc(r.id) + '">' + esc(r.t) + '</button>'; }).join('');
+    }
+    quick.addEventListener('click', function (e) { var b = e.target.closest('button[data-g]'); if (b) navigateTo(b.dataset.g); });
+    function track(id) {
+        if (id === 'hub' || id === 'login') return; var t = ($('current-page-title') || {}).textContent; t = (t || titles[id] || id).trim(); titles[id] = titles[id] || t;
+        var r = LS('spx_recent', []).filter(function (x) { return x.id !== id; }); r.unshift({ id: id, t: t }); SV('spx_recent', r.slice(0, 8)); quickRender();
+    }
+
+    /* ---------- گروه‌بندی ماژول‌ها + ستاره‌ی سنجاق ---------- */
+    function group() {
+        var grid = document.querySelector('#tab-hub .menu-hub-grid'); if (!grid || grid.dataset.g) return; grid.dataset.g = 1;
+        var cards = Array.prototype.slice.call(grid.querySelectorAll(':scope > .hub-card')); if (!cards.length) return;
+        var G = [['عملیات', ['workorders', 'pm', 'daily', 'scanner']], ['تجهیزات و انبار', ['equipment', 'inventory', 'toolbox']], ['تحلیل و کنترل', ['command', 'oee', 'kpi', 'ai']]], buckets = G.map(function () { return []; }), rest = [];
+        cards.forEach(function (c) {
+            var mm = /navigateTo\('([^']+)'\)/.exec(c.getAttribute('onclick') || ''), i = G.findIndex(function (g) { return mm && g[1].indexOf(mm[1]) >= 0; });
+            (i < 0 ? rest : buckets[i]).push(c);
+            var m = /navigateTo\('([^']+)'\)/.exec(c.getAttribute('onclick') || ''); if (m) {
+                var st = document.createElement('span'); st.className = 'spx-star'; st.setAttribute('role', 'button'); st.setAttribute('aria-label', 'سنجاق به دسترسی سریع'); st.textContent = '★';
+                var pinned = function () { return LS('spx_pins', []).indexOf(m[1]) >= 0; }; st.classList.toggle('on', pinned());
+                st.onclick = function (e) { e.stopPropagation(); var p = LS('spx_pins', []), k = p.indexOf(m[1]); if (k < 0) p.push(m[1]); else p.splice(k, 1); SV('spx_pins', p); titles[m[1]] = titles[m[1]] || (c.querySelector('.hub-title') || {}).textContent; st.classList.toggle('on', pinned()); quickRender(); };
+                c.appendChild(st);
+            }
+        });
+        var frag = document.createDocumentFragment(); buckets.concat([rest]).forEach(function (list, i) {
+            if (!list.length) return; var h = document.createElement('div'); h.className = 'spx-grp'; h.textContent = (G[i] || ['ابزار و سیستم'])[0]; frag.appendChild(h);
+            var g2 = grid.cloneNode(false); g2.dataset.g = 1; list.forEach(function (c) { g2.appendChild(c); }); frag.appendChild(g2);
+        });
+        grid.replaceWith(frag);
+    }
+
+    /* ---------- بخش‌های قابل‌جمع‌شدن در داشبورد (با حافظه) ---------- */
+    function fold() {
+        var root = $('cm-dash'); if (!root) return; var state = LS('spx_fold', {});
+        root.querySelectorAll('.cm-sec').forEach(function (sec, i) {
+            var key = (sec.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 24) || ('s' + i), items = [];
+            for (var n = sec.nextElementSibling; n && !n.classList.contains('cm-sec'); n = n.nextElementSibling) items.push(n);
+            var open = key in state ? state[key] : (i < 2 || /ماژول/.test(key));
+            var apply = function () { items.forEach(function (x) { x.hidden = !open; }); sec.classList.toggle('closed', !open); sec.setAttribute('aria-expanded', String(open)); };
+            sec.setAttribute('role', 'button'); sec.tabIndex = 0; apply();
+            var tg = function (e) { if (e.target.closest && e.target.closest('a')) return; open = !open; state[key] = open; SV('spx_fold', state); apply(); };
+            sec.addEventListener('click', tg); sec.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tg(e); } });
+        });
+    }
+    if (typeof renderDashboard === 'function') { var rd0 = renderDashboard; renderDashboard = function () { var r = rd0.apply(this, arguments); try { fold(); group(); } catch (e) { console.warn(e); } return r; }; }
+
+    /* ---------- نشانگر شیفت در نوار تله‌متری ---------- */
+    function shift() { var h = new Date().getHours(); return h >= 6 && h < 14 ? 'صبح · A' : h >= 14 && h < 22 ? 'عصر · B' : 'شب · C'; }
+    if (strip) { var pu = strip.querySelector('.push'); pu && pu.insertAdjacentHTML('beforebegin', '<span class="sep opt"></span><span class="opt">شیفت <b id="spx-shift" dir="auto">' + shift() + '</b></span>'); setInterval(function () { var s = $('spx-shift'); if (s) s.textContent = shift(); }, 60000); }
+
+    /* ---------- میز کار ---------- */
+    var main = document.querySelector('main.workspace');
+    if (main && !$('tab-bench')) { var tb = document.createElement('div'); tb.id = 'tab-bench'; tb.className = 'tab-content'; main.appendChild(tb); }
+    var UN = { 'فشار': { bar: 1, psi: .0689476, kPa: .01, MPa: 10 }, 'توان': { kW: 1, HP: .7457, W: .001 }, 'دبی': { 'm³/h': 1, 'L/s': 3.6, 'L/min': .06 }, 'طول': { mm: .001, cm: .01, m: 1, in: .0254 }, 'جرم': { kg: 1, lb: .45359237, g: .001 }, 'دما': { '°C': 1, '°F': 1, K: 1 } };
+    function conv(cat, v, from) {
+        var out = {}; if (cat === 'دما') { var c = from === '°F' ? (v - 32) * 5 / 9 : from === 'K' ? v - 273.15 : v; out = { '°C': c, '°F': c * 9 / 5 + 32, K: c + 273.15 }; }
+        else { var base = v * UN[cat][from]; Object.keys(UN[cat]).forEach(function (u) { out[u] = base / UN[cat][u]; }); } return out;
+    }
+    var sw = LS('spx_sw', { run: false, start: 0, acc: 0, laps: [] }), swT = 0;
+    function swMs() { return sw.acc + (sw.run ? Date.now() - sw.start : 0); }
+    function swFmt(ms) { var s = Math.floor(ms / 1000); return pad(Math.floor(s / 3600)) + ':' + pad(Math.floor(s % 3600 / 60)) + ':' + pad(s % 60); }
+    var ROUND = ['بازدید روغن و گریس تجهیزات حیاتی', 'کنترل فشار و دمای کمپرسورها', 'بازدید نشتی خطوط هوا و آب', 'کنترل تابلوهای برق (دما و صدا)', 'نظم و پاکسازی اطراف تجهیزات', 'ثبت قرائت‌های روزانه'];
+    function round() { var d = new Date().toISOString().slice(0, 10), r = LS('spx_round', null); if (!r || !r.items) r = { d: d, items: ROUND.map(function (t) { return { t: t, done: false }; }) }; if (r.d !== d) { r.d = d; r.items.forEach(function (i) { i.done = false; }); SV('spx_round', r); } return r; }
+
+    function bench() {
+        var el = $('tab-bench'); if (!el) return; var d = db || {}, wos = d.workOrders || [], eqs = d.equipment || [], inv = d.inventory || [], now = Date.now();
+        var rank = { 'بحرانی': 0, 'فوری': 1 }, tasks = wos.filter(function (w) { return !w.completed; }).sort(function (a, b) { var x = (rank[a.priority] != null ? rank[a.priority] : 2) - (rank[b.priority] != null ? rank[b.priority] : 2); return x || ts(a.startTimestamp || a.createdAt) - ts(b.startTimestamp || b.createdAt); }).slice(0, 6);
+        var days = [0, 0, 0, 0, 0, 0, 0]; wos.forEach(function (w) { var a = Math.floor((now - ts(w.createdAt)) / 864e5); if (ts(w.createdAt) && a >= 0 && a < 7) days[6 - a]++; });
+        var mx = Math.max(1, Math.max.apply(null, days)), spark = '<svg viewBox="0 0 210 64" width="100%" height="70" role="img" aria-label="روند ۷ روزه">' + days.map(function (n, i) { var h = Math.round(n / mx * 44); return '<rect x="' + (i * 30 + 4) + '" y="' + (50 - h) + '" width="22" height="' + Math.max(h, 1) + '" fill="currentColor" opacity="' + (i === 6 ? 1 : .45) + '"/><text x="' + (i * 30 + 15) + '" y="62" font-size="8" text-anchor="middle" fill="currentColor" opacity=".6">' + n + '</text>'; }).join('') + '</svg>';
+        var names = {}; eqs.forEach(function (e) { names[e.name] = 1; });
+        var chk = [['دستورکار بدون تجهیز', wos.filter(function (w) { return !w.equipment; }).length], ['دستورکار با تجهیز ثبت‌نشده', wos.filter(function (w) { return w.equipment && !names[w.equipment]; }).length], ['نام تجهیز تکراری', eqs.length - new Set(eqs.map(function (e) { return e.name; })).size], ['موجودی منفی', inv.filter(function (i) { return Number(i.qty) < 0; }).length], ['قطعه بدون حداقل موجودی', inv.filter(function (i) { return i.min === undefined || i.min === '' || isNaN(Number(i.min)); }).length]];
+        var bad = chk.filter(function (c) { return c[1]; }).length, bytes = 0; try { Object.keys(localStorage).forEach(function (k) { bytes += (k.length + (localStorage.getItem(k) || '').length) * 2; }); } catch (e) {}
+        var pct = Math.min(100, Math.round(bytes / 5242880 * 100)), r = round(), hist = LS('spx_hand', []);
+        var panel = function (t, e, b) { return '<div class="cc-p"><h3>' + t + '<em>' + e + '</em></h3><div class="cc-b">' + b + '</div></div>'; };
+        el.innerHTML = '<div class="cc-head"><div><h2>میز کار</h2><small>ابزارهای روزمره‌ی شیفت؛ شیفت فعلی: <b>' + shift() + '</b></small></div></div><div class="wb-grid"><div>' +
+            panel('کارهای امروز من', 'TODAY', tasks.length ? tasks.map(function (w) { return '<div class="cc-rk" style="cursor:pointer" onclick="navigateTo(\'workorders\')"><span class="n">' + esc(w.title || w.description || w.desc || w.type || 'دستورکار') + ' <small style="color:var(--cm-mute)">' + esc(w.equipment || '') + '</small></span><span class="s">' + esc(w.priority || '') + '</span></div>'; }).join('') : '<p class="cc-empty">دستورکار بازی نیست.</p>') +
+            panel('چک‌لیست راند روزانه', 'ROUND', r.items.map(function (it, i) { return '<div class="wb-li' + (it.done ? ' done' : '') + '"><input type="checkbox" data-r="' + i + '"' + (it.done ? ' checked' : '') + ' aria-label="' + esc(it.t) + '"><span>' + esc(it.t) + '</span><button data-rd="' + i + '" aria-label="حذف">×</button></div>'; }).join('') + '<div class="wb-row" style="margin-top:10px"><input class="form-control" id="wb-ri" placeholder="مورد جدید..."><button class="qa" id="wb-ra">افزودن</button></div>') +
+            panel('یادداشت سریع شیفت', 'NOTES', '<textarea class="form-control wb-ta" id="wb-note" placeholder="یادداشت‌ها خودکار ذخیره می‌شوند...">' + esc(LS('spx_note', '')) + '</textarea>') +
+            panel('کرنومتر کار', 'TIMER', '<div class="wb-big" id="wb-sw">' + swFmt(swMs()) + '</div><div class="wb-row"><button class="qa gold" id="wb-s1">' + (sw.run ? 'توقف' : 'شروع') + '</button><button class="qa" id="wb-s2">دور</button><button class="qa" id="wb-s3">صفر</button></div><div id="wb-laps" style="font-size:12px;color:var(--cm-mute)">' + sw.laps.map(function (l, i) { return '<div>#' + (i + 1) + ' ' + l + '</div>'; }).join('') + '</div>') +
+            '</div><div>' +
+            panel('گزارش تحویل شیفت', 'HANDOVER', '<div class="wb-row"><button class="qa gold" id="wb-hs">ذخیره‌ی گزارش فعلی</button><button class="qa" id="wb-sh">اشتراک‌گذاری</button></div>' + (hist.length ? hist.slice(0, 5).map(function (h, i) { return '<div class="wb-hist" data-h="' + i + '">' + esc(h.t) + ' — لمس برای کپی</div>'; }).join('') : '<p class="cc-empty">هنوز گزارشی ذخیره نشده است.</p>')) +
+            panel('مبدل واحد', 'UNITS', '<div class="wb-row"><select class="form-control" id="wb-cat">' + Object.keys(UN).map(function (k) { return '<option>' + k + '</option>'; }).join('') + '</select><input class="form-control" id="wb-v" type="number" step="any" value="1" style="direction:ltr"><select class="form-control" id="wb-u"></select></div><div class="wb-res" id="wb-out"></div>') +
+            panel('یافتن تجهیز', 'FIND', '<input class="form-control" id="wb-q" placeholder="نام تجهیز..." style="margin-bottom:8px"><div id="wb-qr"></div>') +
+            panel('روند دستورکارهای ۷ روز اخیر', 'TREND', spark) +
+            panel('سلامت داده', 'HEALTH', chk.map(function (c) { return '<div class="wb-chk"><span>' + c[0] + '</span><b class="' + (c[1] ? 'bad' : 'ok') + '">' + (c[1] ? fa(c[1]) : 'OK') + '</b></div>'; }).join('') + '<p class="cc-empty">' + (bad ? bad + ' مورد نیازمند بررسی است.' : 'داده‌ها سالم هستند.') + '</p>') +
+            panel('فضای ذخیره‌سازی و پشتیبان', 'DATA', '<div style="font-size:12.5px">' + fa(Math.round(bytes / 1024)) + ' کیلوبایت از ۵ مگابایت (' + pct + '٪)</div><div class="wb-meter"><i style="width:' + Math.max(pct, 2) + '%;background:' + (pct > 80 ? 'var(--cm-red)' : pct > 50 ? 'var(--cm-amber)' : 'var(--cm-green)') + '"></i></div><button class="qa" id="wb-bk">دانلود پشتیبان JSON</button>') +
+            '</div></div>';
+        wire(eqs);
+    }
+    function wire(eqs) {
+        var el = $('tab-bench'), q = function (s) { return el.querySelector(s); };
+        el.onchange = function (e) { var i = e.target.dataset && e.target.dataset.r; if (i != null) { var r = round(); r.items[i].done = e.target.checked; SV('spx_round', r); e.target.closest('.wb-li').classList.toggle('done', e.target.checked); } };
+        el.onclick = function (e) { var b = e.target.closest('[data-rd]'); if (!b) return; var r = round(); r.items.splice(b.dataset.rd, 1); SV('spx_round', r); bench(); };
+        q('#wb-ra').onclick = function () { var v = q('#wb-ri').value.trim(); if (!v) return; var r = round(); r.items.push({ t: v, done: false }); SV('spx_round', r); bench(); };
+        q('#wb-note').oninput = function () { SV('spx_note', this.value); };
+        var tick = function () { var s = $('wb-sw'); if (!s) { clearInterval(swT); return; } s.textContent = swFmt(swMs()); }; clearInterval(swT); swT = setInterval(tick, 500);
+        q('#wb-s1').onclick = function () { if (sw.run) { sw.acc += Date.now() - sw.start; sw.run = false; } else { sw.start = Date.now(); sw.run = true; } SV('spx_sw', sw); this.textContent = sw.run ? 'توقف' : 'شروع'; };
+        q('#wb-s2').onclick = function () { sw.laps.unshift(swFmt(swMs())); sw.laps = sw.laps.slice(0, 8); SV('spx_sw', sw); bench(); };
+        q('#wb-s3').onclick = function () { sw = { run: false, start: 0, acc: 0, laps: [] }; SV('spx_sw', sw); bench(); };
+        q('#wb-hs').onclick = function () { var h = LS('spx_hand', []); h.unshift({ t: new Date().toLocaleString('fa-IR'), x: window.spxBrief ? window.spxBrief() : '' }); SV('spx_hand', h.slice(0, 10)); toast('ذخیره شد.', 'success'); bench(); };
+        q('#wb-sh').onclick = function () { var t = window.spxBrief ? window.spxBrief() : ''; if (navigator.share) navigator.share({ title: 'تحویل شیفت', text: t }).catch(function () {}); else if (navigator.clipboard) navigator.clipboard.writeText(t).then(function () { toast('کپی شد.', 'success'); }); };
+        el.querySelectorAll('[data-h]').forEach(function (h) { h.onclick = function () { var x = LS('spx_hand', [])[h.dataset.h]; if (x && navigator.clipboard) navigator.clipboard.writeText(x.x).then(function () { toast('کپی شد.', 'success'); }); }; });
+        var cat = q('#wb-cat'), unit = q('#wb-u'), val = q('#wb-v'), out = q('#wb-out');
+        var fill = function () { unit.innerHTML = Object.keys(UN[cat.value]).map(function (u) { return '<option>' + u + '</option>'; }).join(''); calc(); };
+        var calc = function () { var v = parseFloat(val.value); if (isNaN(v)) { out.innerHTML = ''; return; } var o = conv(cat.value, v, unit.value); out.innerHTML = Object.keys(o).filter(function (u) { return u !== unit.value; }).map(function (u) { return '<div>' + (Math.round(o[u] * 1e4) / 1e4) + '<small>' + u + '</small></div>'; }).join(''); };
+        cat.onchange = fill; unit.onchange = calc; val.oninput = calc; fill();
+        q('#wb-q').oninput = function () { var s = this.value.trim().toLowerCase(), open = {}; ((db || {}).workOrders || []).forEach(function (w) { if (!w.completed) open[w.equipment] = (open[w.equipment] || 0) + 1; });
+            q('#wb-qr').innerHTML = s ? eqs.filter(function (e) { return String(e.name).toLowerCase().indexOf(s) >= 0; }).slice(0, 8).map(function (e) { return '<div class="cc-rk" style="cursor:pointer" onclick="navigateTo(\'equipment\')"><span class="n">' + esc(e.name) + '</span><span class="s">' + (open[e.name] ? open[e.name] + ' باز' : 'پایدار') + '</span></div>'; }).join('') || '<p class="cc-empty">یافت نشد.</p>' : ''; };
+        q('#wb-bk').onclick = backup;
+    }
+
+    /* ---------- اتصال به ناوبری ---------- */
+    var bar = $('igbar'), st = bar && bar.querySelector('[data-t="settings"]');
+    if (st && !bar.querySelector('[data-t="bench"]')) st.insertAdjacentHTML('beforebegin', '<button data-t="bench" class="wide-only" onclick="navigateTo(\'bench\')"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.4 2.4-2.1-.6-.6-2.1z"/></svg><span>میز کار</span></button>');
+    var hg = document.querySelector('#tab-hub .menu-hub-grid'); if (hg) hg.insertAdjacentHTML('afterbegin', '<div class="hub-card" onclick="navigateTo(\'bench\')"><div class="hub-icon">🧰</div><div><div class="hub-title">میز کار</div><div class="hub-desc">چک‌لیست راند، کرنومتر، مبدل واحد، یادداشت و سلامت داده</div></div></div>');
+    try { var pn = navigateTo; navigateTo = function (id) { pn.apply(this, arguments); if (id === 'bench') { var t = $('current-page-title'); if (t) t.textContent = 'میز کار'; try { bench(); } catch (e) { console.warn('bench', e); } } try { track(id); } catch (e) {} }; } catch (e) {}
+    quickRender(); try { group(); fold(); } catch (e) {}
+})();
+</script>
+
+<script id="spx-home-js">
+/* ErfoNT 9.0 — خانه‌ی تک‌صفحه‌ای، ناوبری ۵ مقصدی، صفحه‌ی «بیشتر» و «نمای کلی». هیچ قابلیتی حذف نمی‌شود؛ فقط جابه‌جا می‌شود. */
+(function () {
+    'use strict';
+    var $ = function (id) { return document.getElementById(id); };
+    var esc = function (s) { return typeof escapeHtml === 'function' ? escapeHtml(String(s == null ? '' : s)) : String(s).replace(/[&<>"]/g, ''); };
+    var fa = function (n) { return Number(n).toLocaleString('en'); };
+    var hub = $('tab-hub'); if (!hub || !hub.parentNode) return;
+    var mk = function (id) { var d = document.createElement('div'); d.id = id; d.className = 'tab-content'; return d; };
+
+    /* ---- جابه‌جایی محتوای قدیمی داشبورد به «نمای کلی» و شبکه‌ی ماژول‌ها به «بیشتر» ---- */
+    var ov = mk('tab-overview'), more = mk('tab-more');
+    Array.prototype.slice.call(hub.children).forEach(function (k) { (k.classList.contains('spx-grp') || k.classList.contains('menu-hub-grid') ? more : ov).appendChild(k); });
+    hub.after(ov, more);
+    more.insertAdjacentHTML('afterbegin', '<div class="cc-head"><div><h2>بیشتر</h2><small>همه‌ی ماژول‌ها و ابزارها در یک‌جا</small></div></div><input id="mm-search" class="form-control" type="search" placeholder="جستجوی ماژول..." aria-label="جستجوی ماژول">');
+    var grps = more.querySelectorAll('.spx-grp'), analysis = Array.prototype.filter.call(grps, function (g) { return /تحلیل/.test(g.textContent); })[0];
+    if (analysis && analysis.nextElementSibling) analysis.nextElementSibling.insertAdjacentHTML('afterbegin', '<div class="hub-card" onclick="navigateTo(\'overview\')"><div class="hub-icon">📊</div><div><div class="hub-title">نمای کلی</div><div class="hub-desc">داشبورد کامل: شاخص‌ها، نمودار و فهرست‌ها</div></div></div>');
+    $('mm-search').oninput = function () {
+        var s = this.value.trim().toLowerCase();
+        more.querySelectorAll('.hub-card').forEach(function (c) { c.hidden = !!s && c.textContent.toLowerCase().indexOf(s) < 0; });
+        more.querySelectorAll('.spx-grp').forEach(function (g) { var n = g.nextElementSibling; g.hidden = !!s && n && !n.querySelector('.hub-card:not([hidden])'); });
+    };
+
+    /* ---- خانه ---- */
+    var home = document.createElement('div'); home.id = 'spx-home'; hub.appendChild(home);
+    var I = { plus: '<path d="M12 5v14M5 12h14"/>', qr: '<path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M4 12h16"/>', rep: '<path d="M9 4h6a1 1 0 0 1 1 1v1H8V5a1 1 0 0 1 1-1zM8 6H6a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-2M9 12h6M9 16h4"/>', prod: '<path d="M3 20h18M5 20V9l5 3V9l5 3V6h4v14"/>' };
+    var TILES = [['openModal(\'wo-modal\')', 'plus', 'ثبت دستورکار جدید', 1], ['navigateTo(\'scanner\')', 'qr', 'اسکن QR تجهیز'], ['navigateTo(\'daily\')', 'rep', 'گزارش شیفت'], ['navigateTo(\'oee\');openProdLog()', 'prod', 'ثبت تولید روزانه']];
+    function shiftName() { var h = new Date().getHours(); return h >= 6 && h < 14 ? 'شیفت صبح' : h >= 14 && h < 22 ? 'شیفت عصر' : 'شیفت شب'; }
+    function renderHome() {
+        var m = window.spxMetrics ? window.spxMetrics() : { crit: 0, sla: 0, low: 0, oee: null }, d = (typeof db !== 'undefined' && db) ? db : {}, wos = d.workOrders || [];
+        var open = wos.filter(function (w) { return !w.completed; }).length, items = [];
+        if (m.crit > 0) items.push({ l: 'bad', t: fa(m.crit) + ' دستورکار بحرانی باز', d: 'نیاز به رسیدگی فوری', to: 'workorders' });
+        if (m.sla > 0) items.push({ l: m.sla > 3 ? 'bad' : 'warn', t: fa(m.sla) + ' دستورکار بیش از ۲۴ ساعت باز', d: 'از زمان شروع بیش از یک روز گذشته', to: 'workorders' });
+        if (m.low > 0) items.push({ l: m.low > 3 ? 'bad' : 'warn', t: fa(m.low) + ' قطعه زیر حداقل موجودی', d: 'نیاز به سفارش یا تامین', to: 'inventory' });
+        if (m.oee != null && m.oee < 85) items.push({ l: m.oee < 60 ? 'bad' : 'warn', t: 'OEE هفت‌روزه ' + fa(m.oee) + '٪', d: 'کمتر از هدف ۸۵٪', to: 'oee' });
+        items.sort(function (a, b) { return (a.l === 'bad' ? 0 : 1) - (b.l === 'bad' ? 0 : 1); });
+        var lvl = items.some(function (i) { return i.l === 'bad'; }) ? 'bad' : items.length ? 'warn' : 'go';
+        var title = lvl === 'bad' ? 'نیازمند اقدام' : lvl === 'warn' ? 'نیازمند توجه' : 'همه‌چیز عادی', ic = lvl === 'go' ? '✓' : '!';
+        var role = ($('role-text-span') || {}).textContent || '', date = ''; try { date = J_FULL.format(new Date()); } catch (e) {}
+        var pins = []; try { pins = JSON.parse(localStorage.getItem('spx_pins') || '[]'); } catch (e) {}
+        var pinHtml = pins.map(function (id) { var c = document.querySelector('.hub-card[onclick*="navigateTo(\'' + id + '\')"] .hub-title'); return c ? '<button onclick="navigateTo(\'' + esc(id) + '\')">★ ' + esc(c.textContent) + '</button>' : ''; }).join('');
+        var shown = items.slice(0, 3);
+        home.innerHTML = '<div class="hm-main"><div class="hm-status ' + lvl + '"><span class="dot">' + ic + '</span><div><b>' + title + '</b><small>' + esc((role ? role + ' · ' : '') + shiftName() + (date ? ' · ' + date : '')) + '</small></div></div>' +
+            '<div class="hm-tiles">' + TILES.map(function (t) { return '<button class="hm-tile' + (t[3] ? ' pri' : '') + '" onclick="' + t[0] + '"><span class="ic"><svg viewBox="0 0 24 24">' + I[t[1]] + '</svg></span><b>' + t[2] + '</b></button>'; }).join('') + '</div>' +
+            '<div class="hm-sec"><h3>نیازمند اقدام</h3><a onclick="navigateTo(\'overview\')">نمای کلی ‹</a></div>' +
+            '<div class="hm-list">' + (shown.length ? shown.map(function (i) { return '<div class="hm-it ' + i.l + '" onclick="navigateTo(\'' + i.to + '\')"><i></i><div><b>' + i.t + '</b><small>' + i.d + '</small></div></div>'; }).join('') + (items.length > 3 ? '<div class="hm-it" onclick="navigateTo(\'overview\')"><i></i><div><b>و ' + fa(items.length - 3) + ' مورد دیگر</b><small>مشاهده در نمای کلی</small></div></div>' : '') : '<div class="hm-it ok"><i></i><div><b>موردی نیازمند اقدام نیست</b><small>همه‌ی شاخص‌ها در محدوده‌ی مطلوب است</small></div></div>') + '</div>' +
+            (pinHtml ? '<div class="hm-pins">' + pinHtml + '</div>' : '') + '</div>' +
+            '<div class="hm-side"><div class="hm-stat" style="--led:var(--cm-blue)"><span>دستورکار باز</span><b>' + fa(open) + '</b></div><div class="hm-stat" style="--led:' + (m.crit ? 'var(--cm-red)' : 'var(--cm-green)') + '"><span>دستورکار بحرانی</span><b>' + fa(m.crit) + '</b></div><div class="hm-stat" style="--led:' + (m.low ? 'var(--cm-amber)' : 'var(--cm-green)') + '"><span>قطعه‌ی کم‌موجودی</span><b>' + fa(m.low) + '</b></div><div class="hm-stat"><span>OEE میانگین ۷ روز</span><b>' + (m.oee == null ? '—' : fa(m.oee) + '٪') + '</b></div></div>';
+    }
+    try { renderHome(); } catch (e) {}
+    if (typeof renderDashboard === 'function') { var rd = renderDashboard; renderDashboard = function () { var r = rd.apply(this, arguments); try { renderHome(); } catch (e) {} return r; }; }
+    setInterval(function () { if (!document.hidden && hub.classList.contains('active')) { try { renderHome(); } catch (e) {} } }, 30000);
+
+    /* ---- ناوبری: ۵ مقصد (خانه، دستورکار، تجهیزات، انبار، بیشتر) ---- */
+    function fixNav() {
+        var bar = $('igbar') || document.querySelector('.igbar'); if (!bar) return;
+        var hb = bar.querySelector('[data-t="hub"] span'); if (hb && hb.textContent.trim() !== 'خانه') hb.textContent = 'خانه';
+        var eq = bar.querySelector('[data-t="equipment"]'), inv = bar.querySelector('[data-t="inventory"]');
+        if (eq && inv && !bar.querySelector('[data-t="more"]')) {
+            var mb = eq.cloneNode(true); mb.dataset.t = 'more'; mb.setAttribute('onclick', "navigateTo('more')"); mb.classList.remove('on'); mb.removeAttribute('aria-current');
+            var sv = mb.querySelector('svg'), sp = mb.querySelector('span'); if (sv) sv.innerHTML = '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>'; if (sp) { sp.removeAttribute('data-i18n'); sp.textContent = 'بیشتر'; }
+            inv.after(mb);
+        }
+        /* نقش کاربر و تنظیمات به منوی ⋯ می‌روند تا هدر یک‌خطی بماند */
+        var row = $('mm-moved'), role = $('current-role-badge'), gear = document.querySelector('header button[title="تنظیمات"]');
+        if (row) { if (gear && !row.contains(gear)) row.prepend(gear); if (role && !row.contains(role)) row.prepend(role); }
+    }
+    var navT = 0; fixNav();
+    var navBar = $('igbar') || document.querySelector('.igbar');
+    if (navBar) new MutationObserver(function () { clearTimeout(navT); navT = setTimeout(fixNav, 60); }).observe(navBar, { childList: true, subtree: true, characterData: true });
+    document.addEventListener('DOMContentLoaded', function () { setTimeout(fixNav, 0); }); window.addEventListener('load', function () { setTimeout(fixNav, 100); });
+
+    var MAIN = { hub: 1, workorders: 1, equipment: 1, inventory: 1, more: 1 }, TT = { hub: 'خانه', more: 'بیشتر', overview: 'نمای کلی' };
+    var pn = navigateTo;
+    navigateTo = function (id) {
+        pn.apply(this, arguments);
+        try {
+            document.body.dataset.page = id;
+            var t = $('current-page-title'); if (TT[id] && t) t.textContent = TT[id];
+            document.querySelectorAll('.igbar .wide-only').forEach(function (b) { b.classList.remove('on'); });
+            var bs = document.querySelectorAll('.igbar button'), any = Array.prototype.some.call(bs, function (b) { return b.classList.contains('on'); }), mb2 = document.querySelector('.igbar [data-t="more"]');
+            if (!any && mb2) mb2.classList.add('on');
+            document.querySelectorAll('.back-btn').forEach(function (b) { if (!MAIN[id]) b.setAttribute('onclick', "navigateTo('more')"); var s = b.querySelector('[data-i18n="back_to_hub"]'); if (s) s.textContent = 'بازگشت'; });
+            if (id === 'hub') renderHome();
+            document.title = (t && t.textContent.trim() ? t.textContent.trim() + ' · ' : '') + 'ErfoNT pro';
+        } catch (e) { console.warn('nav', e); }
+    };
+    document.body.dataset.page = 'hub';
 })();
 </script>
 
